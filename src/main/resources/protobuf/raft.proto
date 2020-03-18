@@ -1,0 +1,17 @@
+syntax = "proto3";
+package protobuf;
+import "enum.proto";
+option java_package = "rpc";
+option java_outer_classname = "RaftOutter";
+
+message EntryMeta{
+    int64 term = 1;
+    EntryType type = 2;
+    string peers = 3;
+    int64 data_len = 4;
+     string old_peers = 5;
+
+     int64 checksum = 6;
+     string learners = 7;
+     string old_learners = 8;
+}
