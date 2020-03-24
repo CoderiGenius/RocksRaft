@@ -4,6 +4,7 @@
 package rpc;
 
 public final class RpcRequests {
+
   private RpcRequests() {}
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistryLite registry) {
@@ -8117,4 +8118,6 @@ public final class RpcRequests {
   }
 
   // @@protoc_insertion_point(outer_class_scope)
+
+
 }

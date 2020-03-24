@@ -84,7 +84,11 @@ public class NodeOptions extends RpcOptions {
     private String                          logUri;
 
 
-
+    private String rpcProtocol;
+    private String serialization;
+    private int port;
+    private boolean daemon;
+    private String rpcServiceName;
 
     // If non-null, we will pass this throughput_snapshot_throttle to SnapshotExecutor
     // Default: NULL
@@ -108,8 +112,11 @@ public class NodeOptions extends RpcOptions {
      */
     private int                             raftRpcThreadPoolSize  = Utils.cpus() * 6;
 
+    //心跳包最长时间
+    private long maxHeartBeatTime;
 
-
+    //选举超时时间
+    private long maxElectionTime;
 
     /**
      * Custom service factory.
@@ -117,4 +124,175 @@ public class NodeOptions extends RpcOptions {
     private RaftServiceFactory             serviceFactory         = defaultServiceFactory;
 
 
+    public long getMaxHeartBeatTime() {
+        return maxHeartBeatTime;
+    }
+
+    public void setMaxHeartBeatTime(long maxHeartBeatTime) {
+        this.maxHeartBeatTime = maxHeartBeatTime;
+    }
+
+    public long getMaxElectionTime() {
+        return maxElectionTime;
+    }
+
+    public void setMaxElectionTime(long maxElectionTime) {
+        this.maxElectionTime = maxElectionTime;
+    }
+
+    public String getRpcServiceName() {
+        return rpcServiceName;
+    }
+
+    public void setRpcServiceName(String rpcServiceName) {
+        this.rpcServiceName = rpcServiceName;
+    }
+
+    public String getSerialization() {
+        return serialization;
+    }
+
+    public void setSerialization(String serialization) {
+        this.serialization = serialization;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public boolean isDaemon() {
+        return daemon;
+    }
+
+    public void setDaemon(boolean daemon) {
+        this.daemon = daemon;
+    }
+
+    public static RaftServiceFactory getDefaultServiceFactory() {
+        return defaultServiceFactory;
+    }
+
+    public int getElectionTimeoutMs() {
+        return electionTimeoutMs;
+    }
+
+    public void setElectionTimeoutMs(int electionTimeoutMs) {
+        this.electionTimeoutMs = electionTimeoutMs;
+    }
+
+    public int getDecayPriorityGap() {
+        return decayPriorityGap;
+    }
+
+    public void setDecayPriorityGap(int decayPriorityGap) {
+        this.decayPriorityGap = decayPriorityGap;
+    }
+
+    public int getLeaderLeaseTimeRatio() {
+        return leaderLeaseTimeRatio;
+    }
+
+    public void setLeaderLeaseTimeRatio(int leaderLeaseTimeRatio) {
+        this.leaderLeaseTimeRatio = leaderLeaseTimeRatio;
+    }
+
+    public int getSnapshotIntervalSecs() {
+        return snapshotIntervalSecs;
+    }
+
+    public void setSnapshotIntervalSecs(int snapshotIntervalSecs) {
+        this.snapshotIntervalSecs = snapshotIntervalSecs;
+    }
+
+    public int getSnapshotLogIndexMargin() {
+        return snapshotLogIndexMargin;
+    }
+
+    public void setSnapshotLogIndexMargin(int snapshotLogIndexMargin) {
+        this.snapshotLogIndexMargin = snapshotLogIndexMargin;
+    }
+
+    public int getCatchupMargin() {
+        return catchupMargin;
+    }
+
+    public void setCatchupMargin(int catchupMargin) {
+        this.catchupMargin = catchupMargin;
+    }
+
+    public Configuration getInitialConf() {
+        return initialConf;
+    }
+
+    public void setInitialConf(Configuration initialConf) {
+        this.initialConf = initialConf;
+    }
+
+    public StateMachine getFsm() {
+        return fsm;
+    }
+
+    public void setFsm(StateMachine fsm) {
+        this.fsm = fsm;
+    }
+
+    public String getLogUri() {
+        return logUri;
+    }
+
+    public void setLogUri(String logUri) {
+        this.logUri = logUri;
+    }
+
+    public String getRpcProtocol() {
+        return rpcProtocol;
+    }
+
+    public void setRpcProtocol(String rpcProtocol) {
+        this.rpcProtocol = rpcProtocol;
+    }
+
+    public boolean isDisableCli() {
+        return disableCli;
+    }
+
+    public void setDisableCli(boolean disableCli) {
+        this.disableCli = disableCli;
+    }
+
+    public int getTimerPoolSize() {
+        return timerPoolSize;
+    }
+
+    public void setTimerPoolSize(int timerPoolSize) {
+        this.timerPoolSize = timerPoolSize;
+    }
+
+    public int getCliRpcThreadPoolSize() {
+        return cliRpcThreadPoolSize;
+    }
+
+    public void setCliRpcThreadPoolSize(int cliRpcThreadPoolSize) {
+        this.cliRpcThreadPoolSize = cliRpcThreadPoolSize;
+    }
+
+    public int getRaftRpcThreadPoolSize() {
+        return raftRpcThreadPoolSize;
+    }
+
+    public void setRaftRpcThreadPoolSize(int raftRpcThreadPoolSize) {
+        this.raftRpcThreadPoolSize = raftRpcThreadPoolSize;
+    }
+
+    public RaftServiceFactory getServiceFactory() {
+        return serviceFactory;
+    }
+
+    public void setServiceFactory(RaftServiceFactory serviceFactory) {
+        this.serviceFactory = serviceFactory;
+    }
 }

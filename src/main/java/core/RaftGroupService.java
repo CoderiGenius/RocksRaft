@@ -2,13 +2,18 @@ package core;
 
 import com.alipay.remoting.rpc.RpcServer;
 import com.alipay.remoting.util.StringUtils;
+import com.alipay.sofa.rpc.config.ProviderConfig;
+import com.alipay.sofa.rpc.config.ServerConfig;
 import entity.Endpoint;
 import entity.Node;
 import entity.NodeOptions;
 import entity.PeerId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import utils.RandomTimeUtil;
 import utils.Utils;
+
+import java.lang.reflect.Type;
 
 /**
  * Created by 周思成 on  2020/3/13 23:38
@@ -56,10 +61,16 @@ public class RaftGroupService {
         this.nodeOptions = nodeOptions;
    }
 
-   public RaftGroupService(String groupId,PeerId peerId,NodeOptions nodeOptions,)
+    public RaftGroupService(String groupId, PeerId peerId, NodeOptions nodeOptions, RpcServer rpcServer) {
+        this.groupId = groupId;
+        this.serverId = peerId;
+        this.nodeOptions = nodeOptions;
+        this.rpcServer = rpcServer;
+
+    }
 
 
-   public Node start(){
+   public Node start() throws ClassNotFoundException {
        if (this.started) {
            return this.node;
        }
@@ -71,6 +82,20 @@ public class RaftGroupService {
            throw new IllegalArgumentException("Blank group id" + this.groupId);
        }
         //注册rpc
-       NodeManagerImpl.getInstance().addAddress(this.serverId.getEndpoint());
+       //NodeManagerImpl.getInstance().addAddress(this.serverId.getEndpoint());
+
+       //开启rpc
+       ServerConfig serverConfig = new ServerConfig()
+               .setProtocol(nodeOptions.getRpcProtocol())
+               .setSerialization(nodeOptions.getSerialization())
+               .setPort(nodeOptions.getPort())
+               .setDaemon(nodeOptions.isDaemon());
+
+
+       //随机时间开始选举
+      long randomElectionTime = RandomTimeUtil
+              .newRandomTime(nodeOptions.getMaxHeartBeatTime(),nodeOptions.getMaxElectionTime());
+
+
    }
 }

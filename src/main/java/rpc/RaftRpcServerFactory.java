@@ -27,6 +27,12 @@ public class RaftRpcServerFactory {
     public static RpcServer createRaftRpcServer(final Endpoint endpoint, final Executor raftExecutor
             ,final Executor cliExecutor){
        final RpcServer rpcServer = new RpcServer(endpoint.getPort(),true,true);
-       
+        addRaftRequestProcessors(rpcServer, raftExecutor, cliExecutor);
+        return rpcServer;
+    }
+
+    public static void addRaftRequestProcessors(RpcServer rpcServer, Executor raftExecutor, Executor cliExecutor) {
+
+
     }
 }
