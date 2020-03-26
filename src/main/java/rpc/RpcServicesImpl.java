@@ -1,5 +1,6 @@
 package rpc;
 
+import core.NodeImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,5 +16,21 @@ public class RpcServicesImpl implements RpcServices {
     public RpcRequests sendRpcRequest(RpcRequests rpcRequests) {
 
         return null;
+    }
+
+    @Override
+    public RpcRequests.RequestPreVoteResponse sendPreVoteRequest(RpcRequests.RequestPreVoteRequest requestPreVoteRequest) {
+       long candidateTerm = requestPreVoteRequest.getLastLogTerm();
+       long selfTerm = NodeImpl.getNodeImple().getTerm();
+        RpcRequests.RequestPreVoteResponse.Builder builder = RpcRequests.RequestPreVoteResponse.newBuilder();
+        if (candidateTerm < selfTerm) {
+            builder.setGranted(false);
+            builder.setTerm(selfTerm);
+        }else{
+            builder.setGranted(true);
+            builder.setTerm(selfTerm);
+        }
+        RpcRequests.RequestPreVoteResponse requestPreVoteResponse = builder.build();
+        return requestPreVoteResponse;
     }
 }

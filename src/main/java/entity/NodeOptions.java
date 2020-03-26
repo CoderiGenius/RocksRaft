@@ -19,6 +19,14 @@ import java.util.ServiceLoader;
  */
 public class NodeOptions extends RpcOptions {
 
+    public static NodeOptions nodeOptions  = new NodeOptions();
+
+    public static NodeOptions getNodeOptions() {
+        return nodeOptions;
+    }
+
+    private NodeOptions(){};
+
     public static final RaftServiceFactory defaultServiceFactory  =
             ServiceLoader.load(RaftServiceFactory.class).iterator().next();
 

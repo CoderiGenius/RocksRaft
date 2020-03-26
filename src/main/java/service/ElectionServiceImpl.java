@@ -1,6 +1,8 @@
 package service;
 
+import core.NodeImpl;
 import exceptions.ElectionException;
+import rpc.RpcRequests;
 
 import java.util.concurrent.Callable;
 
@@ -11,7 +13,16 @@ import java.util.concurrent.Callable;
 public class ElectionServiceImpl implements ElectionService , Callable  {
     @Override
     public boolean startElection() {
+            //修改当前节点状态为prevote
+        NodeImpl.getNodeImple().setNodeState(NodeImpl.NodeState.preCandidate);
+        return true;
+    }
 
+    @Override
+    public void startPrevote() {
+        RpcRequests.RequestPreVoteRequest.Builder builder = RpcRequests.RequestPreVoteRequest.newBuilder();
+        builder.setLastLogTerm(NodeImpl.getNodeImple().getTerm());
+        builder.build();
     }
 
     @Override

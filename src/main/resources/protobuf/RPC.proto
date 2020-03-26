@@ -36,6 +36,20 @@ message RequestVoteResponse {
      bool granted = 2;
 };
 
+
+message RequestPreVoteRequest {
+     string server_id = 1;
+     string peer_id = 2;
+     int64 term = 3;
+     int64 last_log_term = 4;
+     int64 last_log_index = 5;
+     bool pre_vote = 6;
+};
+message RequestPreVoteResponse {
+     int64 term = 1;
+     bool granted = 2;
+};
+
 message AppendEntriesRequestHeader {
 
      string server_id = 1;

@@ -15,7 +15,7 @@ public class start {
         Endpoint endpoint = new Endpoint("localhost",8800);
         PeerId serverId = new PeerId();
         serverId.setEndpoint(endpoint);
-        NodeOptions nodeOptions = new NodeOptions();
+        NodeOptions nodeOptions =  NodeOptions.getNodeOptions();
 
         RaftGroupService cluster = new RaftGroupService(groupId, serverId, nodeOptions);
         Node node = cluster.start();

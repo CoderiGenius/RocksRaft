@@ -4,20 +4,19 @@
 package rpc;
 
 public final class RpcRequests {
-
   private RpcRequests() {}
   public static void registerAllExtensions(
-      com.google.protobuf.ExtensionRegistryLite registry) {
+          com.google.protobuf.ExtensionRegistryLite registry) {
   }
 
   public static void registerAllExtensions(
-      com.google.protobuf.ExtensionRegistry registry) {
+          com.google.protobuf.ExtensionRegistry registry) {
     registerAllExtensions(
-        (com.google.protobuf.ExtensionRegistryLite) registry);
+            (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   public interface PingRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:protobuf.PingRequest)
-      com.google.protobuf.MessageOrBuilder {
+          // @@protoc_insertion_point(interface_extends:protobuf.PingRequest)
+          com.google.protobuf.MessageOrBuilder {
 
     /**
      * <code>int64 send_timestamp = 1;</code>
@@ -28,10 +27,10 @@ public final class RpcRequests {
    * Protobuf type {@code protobuf.PingRequest}
    */
   public  static final class PingRequest extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:protobuf.PingRequest)
-      PingRequestOrBuilder {
-  private static final long serialVersionUID = 0L;
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:protobuf.PingRequest)
+          PingRequestOrBuilder {
+    private static final long serialVersionUID = 0L;
     // Use PingRequest.newBuilder() to construct.
     private PingRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -46,16 +45,16 @@ public final class RpcRequests {
       return this.unknownFields;
     }
     private PingRequest(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       this();
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
+              com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -71,7 +70,7 @@ public final class RpcRequests {
             }
             default: {
               if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
+                      input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -82,23 +81,23 @@ public final class RpcRequests {
         throw e.setUnfinishedMessage(this);
       } catch (java.io.IOException e) {
         throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
+                e).setUnfinishedMessage(this);
       } finally {
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return rpc.RpcRequests.internal_static_protobuf_PingRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return rpc.RpcRequests.internal_static_protobuf_PingRequest_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              rpc.RpcRequests.PingRequest.class, rpc.RpcRequests.PingRequest.Builder.class);
+              .ensureFieldAccessorsInitialized(
+                      rpc.RpcRequests.PingRequest.class, rpc.RpcRequests.PingRequest.Builder.class);
     }
 
     public static final int SEND_TIMESTAMP_FIELD_NUMBER = 1;
@@ -123,7 +122,7 @@ public final class RpcRequests {
 
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+            throws java.io.IOException {
       if (sendTimestamp_ != 0L) {
         output.writeInt64(1, sendTimestamp_);
       }
@@ -138,7 +137,7 @@ public final class RpcRequests {
       size = 0;
       if (sendTimestamp_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(1, sendTimestamp_);
+                .computeInt64Size(1, sendTimestamp_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -148,7 +147,7 @@ public final class RpcRequests {
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
-       return true;
+        return true;
       }
       if (!(obj instanceof rpc.RpcRequests.PingRequest)) {
         return super.equals(obj);
@@ -157,7 +156,7 @@ public final class RpcRequests {
 
       boolean result = true;
       result = result && (getSendTimestamp()
-          == other.getSendTimestamp());
+              == other.getSendTimestamp());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -171,80 +170,80 @@ public final class RpcRequests {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + SEND_TIMESTAMP_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getSendTimestamp());
+              getSendTimestamp());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
     public static rpc.RpcRequests.PingRequest parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.PingRequest parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.PingRequest parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.PingRequest parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.PingRequest parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.PingRequest parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.PingRequest parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.PingRequest parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.PingRequest parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
+              .parseDelimitedWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.PingRequest parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.PingRequest parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.PingRequest parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
@@ -258,12 +257,12 @@ public final class RpcRequests {
     @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
+              ? new Builder() : new Builder().mergeFrom(this);
     }
 
     @java.lang.Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -271,20 +270,20 @@ public final class RpcRequests {
      * Protobuf type {@code protobuf.PingRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:protobuf.PingRequest)
-        rpc.RpcRequests.PingRequestOrBuilder {
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:protobuf.PingRequest)
+            rpc.RpcRequests.PingRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return rpc.RpcRequests.internal_static_protobuf_PingRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return rpc.RpcRequests.internal_static_protobuf_PingRequest_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                rpc.RpcRequests.PingRequest.class, rpc.RpcRequests.PingRequest.Builder.class);
+                .ensureFieldAccessorsInitialized(
+                        rpc.RpcRequests.PingRequest.class, rpc.RpcRequests.PingRequest.Builder.class);
       }
 
       // Construct using rpc.RpcRequests.PingRequest.newBuilder()
@@ -293,7 +292,7 @@ public final class RpcRequests {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
@@ -312,7 +311,7 @@ public final class RpcRequests {
 
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return rpc.RpcRequests.internal_static_protobuf_PingRequest_descriptor;
       }
 
@@ -344,30 +343,30 @@ public final class RpcRequests {
       }
       @java.lang.Override
       public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       @java.lang.Override
       public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
         return (Builder) super.clearField(field);
       }
       @java.lang.Override
       public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return (Builder) super.clearOneof(oneof);
       }
       @java.lang.Override
       public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       @java.lang.Override
       public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       @java.lang.Override
@@ -397,9 +396,9 @@ public final class RpcRequests {
 
       @java.lang.Override
       public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
         rpc.RpcRequests.PingRequest parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
@@ -425,7 +424,7 @@ public final class RpcRequests {
        * <code>int64 send_timestamp = 1;</code>
        */
       public Builder setSendTimestamp(long value) {
-        
+
         sendTimestamp_ = value;
         onChanged();
         return this;
@@ -434,20 +433,20 @@ public final class RpcRequests {
        * <code>int64 send_timestamp = 1;</code>
        */
       public Builder clearSendTimestamp() {
-        
+
         sendTimestamp_ = 0L;
         onChanged();
         return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
       }
 
       @java.lang.Override
       public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
       }
 
@@ -466,12 +465,12 @@ public final class RpcRequests {
     }
 
     private static final com.google.protobuf.Parser<PingRequest>
-        PARSER = new com.google.protobuf.AbstractParser<PingRequest>() {
+            PARSER = new com.google.protobuf.AbstractParser<PingRequest>() {
       @java.lang.Override
       public PingRequest parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
         return new PingRequest(input, extensionRegistry);
       }
     };
@@ -493,8 +492,8 @@ public final class RpcRequests {
   }
 
   public interface ErrorResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:protobuf.ErrorResponse)
-      com.google.protobuf.MessageOrBuilder {
+          // @@protoc_insertion_point(interface_extends:protobuf.ErrorResponse)
+          com.google.protobuf.MessageOrBuilder {
 
     /**
      * <code>int64 errorCode = 1;</code>
@@ -509,16 +508,16 @@ public final class RpcRequests {
      * <code>string errorMsg = 2;</code>
      */
     com.google.protobuf.ByteString
-        getErrorMsgBytes();
+    getErrorMsgBytes();
   }
   /**
    * Protobuf type {@code protobuf.ErrorResponse}
    */
   public  static final class ErrorResponse extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:protobuf.ErrorResponse)
-      ErrorResponseOrBuilder {
-  private static final long serialVersionUID = 0L;
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:protobuf.ErrorResponse)
+          ErrorResponseOrBuilder {
+    private static final long serialVersionUID = 0L;
     // Use ErrorResponse.newBuilder() to construct.
     private ErrorResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -534,16 +533,16 @@ public final class RpcRequests {
       return this.unknownFields;
     }
     private ErrorResponse(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       this();
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
+              com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -565,7 +564,7 @@ public final class RpcRequests {
             }
             default: {
               if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
+                      input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -576,23 +575,23 @@ public final class RpcRequests {
         throw e.setUnfinishedMessage(this);
       } catch (java.io.IOException e) {
         throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
+                e).setUnfinishedMessage(this);
       } finally {
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return rpc.RpcRequests.internal_static_protobuf_ErrorResponse_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return rpc.RpcRequests.internal_static_protobuf_ErrorResponse_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              rpc.RpcRequests.ErrorResponse.class, rpc.RpcRequests.ErrorResponse.Builder.class);
+              .ensureFieldAccessorsInitialized(
+                      rpc.RpcRequests.ErrorResponse.class, rpc.RpcRequests.ErrorResponse.Builder.class);
     }
 
     public static final int ERRORCODE_FIELD_NUMBER = 1;
@@ -614,8 +613,8 @@ public final class RpcRequests {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         errorMsg_ = s;
         return s;
@@ -625,12 +624,12 @@ public final class RpcRequests {
      * <code>string errorMsg = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getErrorMsgBytes() {
+    getErrorMsgBytes() {
       java.lang.Object ref = errorMsg_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
         errorMsg_ = b;
         return b;
       } else {
@@ -651,7 +650,7 @@ public final class RpcRequests {
 
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+            throws java.io.IOException {
       if (errorCode_ != 0L) {
         output.writeInt64(1, errorCode_);
       }
@@ -669,7 +668,7 @@ public final class RpcRequests {
       size = 0;
       if (errorCode_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(1, errorCode_);
+                .computeInt64Size(1, errorCode_);
       }
       if (!getErrorMsgBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, errorMsg_);
@@ -682,7 +681,7 @@ public final class RpcRequests {
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
-       return true;
+        return true;
       }
       if (!(obj instanceof rpc.RpcRequests.ErrorResponse)) {
         return super.equals(obj);
@@ -691,9 +690,9 @@ public final class RpcRequests {
 
       boolean result = true;
       result = result && (getErrorCode()
-          == other.getErrorCode());
+              == other.getErrorCode());
       result = result && getErrorMsg()
-          .equals(other.getErrorMsg());
+              .equals(other.getErrorMsg());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -707,7 +706,7 @@ public final class RpcRequests {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + ERRORCODE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getErrorCode());
+              getErrorCode());
       hash = (37 * hash) + ERRORMSG_FIELD_NUMBER;
       hash = (53 * hash) + getErrorMsg().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -716,73 +715,73 @@ public final class RpcRequests {
     }
 
     public static rpc.RpcRequests.ErrorResponse parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.ErrorResponse parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.ErrorResponse parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.ErrorResponse parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.ErrorResponse parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.ErrorResponse parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.ErrorResponse parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.ErrorResponse parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.ErrorResponse parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
+              .parseDelimitedWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.ErrorResponse parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.ErrorResponse parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.ErrorResponse parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
@@ -796,12 +795,12 @@ public final class RpcRequests {
     @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
+              ? new Builder() : new Builder().mergeFrom(this);
     }
 
     @java.lang.Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -809,20 +808,20 @@ public final class RpcRequests {
      * Protobuf type {@code protobuf.ErrorResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:protobuf.ErrorResponse)
-        rpc.RpcRequests.ErrorResponseOrBuilder {
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:protobuf.ErrorResponse)
+            rpc.RpcRequests.ErrorResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return rpc.RpcRequests.internal_static_protobuf_ErrorResponse_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return rpc.RpcRequests.internal_static_protobuf_ErrorResponse_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                rpc.RpcRequests.ErrorResponse.class, rpc.RpcRequests.ErrorResponse.Builder.class);
+                .ensureFieldAccessorsInitialized(
+                        rpc.RpcRequests.ErrorResponse.class, rpc.RpcRequests.ErrorResponse.Builder.class);
       }
 
       // Construct using rpc.RpcRequests.ErrorResponse.newBuilder()
@@ -831,7 +830,7 @@ public final class RpcRequests {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
@@ -852,7 +851,7 @@ public final class RpcRequests {
 
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return rpc.RpcRequests.internal_static_protobuf_ErrorResponse_descriptor;
       }
 
@@ -885,30 +884,30 @@ public final class RpcRequests {
       }
       @java.lang.Override
       public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       @java.lang.Override
       public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
         return (Builder) super.clearField(field);
       }
       @java.lang.Override
       public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return (Builder) super.clearOneof(oneof);
       }
       @java.lang.Override
       public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       @java.lang.Override
       public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       @java.lang.Override
@@ -942,9 +941,9 @@ public final class RpcRequests {
 
       @java.lang.Override
       public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
         rpc.RpcRequests.ErrorResponse parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
@@ -970,7 +969,7 @@ public final class RpcRequests {
        * <code>int64 errorCode = 1;</code>
        */
       public Builder setErrorCode(long value) {
-        
+
         errorCode_ = value;
         onChanged();
         return this;
@@ -979,7 +978,7 @@ public final class RpcRequests {
        * <code>int64 errorCode = 1;</code>
        */
       public Builder clearErrorCode() {
-        
+
         errorCode_ = 0L;
         onChanged();
         return this;
@@ -993,7 +992,7 @@ public final class RpcRequests {
         java.lang.Object ref = errorMsg_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
+                  (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           errorMsg_ = s;
           return s;
@@ -1005,12 +1004,12 @@ public final class RpcRequests {
        * <code>string errorMsg = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getErrorMsgBytes() {
+      getErrorMsgBytes() {
         java.lang.Object ref = errorMsg_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
           errorMsg_ = b;
           return b;
         } else {
@@ -1021,11 +1020,11 @@ public final class RpcRequests {
        * <code>string errorMsg = 2;</code>
        */
       public Builder setErrorMsg(
-          java.lang.String value) {
+              java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  
+          throw new NullPointerException();
+        }
+
         errorMsg_ = value;
         onChanged();
         return this;
@@ -1034,7 +1033,7 @@ public final class RpcRequests {
        * <code>string errorMsg = 2;</code>
        */
       public Builder clearErrorMsg() {
-        
+
         errorMsg_ = getDefaultInstance().getErrorMsg();
         onChanged();
         return this;
@@ -1043,25 +1042,25 @@ public final class RpcRequests {
        * <code>string errorMsg = 2;</code>
        */
       public Builder setErrorMsgBytes(
-          com.google.protobuf.ByteString value) {
+              com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
         errorMsg_ = value;
         onChanged();
         return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
       }
 
       @java.lang.Override
       public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
       }
 
@@ -1080,12 +1079,12 @@ public final class RpcRequests {
     }
 
     private static final com.google.protobuf.Parser<ErrorResponse>
-        PARSER = new com.google.protobuf.AbstractParser<ErrorResponse>() {
+            PARSER = new com.google.protobuf.AbstractParser<ErrorResponse>() {
       @java.lang.Override
       public ErrorResponse parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
         return new ErrorResponse(input, extensionRegistry);
       }
     };
@@ -1107,8 +1106,8 @@ public final class RpcRequests {
   }
 
   public interface TimeoutNowRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:protobuf.TimeoutNowRequest)
-      com.google.protobuf.MessageOrBuilder {
+          // @@protoc_insertion_point(interface_extends:protobuf.TimeoutNowRequest)
+          com.google.protobuf.MessageOrBuilder {
 
     /**
      * <code>string server_id = 1;</code>
@@ -1118,7 +1117,7 @@ public final class RpcRequests {
      * <code>string server_id = 1;</code>
      */
     com.google.protobuf.ByteString
-        getServerIdBytes();
+    getServerIdBytes();
 
     /**
      * <code>string peer_id = 2;</code>
@@ -1128,7 +1127,7 @@ public final class RpcRequests {
      * <code>string peer_id = 2;</code>
      */
     com.google.protobuf.ByteString
-        getPeerIdBytes();
+    getPeerIdBytes();
 
     /**
      * <code>int64 term = 3;</code>
@@ -1139,10 +1138,10 @@ public final class RpcRequests {
    * Protobuf type {@code protobuf.TimeoutNowRequest}
    */
   public  static final class TimeoutNowRequest extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:protobuf.TimeoutNowRequest)
-      TimeoutNowRequestOrBuilder {
-  private static final long serialVersionUID = 0L;
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:protobuf.TimeoutNowRequest)
+          TimeoutNowRequestOrBuilder {
+    private static final long serialVersionUID = 0L;
     // Use TimeoutNowRequest.newBuilder() to construct.
     private TimeoutNowRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -1159,16 +1158,16 @@ public final class RpcRequests {
       return this.unknownFields;
     }
     private TimeoutNowRequest(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       this();
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
+              com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -1196,7 +1195,7 @@ public final class RpcRequests {
             }
             default: {
               if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
+                      input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -1207,23 +1206,23 @@ public final class RpcRequests {
         throw e.setUnfinishedMessage(this);
       } catch (java.io.IOException e) {
         throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
+                e).setUnfinishedMessage(this);
       } finally {
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return rpc.RpcRequests.internal_static_protobuf_TimeoutNowRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return rpc.RpcRequests.internal_static_protobuf_TimeoutNowRequest_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              rpc.RpcRequests.TimeoutNowRequest.class, rpc.RpcRequests.TimeoutNowRequest.Builder.class);
+              .ensureFieldAccessorsInitialized(
+                      rpc.RpcRequests.TimeoutNowRequest.class, rpc.RpcRequests.TimeoutNowRequest.Builder.class);
     }
 
     public static final int SERVER_ID_FIELD_NUMBER = 1;
@@ -1236,8 +1235,8 @@ public final class RpcRequests {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         serverId_ = s;
         return s;
@@ -1247,12 +1246,12 @@ public final class RpcRequests {
      * <code>string server_id = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getServerIdBytes() {
+    getServerIdBytes() {
       java.lang.Object ref = serverId_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
         serverId_ = b;
         return b;
       } else {
@@ -1270,8 +1269,8 @@ public final class RpcRequests {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         peerId_ = s;
         return s;
@@ -1281,12 +1280,12 @@ public final class RpcRequests {
      * <code>string peer_id = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getPeerIdBytes() {
+    getPeerIdBytes() {
       java.lang.Object ref = peerId_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
         peerId_ = b;
         return b;
       } else {
@@ -1316,7 +1315,7 @@ public final class RpcRequests {
 
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+            throws java.io.IOException {
       if (!getServerIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, serverId_);
       }
@@ -1343,7 +1342,7 @@ public final class RpcRequests {
       }
       if (term_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(3, term_);
+                .computeInt64Size(3, term_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1353,7 +1352,7 @@ public final class RpcRequests {
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
-       return true;
+        return true;
       }
       if (!(obj instanceof rpc.RpcRequests.TimeoutNowRequest)) {
         return super.equals(obj);
@@ -1362,11 +1361,11 @@ public final class RpcRequests {
 
       boolean result = true;
       result = result && getServerId()
-          .equals(other.getServerId());
+              .equals(other.getServerId());
       result = result && getPeerId()
-          .equals(other.getPeerId());
+              .equals(other.getPeerId());
       result = result && (getTerm()
-          == other.getTerm());
+              == other.getTerm());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -1384,80 +1383,80 @@ public final class RpcRequests {
       hash = (53 * hash) + getPeerId().hashCode();
       hash = (37 * hash) + TERM_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getTerm());
+              getTerm());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
     public static rpc.RpcRequests.TimeoutNowRequest parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.TimeoutNowRequest parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.TimeoutNowRequest parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.TimeoutNowRequest parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.TimeoutNowRequest parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.TimeoutNowRequest parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.TimeoutNowRequest parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.TimeoutNowRequest parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.TimeoutNowRequest parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
+              .parseDelimitedWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.TimeoutNowRequest parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.TimeoutNowRequest parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.TimeoutNowRequest parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
@@ -1471,12 +1470,12 @@ public final class RpcRequests {
     @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
+              ? new Builder() : new Builder().mergeFrom(this);
     }
 
     @java.lang.Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -1484,20 +1483,20 @@ public final class RpcRequests {
      * Protobuf type {@code protobuf.TimeoutNowRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:protobuf.TimeoutNowRequest)
-        rpc.RpcRequests.TimeoutNowRequestOrBuilder {
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:protobuf.TimeoutNowRequest)
+            rpc.RpcRequests.TimeoutNowRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return rpc.RpcRequests.internal_static_protobuf_TimeoutNowRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return rpc.RpcRequests.internal_static_protobuf_TimeoutNowRequest_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                rpc.RpcRequests.TimeoutNowRequest.class, rpc.RpcRequests.TimeoutNowRequest.Builder.class);
+                .ensureFieldAccessorsInitialized(
+                        rpc.RpcRequests.TimeoutNowRequest.class, rpc.RpcRequests.TimeoutNowRequest.Builder.class);
       }
 
       // Construct using rpc.RpcRequests.TimeoutNowRequest.newBuilder()
@@ -1506,7 +1505,7 @@ public final class RpcRequests {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
@@ -1529,7 +1528,7 @@ public final class RpcRequests {
 
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return rpc.RpcRequests.internal_static_protobuf_TimeoutNowRequest_descriptor;
       }
 
@@ -1563,30 +1562,30 @@ public final class RpcRequests {
       }
       @java.lang.Override
       public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       @java.lang.Override
       public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
         return (Builder) super.clearField(field);
       }
       @java.lang.Override
       public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return (Builder) super.clearOneof(oneof);
       }
       @java.lang.Override
       public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       @java.lang.Override
       public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       @java.lang.Override
@@ -1624,9 +1623,9 @@ public final class RpcRequests {
 
       @java.lang.Override
       public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
         rpc.RpcRequests.TimeoutNowRequest parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
@@ -1649,7 +1648,7 @@ public final class RpcRequests {
         java.lang.Object ref = serverId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
+                  (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           serverId_ = s;
           return s;
@@ -1661,12 +1660,12 @@ public final class RpcRequests {
        * <code>string server_id = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getServerIdBytes() {
+      getServerIdBytes() {
         java.lang.Object ref = serverId_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
           serverId_ = b;
           return b;
         } else {
@@ -1677,11 +1676,11 @@ public final class RpcRequests {
        * <code>string server_id = 1;</code>
        */
       public Builder setServerId(
-          java.lang.String value) {
+              java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  
+          throw new NullPointerException();
+        }
+
         serverId_ = value;
         onChanged();
         return this;
@@ -1690,7 +1689,7 @@ public final class RpcRequests {
        * <code>string server_id = 1;</code>
        */
       public Builder clearServerId() {
-        
+
         serverId_ = getDefaultInstance().getServerId();
         onChanged();
         return this;
@@ -1699,12 +1698,12 @@ public final class RpcRequests {
        * <code>string server_id = 1;</code>
        */
       public Builder setServerIdBytes(
-          com.google.protobuf.ByteString value) {
+              com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
         serverId_ = value;
         onChanged();
         return this;
@@ -1718,7 +1717,7 @@ public final class RpcRequests {
         java.lang.Object ref = peerId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
+                  (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           peerId_ = s;
           return s;
@@ -1730,12 +1729,12 @@ public final class RpcRequests {
        * <code>string peer_id = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getPeerIdBytes() {
+      getPeerIdBytes() {
         java.lang.Object ref = peerId_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
           peerId_ = b;
           return b;
         } else {
@@ -1746,11 +1745,11 @@ public final class RpcRequests {
        * <code>string peer_id = 2;</code>
        */
       public Builder setPeerId(
-          java.lang.String value) {
+              java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  
+          throw new NullPointerException();
+        }
+
         peerId_ = value;
         onChanged();
         return this;
@@ -1759,7 +1758,7 @@ public final class RpcRequests {
        * <code>string peer_id = 2;</code>
        */
       public Builder clearPeerId() {
-        
+
         peerId_ = getDefaultInstance().getPeerId();
         onChanged();
         return this;
@@ -1768,12 +1767,12 @@ public final class RpcRequests {
        * <code>string peer_id = 2;</code>
        */
       public Builder setPeerIdBytes(
-          com.google.protobuf.ByteString value) {
+              com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
         peerId_ = value;
         onChanged();
         return this;
@@ -1790,7 +1789,7 @@ public final class RpcRequests {
        * <code>int64 term = 3;</code>
        */
       public Builder setTerm(long value) {
-        
+
         term_ = value;
         onChanged();
         return this;
@@ -1799,20 +1798,20 @@ public final class RpcRequests {
        * <code>int64 term = 3;</code>
        */
       public Builder clearTerm() {
-        
+
         term_ = 0L;
         onChanged();
         return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
       }
 
       @java.lang.Override
       public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
       }
 
@@ -1831,12 +1830,12 @@ public final class RpcRequests {
     }
 
     private static final com.google.protobuf.Parser<TimeoutNowRequest>
-        PARSER = new com.google.protobuf.AbstractParser<TimeoutNowRequest>() {
+            PARSER = new com.google.protobuf.AbstractParser<TimeoutNowRequest>() {
       @java.lang.Override
       public TimeoutNowRequest parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
         return new TimeoutNowRequest(input, extensionRegistry);
       }
     };
@@ -1858,8 +1857,8 @@ public final class RpcRequests {
   }
 
   public interface TimeoutNowResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:protobuf.TimeoutNowResponse)
-      com.google.protobuf.MessageOrBuilder {
+          // @@protoc_insertion_point(interface_extends:protobuf.TimeoutNowResponse)
+          com.google.protobuf.MessageOrBuilder {
 
     /**
      * <code>int64 term = 1;</code>
@@ -1875,10 +1874,10 @@ public final class RpcRequests {
    * Protobuf type {@code protobuf.TimeoutNowResponse}
    */
   public  static final class TimeoutNowResponse extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:protobuf.TimeoutNowResponse)
-      TimeoutNowResponseOrBuilder {
-  private static final long serialVersionUID = 0L;
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:protobuf.TimeoutNowResponse)
+          TimeoutNowResponseOrBuilder {
+    private static final long serialVersionUID = 0L;
     // Use TimeoutNowResponse.newBuilder() to construct.
     private TimeoutNowResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -1894,16 +1893,16 @@ public final class RpcRequests {
       return this.unknownFields;
     }
     private TimeoutNowResponse(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       this();
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
+              com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -1924,7 +1923,7 @@ public final class RpcRequests {
             }
             default: {
               if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
+                      input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -1935,23 +1934,23 @@ public final class RpcRequests {
         throw e.setUnfinishedMessage(this);
       } catch (java.io.IOException e) {
         throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
+                e).setUnfinishedMessage(this);
       } finally {
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return rpc.RpcRequests.internal_static_protobuf_TimeoutNowResponse_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return rpc.RpcRequests.internal_static_protobuf_TimeoutNowResponse_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              rpc.RpcRequests.TimeoutNowResponse.class, rpc.RpcRequests.TimeoutNowResponse.Builder.class);
+              .ensureFieldAccessorsInitialized(
+                      rpc.RpcRequests.TimeoutNowResponse.class, rpc.RpcRequests.TimeoutNowResponse.Builder.class);
     }
 
     public static final int TERM_FIELD_NUMBER = 1;
@@ -1985,7 +1984,7 @@ public final class RpcRequests {
 
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+            throws java.io.IOException {
       if (term_ != 0L) {
         output.writeInt64(1, term_);
       }
@@ -2003,11 +2002,11 @@ public final class RpcRequests {
       size = 0;
       if (term_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(1, term_);
+                .computeInt64Size(1, term_);
       }
       if (success_ != false) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(2, success_);
+                .computeBoolSize(2, success_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2017,7 +2016,7 @@ public final class RpcRequests {
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
-       return true;
+        return true;
       }
       if (!(obj instanceof rpc.RpcRequests.TimeoutNowResponse)) {
         return super.equals(obj);
@@ -2026,9 +2025,9 @@ public final class RpcRequests {
 
       boolean result = true;
       result = result && (getTerm()
-          == other.getTerm());
+              == other.getTerm());
       result = result && (getSuccess()
-          == other.getSuccess());
+              == other.getSuccess());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -2042,83 +2041,83 @@ public final class RpcRequests {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + TERM_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getTerm());
+              getTerm());
       hash = (37 * hash) + SUCCESS_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-          getSuccess());
+              getSuccess());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
     public static rpc.RpcRequests.TimeoutNowResponse parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.TimeoutNowResponse parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.TimeoutNowResponse parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.TimeoutNowResponse parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.TimeoutNowResponse parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.TimeoutNowResponse parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.TimeoutNowResponse parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.TimeoutNowResponse parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.TimeoutNowResponse parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
+              .parseDelimitedWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.TimeoutNowResponse parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.TimeoutNowResponse parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.TimeoutNowResponse parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
@@ -2132,12 +2131,12 @@ public final class RpcRequests {
     @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
+              ? new Builder() : new Builder().mergeFrom(this);
     }
 
     @java.lang.Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -2145,20 +2144,20 @@ public final class RpcRequests {
      * Protobuf type {@code protobuf.TimeoutNowResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:protobuf.TimeoutNowResponse)
-        rpc.RpcRequests.TimeoutNowResponseOrBuilder {
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:protobuf.TimeoutNowResponse)
+            rpc.RpcRequests.TimeoutNowResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return rpc.RpcRequests.internal_static_protobuf_TimeoutNowResponse_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return rpc.RpcRequests.internal_static_protobuf_TimeoutNowResponse_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                rpc.RpcRequests.TimeoutNowResponse.class, rpc.RpcRequests.TimeoutNowResponse.Builder.class);
+                .ensureFieldAccessorsInitialized(
+                        rpc.RpcRequests.TimeoutNowResponse.class, rpc.RpcRequests.TimeoutNowResponse.Builder.class);
       }
 
       // Construct using rpc.RpcRequests.TimeoutNowResponse.newBuilder()
@@ -2167,7 +2166,7 @@ public final class RpcRequests {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
@@ -2188,7 +2187,7 @@ public final class RpcRequests {
 
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return rpc.RpcRequests.internal_static_protobuf_TimeoutNowResponse_descriptor;
       }
 
@@ -2221,30 +2220,30 @@ public final class RpcRequests {
       }
       @java.lang.Override
       public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       @java.lang.Override
       public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
         return (Builder) super.clearField(field);
       }
       @java.lang.Override
       public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return (Builder) super.clearOneof(oneof);
       }
       @java.lang.Override
       public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       @java.lang.Override
       public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       @java.lang.Override
@@ -2277,9 +2276,9 @@ public final class RpcRequests {
 
       @java.lang.Override
       public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
         rpc.RpcRequests.TimeoutNowResponse parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
@@ -2305,7 +2304,7 @@ public final class RpcRequests {
        * <code>int64 term = 1;</code>
        */
       public Builder setTerm(long value) {
-        
+
         term_ = value;
         onChanged();
         return this;
@@ -2314,7 +2313,7 @@ public final class RpcRequests {
        * <code>int64 term = 1;</code>
        */
       public Builder clearTerm() {
-        
+
         term_ = 0L;
         onChanged();
         return this;
@@ -2331,7 +2330,7 @@ public final class RpcRequests {
        * <code>bool success = 2;</code>
        */
       public Builder setSuccess(boolean value) {
-        
+
         success_ = value;
         onChanged();
         return this;
@@ -2340,20 +2339,20 @@ public final class RpcRequests {
        * <code>bool success = 2;</code>
        */
       public Builder clearSuccess() {
-        
+
         success_ = false;
         onChanged();
         return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
       }
 
       @java.lang.Override
       public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
       }
 
@@ -2372,12 +2371,12 @@ public final class RpcRequests {
     }
 
     private static final com.google.protobuf.Parser<TimeoutNowResponse>
-        PARSER = new com.google.protobuf.AbstractParser<TimeoutNowResponse>() {
+            PARSER = new com.google.protobuf.AbstractParser<TimeoutNowResponse>() {
       @java.lang.Override
       public TimeoutNowResponse parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
         return new TimeoutNowResponse(input, extensionRegistry);
       }
     };
@@ -2399,8 +2398,8 @@ public final class RpcRequests {
   }
 
   public interface RequestVoteRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:protobuf.RequestVoteRequest)
-      com.google.protobuf.MessageOrBuilder {
+          // @@protoc_insertion_point(interface_extends:protobuf.RequestVoteRequest)
+          com.google.protobuf.MessageOrBuilder {
 
     /**
      * <code>string server_id = 1;</code>
@@ -2410,7 +2409,7 @@ public final class RpcRequests {
      * <code>string server_id = 1;</code>
      */
     com.google.protobuf.ByteString
-        getServerIdBytes();
+    getServerIdBytes();
 
     /**
      * <code>string peer_id = 2;</code>
@@ -2420,7 +2419,7 @@ public final class RpcRequests {
      * <code>string peer_id = 2;</code>
      */
     com.google.protobuf.ByteString
-        getPeerIdBytes();
+    getPeerIdBytes();
 
     /**
      * <code>int64 term = 3;</code>
@@ -2446,10 +2445,10 @@ public final class RpcRequests {
    * Protobuf type {@code protobuf.RequestVoteRequest}
    */
   public  static final class RequestVoteRequest extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:protobuf.RequestVoteRequest)
-      RequestVoteRequestOrBuilder {
-  private static final long serialVersionUID = 0L;
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:protobuf.RequestVoteRequest)
+          RequestVoteRequestOrBuilder {
+    private static final long serialVersionUID = 0L;
     // Use RequestVoteRequest.newBuilder() to construct.
     private RequestVoteRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -2469,16 +2468,16 @@ public final class RpcRequests {
       return this.unknownFields;
     }
     private RequestVoteRequest(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       this();
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
+              com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -2521,7 +2520,7 @@ public final class RpcRequests {
             }
             default: {
               if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
+                      input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -2532,23 +2531,23 @@ public final class RpcRequests {
         throw e.setUnfinishedMessage(this);
       } catch (java.io.IOException e) {
         throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
+                e).setUnfinishedMessage(this);
       } finally {
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return rpc.RpcRequests.internal_static_protobuf_RequestVoteRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return rpc.RpcRequests.internal_static_protobuf_RequestVoteRequest_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              rpc.RpcRequests.RequestVoteRequest.class, rpc.RpcRequests.RequestVoteRequest.Builder.class);
+              .ensureFieldAccessorsInitialized(
+                      rpc.RpcRequests.RequestVoteRequest.class, rpc.RpcRequests.RequestVoteRequest.Builder.class);
     }
 
     public static final int SERVER_ID_FIELD_NUMBER = 1;
@@ -2561,8 +2560,8 @@ public final class RpcRequests {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         serverId_ = s;
         return s;
@@ -2572,12 +2571,12 @@ public final class RpcRequests {
      * <code>string server_id = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getServerIdBytes() {
+    getServerIdBytes() {
       java.lang.Object ref = serverId_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
         serverId_ = b;
         return b;
       } else {
@@ -2595,8 +2594,8 @@ public final class RpcRequests {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         peerId_ = s;
         return s;
@@ -2606,12 +2605,12 @@ public final class RpcRequests {
      * <code>string peer_id = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getPeerIdBytes() {
+    getPeerIdBytes() {
       java.lang.Object ref = peerId_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
         peerId_ = b;
         return b;
       } else {
@@ -2668,7 +2667,7 @@ public final class RpcRequests {
 
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+            throws java.io.IOException {
       if (!getServerIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, serverId_);
       }
@@ -2704,19 +2703,19 @@ public final class RpcRequests {
       }
       if (term_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(3, term_);
+                .computeInt64Size(3, term_);
       }
       if (lastLogTerm_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(4, lastLogTerm_);
+                .computeInt64Size(4, lastLogTerm_);
       }
       if (lastLogIndex_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(5, lastLogIndex_);
+                .computeInt64Size(5, lastLogIndex_);
       }
       if (preVote_ != false) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(6, preVote_);
+                .computeBoolSize(6, preVote_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2726,7 +2725,7 @@ public final class RpcRequests {
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
-       return true;
+        return true;
       }
       if (!(obj instanceof rpc.RpcRequests.RequestVoteRequest)) {
         return super.equals(obj);
@@ -2735,17 +2734,17 @@ public final class RpcRequests {
 
       boolean result = true;
       result = result && getServerId()
-          .equals(other.getServerId());
+              .equals(other.getServerId());
       result = result && getPeerId()
-          .equals(other.getPeerId());
+              .equals(other.getPeerId());
       result = result && (getTerm()
-          == other.getTerm());
+              == other.getTerm());
       result = result && (getLastLogTerm()
-          == other.getLastLogTerm());
+              == other.getLastLogTerm());
       result = result && (getLastLogIndex()
-          == other.getLastLogIndex());
+              == other.getLastLogIndex());
       result = result && (getPreVote()
-          == other.getPreVote());
+              == other.getPreVote());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -2763,89 +2762,89 @@ public final class RpcRequests {
       hash = (53 * hash) + getPeerId().hashCode();
       hash = (37 * hash) + TERM_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getTerm());
+              getTerm());
       hash = (37 * hash) + LAST_LOG_TERM_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getLastLogTerm());
+              getLastLogTerm());
       hash = (37 * hash) + LAST_LOG_INDEX_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getLastLogIndex());
+              getLastLogIndex());
       hash = (37 * hash) + PRE_VOTE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-          getPreVote());
+              getPreVote());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
     public static rpc.RpcRequests.RequestVoteRequest parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.RequestVoteRequest parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.RequestVoteRequest parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.RequestVoteRequest parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.RequestVoteRequest parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.RequestVoteRequest parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.RequestVoteRequest parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.RequestVoteRequest parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.RequestVoteRequest parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
+              .parseDelimitedWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.RequestVoteRequest parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.RequestVoteRequest parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.RequestVoteRequest parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
@@ -2859,12 +2858,12 @@ public final class RpcRequests {
     @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
+              ? new Builder() : new Builder().mergeFrom(this);
     }
 
     @java.lang.Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -2872,20 +2871,20 @@ public final class RpcRequests {
      * Protobuf type {@code protobuf.RequestVoteRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:protobuf.RequestVoteRequest)
-        rpc.RpcRequests.RequestVoteRequestOrBuilder {
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:protobuf.RequestVoteRequest)
+            rpc.RpcRequests.RequestVoteRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return rpc.RpcRequests.internal_static_protobuf_RequestVoteRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return rpc.RpcRequests.internal_static_protobuf_RequestVoteRequest_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                rpc.RpcRequests.RequestVoteRequest.class, rpc.RpcRequests.RequestVoteRequest.Builder.class);
+                .ensureFieldAccessorsInitialized(
+                        rpc.RpcRequests.RequestVoteRequest.class, rpc.RpcRequests.RequestVoteRequest.Builder.class);
       }
 
       // Construct using rpc.RpcRequests.RequestVoteRequest.newBuilder()
@@ -2894,7 +2893,7 @@ public final class RpcRequests {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
@@ -2923,7 +2922,7 @@ public final class RpcRequests {
 
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return rpc.RpcRequests.internal_static_protobuf_RequestVoteRequest_descriptor;
       }
 
@@ -2960,30 +2959,30 @@ public final class RpcRequests {
       }
       @java.lang.Override
       public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       @java.lang.Override
       public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
         return (Builder) super.clearField(field);
       }
       @java.lang.Override
       public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return (Builder) super.clearOneof(oneof);
       }
       @java.lang.Override
       public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       @java.lang.Override
       public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       @java.lang.Override
@@ -3030,9 +3029,9 @@ public final class RpcRequests {
 
       @java.lang.Override
       public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
         rpc.RpcRequests.RequestVoteRequest parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
@@ -3055,7 +3054,7 @@ public final class RpcRequests {
         java.lang.Object ref = serverId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
+                  (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           serverId_ = s;
           return s;
@@ -3067,12 +3066,12 @@ public final class RpcRequests {
        * <code>string server_id = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getServerIdBytes() {
+      getServerIdBytes() {
         java.lang.Object ref = serverId_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
           serverId_ = b;
           return b;
         } else {
@@ -3083,11 +3082,11 @@ public final class RpcRequests {
        * <code>string server_id = 1;</code>
        */
       public Builder setServerId(
-          java.lang.String value) {
+              java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  
+          throw new NullPointerException();
+        }
+
         serverId_ = value;
         onChanged();
         return this;
@@ -3096,7 +3095,7 @@ public final class RpcRequests {
        * <code>string server_id = 1;</code>
        */
       public Builder clearServerId() {
-        
+
         serverId_ = getDefaultInstance().getServerId();
         onChanged();
         return this;
@@ -3105,12 +3104,12 @@ public final class RpcRequests {
        * <code>string server_id = 1;</code>
        */
       public Builder setServerIdBytes(
-          com.google.protobuf.ByteString value) {
+              com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
         serverId_ = value;
         onChanged();
         return this;
@@ -3124,7 +3123,7 @@ public final class RpcRequests {
         java.lang.Object ref = peerId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
+                  (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           peerId_ = s;
           return s;
@@ -3136,12 +3135,12 @@ public final class RpcRequests {
        * <code>string peer_id = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getPeerIdBytes() {
+      getPeerIdBytes() {
         java.lang.Object ref = peerId_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
           peerId_ = b;
           return b;
         } else {
@@ -3152,11 +3151,11 @@ public final class RpcRequests {
        * <code>string peer_id = 2;</code>
        */
       public Builder setPeerId(
-          java.lang.String value) {
+              java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  
+          throw new NullPointerException();
+        }
+
         peerId_ = value;
         onChanged();
         return this;
@@ -3165,7 +3164,7 @@ public final class RpcRequests {
        * <code>string peer_id = 2;</code>
        */
       public Builder clearPeerId() {
-        
+
         peerId_ = getDefaultInstance().getPeerId();
         onChanged();
         return this;
@@ -3174,12 +3173,12 @@ public final class RpcRequests {
        * <code>string peer_id = 2;</code>
        */
       public Builder setPeerIdBytes(
-          com.google.protobuf.ByteString value) {
+              com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
         peerId_ = value;
         onChanged();
         return this;
@@ -3196,7 +3195,7 @@ public final class RpcRequests {
        * <code>int64 term = 3;</code>
        */
       public Builder setTerm(long value) {
-        
+
         term_ = value;
         onChanged();
         return this;
@@ -3205,7 +3204,7 @@ public final class RpcRequests {
        * <code>int64 term = 3;</code>
        */
       public Builder clearTerm() {
-        
+
         term_ = 0L;
         onChanged();
         return this;
@@ -3222,7 +3221,7 @@ public final class RpcRequests {
        * <code>int64 last_log_term = 4;</code>
        */
       public Builder setLastLogTerm(long value) {
-        
+
         lastLogTerm_ = value;
         onChanged();
         return this;
@@ -3231,7 +3230,7 @@ public final class RpcRequests {
        * <code>int64 last_log_term = 4;</code>
        */
       public Builder clearLastLogTerm() {
-        
+
         lastLogTerm_ = 0L;
         onChanged();
         return this;
@@ -3248,7 +3247,7 @@ public final class RpcRequests {
        * <code>int64 last_log_index = 5;</code>
        */
       public Builder setLastLogIndex(long value) {
-        
+
         lastLogIndex_ = value;
         onChanged();
         return this;
@@ -3257,7 +3256,7 @@ public final class RpcRequests {
        * <code>int64 last_log_index = 5;</code>
        */
       public Builder clearLastLogIndex() {
-        
+
         lastLogIndex_ = 0L;
         onChanged();
         return this;
@@ -3274,7 +3273,7 @@ public final class RpcRequests {
        * <code>bool pre_vote = 6;</code>
        */
       public Builder setPreVote(boolean value) {
-        
+
         preVote_ = value;
         onChanged();
         return this;
@@ -3283,20 +3282,20 @@ public final class RpcRequests {
        * <code>bool pre_vote = 6;</code>
        */
       public Builder clearPreVote() {
-        
+
         preVote_ = false;
         onChanged();
         return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
       }
 
       @java.lang.Override
       public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
       }
 
@@ -3315,12 +3314,12 @@ public final class RpcRequests {
     }
 
     private static final com.google.protobuf.Parser<RequestVoteRequest>
-        PARSER = new com.google.protobuf.AbstractParser<RequestVoteRequest>() {
+            PARSER = new com.google.protobuf.AbstractParser<RequestVoteRequest>() {
       @java.lang.Override
       public RequestVoteRequest parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
         return new RequestVoteRequest(input, extensionRegistry);
       }
     };
@@ -3342,8 +3341,8 @@ public final class RpcRequests {
   }
 
   public interface RequestVoteResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:protobuf.RequestVoteResponse)
-      com.google.protobuf.MessageOrBuilder {
+          // @@protoc_insertion_point(interface_extends:protobuf.RequestVoteResponse)
+          com.google.protobuf.MessageOrBuilder {
 
     /**
      * <code>int64 term = 1;</code>
@@ -3359,10 +3358,10 @@ public final class RpcRequests {
    * Protobuf type {@code protobuf.RequestVoteResponse}
    */
   public  static final class RequestVoteResponse extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:protobuf.RequestVoteResponse)
-      RequestVoteResponseOrBuilder {
-  private static final long serialVersionUID = 0L;
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:protobuf.RequestVoteResponse)
+          RequestVoteResponseOrBuilder {
+    private static final long serialVersionUID = 0L;
     // Use RequestVoteResponse.newBuilder() to construct.
     private RequestVoteResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -3378,16 +3377,16 @@ public final class RpcRequests {
       return this.unknownFields;
     }
     private RequestVoteResponse(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       this();
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
+              com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -3408,7 +3407,7 @@ public final class RpcRequests {
             }
             default: {
               if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
+                      input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -3419,23 +3418,23 @@ public final class RpcRequests {
         throw e.setUnfinishedMessage(this);
       } catch (java.io.IOException e) {
         throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
+                e).setUnfinishedMessage(this);
       } finally {
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return rpc.RpcRequests.internal_static_protobuf_RequestVoteResponse_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return rpc.RpcRequests.internal_static_protobuf_RequestVoteResponse_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              rpc.RpcRequests.RequestVoteResponse.class, rpc.RpcRequests.RequestVoteResponse.Builder.class);
+              .ensureFieldAccessorsInitialized(
+                      rpc.RpcRequests.RequestVoteResponse.class, rpc.RpcRequests.RequestVoteResponse.Builder.class);
     }
 
     public static final int TERM_FIELD_NUMBER = 1;
@@ -3469,7 +3468,7 @@ public final class RpcRequests {
 
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+            throws java.io.IOException {
       if (term_ != 0L) {
         output.writeInt64(1, term_);
       }
@@ -3487,11 +3486,11 @@ public final class RpcRequests {
       size = 0;
       if (term_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(1, term_);
+                .computeInt64Size(1, term_);
       }
       if (granted_ != false) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(2, granted_);
+                .computeBoolSize(2, granted_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3501,7 +3500,7 @@ public final class RpcRequests {
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
-       return true;
+        return true;
       }
       if (!(obj instanceof rpc.RpcRequests.RequestVoteResponse)) {
         return super.equals(obj);
@@ -3510,9 +3509,9 @@ public final class RpcRequests {
 
       boolean result = true;
       result = result && (getTerm()
-          == other.getTerm());
+              == other.getTerm());
       result = result && (getGranted()
-          == other.getGranted());
+              == other.getGranted());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -3526,83 +3525,83 @@ public final class RpcRequests {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + TERM_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getTerm());
+              getTerm());
       hash = (37 * hash) + GRANTED_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-          getGranted());
+              getGranted());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
     public static rpc.RpcRequests.RequestVoteResponse parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.RequestVoteResponse parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.RequestVoteResponse parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.RequestVoteResponse parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.RequestVoteResponse parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.RequestVoteResponse parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.RequestVoteResponse parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.RequestVoteResponse parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.RequestVoteResponse parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
+              .parseDelimitedWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.RequestVoteResponse parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.RequestVoteResponse parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.RequestVoteResponse parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
@@ -3616,12 +3615,12 @@ public final class RpcRequests {
     @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
+              ? new Builder() : new Builder().mergeFrom(this);
     }
 
     @java.lang.Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -3629,20 +3628,20 @@ public final class RpcRequests {
      * Protobuf type {@code protobuf.RequestVoteResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:protobuf.RequestVoteResponse)
-        rpc.RpcRequests.RequestVoteResponseOrBuilder {
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:protobuf.RequestVoteResponse)
+            rpc.RpcRequests.RequestVoteResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return rpc.RpcRequests.internal_static_protobuf_RequestVoteResponse_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return rpc.RpcRequests.internal_static_protobuf_RequestVoteResponse_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                rpc.RpcRequests.RequestVoteResponse.class, rpc.RpcRequests.RequestVoteResponse.Builder.class);
+                .ensureFieldAccessorsInitialized(
+                        rpc.RpcRequests.RequestVoteResponse.class, rpc.RpcRequests.RequestVoteResponse.Builder.class);
       }
 
       // Construct using rpc.RpcRequests.RequestVoteResponse.newBuilder()
@@ -3651,7 +3650,7 @@ public final class RpcRequests {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
@@ -3672,7 +3671,7 @@ public final class RpcRequests {
 
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return rpc.RpcRequests.internal_static_protobuf_RequestVoteResponse_descriptor;
       }
 
@@ -3705,30 +3704,30 @@ public final class RpcRequests {
       }
       @java.lang.Override
       public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       @java.lang.Override
       public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
         return (Builder) super.clearField(field);
       }
       @java.lang.Override
       public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return (Builder) super.clearOneof(oneof);
       }
       @java.lang.Override
       public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       @java.lang.Override
       public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       @java.lang.Override
@@ -3761,9 +3760,9 @@ public final class RpcRequests {
 
       @java.lang.Override
       public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
         rpc.RpcRequests.RequestVoteResponse parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
@@ -3789,7 +3788,7 @@ public final class RpcRequests {
        * <code>int64 term = 1;</code>
        */
       public Builder setTerm(long value) {
-        
+
         term_ = value;
         onChanged();
         return this;
@@ -3798,7 +3797,7 @@ public final class RpcRequests {
        * <code>int64 term = 1;</code>
        */
       public Builder clearTerm() {
-        
+
         term_ = 0L;
         onChanged();
         return this;
@@ -3815,7 +3814,7 @@ public final class RpcRequests {
        * <code>bool granted = 2;</code>
        */
       public Builder setGranted(boolean value) {
-        
+
         granted_ = value;
         onChanged();
         return this;
@@ -3824,20 +3823,20 @@ public final class RpcRequests {
        * <code>bool granted = 2;</code>
        */
       public Builder clearGranted() {
-        
+
         granted_ = false;
         onChanged();
         return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
       }
 
       @java.lang.Override
       public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
       }
 
@@ -3856,12 +3855,12 @@ public final class RpcRequests {
     }
 
     private static final com.google.protobuf.Parser<RequestVoteResponse>
-        PARSER = new com.google.protobuf.AbstractParser<RequestVoteResponse>() {
+            PARSER = new com.google.protobuf.AbstractParser<RequestVoteResponse>() {
       @java.lang.Override
       public RequestVoteResponse parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
         return new RequestVoteResponse(input, extensionRegistry);
       }
     };
@@ -3882,9 +3881,9 @@ public final class RpcRequests {
 
   }
 
-  public interface AppendEntriesRequestHeaderOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:protobuf.AppendEntriesRequestHeader)
-      com.google.protobuf.MessageOrBuilder {
+  public interface RequestPreVoteRequestOrBuilder extends
+          // @@protoc_insertion_point(interface_extends:protobuf.RequestPreVoteRequest)
+          com.google.protobuf.MessageOrBuilder {
 
     /**
      * <code>string server_id = 1;</code>
@@ -3894,7 +3893,7 @@ public final class RpcRequests {
      * <code>string server_id = 1;</code>
      */
     com.google.protobuf.ByteString
-        getServerIdBytes();
+    getServerIdBytes();
 
     /**
      * <code>string peer_id = 2;</code>
@@ -3904,16 +3903,1500 @@ public final class RpcRequests {
      * <code>string peer_id = 2;</code>
      */
     com.google.protobuf.ByteString
-        getPeerIdBytes();
+    getPeerIdBytes();
+
+    /**
+     * <code>int64 term = 3;</code>
+     */
+    long getTerm();
+
+    /**
+     * <code>int64 last_log_term = 4;</code>
+     */
+    long getLastLogTerm();
+
+    /**
+     * <code>int64 last_log_index = 5;</code>
+     */
+    long getLastLogIndex();
+
+    /**
+     * <code>bool pre_vote = 6;</code>
+     */
+    boolean getPreVote();
+  }
+  /**
+   * Protobuf type {@code protobuf.RequestPreVoteRequest}
+   */
+  public  static final class RequestPreVoteRequest extends
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:protobuf.RequestPreVoteRequest)
+          RequestPreVoteRequestOrBuilder {
+    private static final long serialVersionUID = 0L;
+    // Use RequestPreVoteRequest.newBuilder() to construct.
+    private RequestPreVoteRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private RequestPreVoteRequest() {
+      serverId_ = "";
+      peerId_ = "";
+      term_ = 0L;
+      lastLogTerm_ = 0L;
+      lastLogIndex_ = 0L;
+      preVote_ = false;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RequestPreVoteRequest(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+              com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              serverId_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              peerId_ = s;
+              break;
+            }
+            case 24: {
+
+              term_ = input.readInt64();
+              break;
+            }
+            case 32: {
+
+              lastLogTerm_ = input.readInt64();
+              break;
+            }
+            case 40: {
+
+              lastLogIndex_ = input.readInt64();
+              break;
+            }
+            case 48: {
+
+              preVote_ = input.readBool();
+              break;
+            }
+            default: {
+              if (!parseUnknownFieldProto3(
+                      input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+                e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+    getDescriptor() {
+      return rpc.RpcRequests.internal_static_protobuf_RequestPreVoteRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+    internalGetFieldAccessorTable() {
+      return rpc.RpcRequests.internal_static_protobuf_RequestPreVoteRequest_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                      rpc.RpcRequests.RequestPreVoteRequest.class, rpc.RpcRequests.RequestPreVoteRequest.Builder.class);
+    }
+
+    public static final int SERVER_ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object serverId_;
+    /**
+     * <code>string server_id = 1;</code>
+     */
+    public java.lang.String getServerId() {
+      java.lang.Object ref = serverId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        serverId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string server_id = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+    getServerIdBytes() {
+      java.lang.Object ref = serverId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
+        serverId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PEER_ID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object peerId_;
+    /**
+     * <code>string peer_id = 2;</code>
+     */
+    public java.lang.String getPeerId() {
+      java.lang.Object ref = peerId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        peerId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string peer_id = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+    getPeerIdBytes() {
+      java.lang.Object ref = peerId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
+        peerId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TERM_FIELD_NUMBER = 3;
+    private long term_;
+    /**
+     * <code>int64 term = 3;</code>
+     */
+    public long getTerm() {
+      return term_;
+    }
+
+    public static final int LAST_LOG_TERM_FIELD_NUMBER = 4;
+    private long lastLogTerm_;
+    /**
+     * <code>int64 last_log_term = 4;</code>
+     */
+    public long getLastLogTerm() {
+      return lastLogTerm_;
+    }
+
+    public static final int LAST_LOG_INDEX_FIELD_NUMBER = 5;
+    private long lastLogIndex_;
+    /**
+     * <code>int64 last_log_index = 5;</code>
+     */
+    public long getLastLogIndex() {
+      return lastLogIndex_;
+    }
+
+    public static final int PRE_VOTE_FIELD_NUMBER = 6;
+    private boolean preVote_;
+    /**
+     * <code>bool pre_vote = 6;</code>
+     */
+    public boolean getPreVote() {
+      return preVote_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+            throws java.io.IOException {
+      if (!getServerIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, serverId_);
+      }
+      if (!getPeerIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, peerId_);
+      }
+      if (term_ != 0L) {
+        output.writeInt64(3, term_);
+      }
+      if (lastLogTerm_ != 0L) {
+        output.writeInt64(4, lastLogTerm_);
+      }
+      if (lastLogIndex_ != 0L) {
+        output.writeInt64(5, lastLogIndex_);
+      }
+      if (preVote_ != false) {
+        output.writeBool(6, preVote_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getServerIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, serverId_);
+      }
+      if (!getPeerIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, peerId_);
+      }
+      if (term_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeInt64Size(3, term_);
+      }
+      if (lastLogTerm_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeInt64Size(4, lastLogTerm_);
+      }
+      if (lastLogIndex_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeInt64Size(5, lastLogIndex_);
+      }
+      if (preVote_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeBoolSize(6, preVote_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof rpc.RpcRequests.RequestPreVoteRequest)) {
+        return super.equals(obj);
+      }
+      rpc.RpcRequests.RequestPreVoteRequest other = (rpc.RpcRequests.RequestPreVoteRequest) obj;
+
+      boolean result = true;
+      result = result && getServerId()
+              .equals(other.getServerId());
+      result = result && getPeerId()
+              .equals(other.getPeerId());
+      result = result && (getTerm()
+              == other.getTerm());
+      result = result && (getLastLogTerm()
+              == other.getLastLogTerm());
+      result = result && (getLastLogIndex()
+              == other.getLastLogIndex());
+      result = result && (getPreVote()
+              == other.getPreVote());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + SERVER_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getServerId().hashCode();
+      hash = (37 * hash) + PEER_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getPeerId().hashCode();
+      hash = (37 * hash) + TERM_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+              getTerm());
+      hash = (37 * hash) + LAST_LOG_TERM_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+              getLastLogTerm());
+      hash = (37 * hash) + LAST_LOG_INDEX_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+              getLastLogIndex());
+      hash = (37 * hash) + PRE_VOTE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+              getPreVote());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static rpc.RpcRequests.RequestPreVoteRequest parseFrom(
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static rpc.RpcRequests.RequestPreVoteRequest parseFrom(
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static rpc.RpcRequests.RequestPreVoteRequest parseFrom(
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static rpc.RpcRequests.RequestPreVoteRequest parseFrom(
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static rpc.RpcRequests.RequestPreVoteRequest parseFrom(byte[] data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static rpc.RpcRequests.RequestPreVoteRequest parseFrom(
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static rpc.RpcRequests.RequestPreVoteRequest parseFrom(java.io.InputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+    }
+    public static rpc.RpcRequests.RequestPreVoteRequest parseFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static rpc.RpcRequests.RequestPreVoteRequest parseDelimitedFrom(java.io.InputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static rpc.RpcRequests.RequestPreVoteRequest parseDelimitedFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static rpc.RpcRequests.RequestPreVoteRequest parseFrom(
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+    }
+    public static rpc.RpcRequests.RequestPreVoteRequest parseFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(rpc.RpcRequests.RequestPreVoteRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+              ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code protobuf.RequestPreVoteRequest}
+     */
+    public static final class Builder extends
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:protobuf.RequestPreVoteRequest)
+            rpc.RpcRequests.RequestPreVoteRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+      getDescriptor() {
+        return rpc.RpcRequests.internal_static_protobuf_RequestPreVoteRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internalGetFieldAccessorTable() {
+        return rpc.RpcRequests.internal_static_protobuf_RequestPreVoteRequest_fieldAccessorTable
+                .ensureFieldAccessorsInitialized(
+                        rpc.RpcRequests.RequestPreVoteRequest.class, rpc.RpcRequests.RequestPreVoteRequest.Builder.class);
+      }
+
+      // Construct using rpc.RpcRequests.RequestPreVoteRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        serverId_ = "";
+
+        peerId_ = "";
+
+        term_ = 0L;
+
+        lastLogTerm_ = 0L;
+
+        lastLogIndex_ = 0L;
+
+        preVote_ = false;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+      getDescriptorForType() {
+        return rpc.RpcRequests.internal_static_protobuf_RequestPreVoteRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public rpc.RpcRequests.RequestPreVoteRequest getDefaultInstanceForType() {
+        return rpc.RpcRequests.RequestPreVoteRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public rpc.RpcRequests.RequestPreVoteRequest build() {
+        rpc.RpcRequests.RequestPreVoteRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public rpc.RpcRequests.RequestPreVoteRequest buildPartial() {
+        rpc.RpcRequests.RequestPreVoteRequest result = new rpc.RpcRequests.RequestPreVoteRequest(this);
+        result.serverId_ = serverId_;
+        result.peerId_ = peerId_;
+        result.term_ = term_;
+        result.lastLogTerm_ = lastLogTerm_;
+        result.lastLogIndex_ = lastLogIndex_;
+        result.preVote_ = preVote_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof rpc.RpcRequests.RequestPreVoteRequest) {
+          return mergeFrom((rpc.RpcRequests.RequestPreVoteRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(rpc.RpcRequests.RequestPreVoteRequest other) {
+        if (other == rpc.RpcRequests.RequestPreVoteRequest.getDefaultInstance()) return this;
+        if (!other.getServerId().isEmpty()) {
+          serverId_ = other.serverId_;
+          onChanged();
+        }
+        if (!other.getPeerId().isEmpty()) {
+          peerId_ = other.peerId_;
+          onChanged();
+        }
+        if (other.getTerm() != 0L) {
+          setTerm(other.getTerm());
+        }
+        if (other.getLastLogTerm() != 0L) {
+          setLastLogTerm(other.getLastLogTerm());
+        }
+        if (other.getLastLogIndex() != 0L) {
+          setLastLogIndex(other.getLastLogIndex());
+        }
+        if (other.getPreVote() != false) {
+          setPreVote(other.getPreVote());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
+        rpc.RpcRequests.RequestPreVoteRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (rpc.RpcRequests.RequestPreVoteRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object serverId_ = "";
+      /**
+       * <code>string server_id = 1;</code>
+       */
+      public java.lang.String getServerId() {
+        java.lang.Object ref = serverId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          serverId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string server_id = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+      getServerIdBytes() {
+        java.lang.Object ref = serverId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
+          serverId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string server_id = 1;</code>
+       */
+      public Builder setServerId(
+              java.lang.String value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+
+        serverId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string server_id = 1;</code>
+       */
+      public Builder clearServerId() {
+
+        serverId_ = getDefaultInstance().getServerId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string server_id = 1;</code>
+       */
+      public Builder setServerIdBytes(
+              com.google.protobuf.ByteString value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
+        serverId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object peerId_ = "";
+      /**
+       * <code>string peer_id = 2;</code>
+       */
+      public java.lang.String getPeerId() {
+        java.lang.Object ref = peerId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          peerId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string peer_id = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+      getPeerIdBytes() {
+        java.lang.Object ref = peerId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
+          peerId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string peer_id = 2;</code>
+       */
+      public Builder setPeerId(
+              java.lang.String value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+
+        peerId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string peer_id = 2;</code>
+       */
+      public Builder clearPeerId() {
+
+        peerId_ = getDefaultInstance().getPeerId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string peer_id = 2;</code>
+       */
+      public Builder setPeerIdBytes(
+              com.google.protobuf.ByteString value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
+        peerId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long term_ ;
+      /**
+       * <code>int64 term = 3;</code>
+       */
+      public long getTerm() {
+        return term_;
+      }
+      /**
+       * <code>int64 term = 3;</code>
+       */
+      public Builder setTerm(long value) {
+
+        term_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 term = 3;</code>
+       */
+      public Builder clearTerm() {
+
+        term_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long lastLogTerm_ ;
+      /**
+       * <code>int64 last_log_term = 4;</code>
+       */
+      public long getLastLogTerm() {
+        return lastLogTerm_;
+      }
+      /**
+       * <code>int64 last_log_term = 4;</code>
+       */
+      public Builder setLastLogTerm(long value) {
+
+        lastLogTerm_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 last_log_term = 4;</code>
+       */
+      public Builder clearLastLogTerm() {
+
+        lastLogTerm_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long lastLogIndex_ ;
+      /**
+       * <code>int64 last_log_index = 5;</code>
+       */
+      public long getLastLogIndex() {
+        return lastLogIndex_;
+      }
+      /**
+       * <code>int64 last_log_index = 5;</code>
+       */
+      public Builder setLastLogIndex(long value) {
+
+        lastLogIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 last_log_index = 5;</code>
+       */
+      public Builder clearLastLogIndex() {
+
+        lastLogIndex_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private boolean preVote_ ;
+      /**
+       * <code>bool pre_vote = 6;</code>
+       */
+      public boolean getPreVote() {
+        return preVote_;
+      }
+      /**
+       * <code>bool pre_vote = 6;</code>
+       */
+      public Builder setPreVote(boolean value) {
+
+        preVote_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool pre_vote = 6;</code>
+       */
+      public Builder clearPreVote() {
+
+        preVote_ = false;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:protobuf.RequestPreVoteRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:protobuf.RequestPreVoteRequest)
+    private static final rpc.RpcRequests.RequestPreVoteRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new rpc.RpcRequests.RequestPreVoteRequest();
+    }
+
+    public static rpc.RpcRequests.RequestPreVoteRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<RequestPreVoteRequest>
+            PARSER = new com.google.protobuf.AbstractParser<RequestPreVoteRequest>() {
+      @java.lang.Override
+      public RequestPreVoteRequest parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RequestPreVoteRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<RequestPreVoteRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RequestPreVoteRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public rpc.RpcRequests.RequestPreVoteRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface RequestPreVoteResponseOrBuilder extends
+          // @@protoc_insertion_point(interface_extends:protobuf.RequestPreVoteResponse)
+          com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>int64 term = 1;</code>
+     */
+    long getTerm();
+
+    /**
+     * <code>bool granted = 2;</code>
+     */
+    boolean getGranted();
+  }
+  /**
+   * Protobuf type {@code protobuf.RequestPreVoteResponse}
+   */
+  public  static final class RequestPreVoteResponse extends
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:protobuf.RequestPreVoteResponse)
+          RequestPreVoteResponseOrBuilder {
+    private static final long serialVersionUID = 0L;
+    // Use RequestPreVoteResponse.newBuilder() to construct.
+    private RequestPreVoteResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private RequestPreVoteResponse() {
+      term_ = 0L;
+      granted_ = false;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RequestPreVoteResponse(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+              com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              term_ = input.readInt64();
+              break;
+            }
+            case 16: {
+
+              granted_ = input.readBool();
+              break;
+            }
+            default: {
+              if (!parseUnknownFieldProto3(
+                      input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+                e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+    getDescriptor() {
+      return rpc.RpcRequests.internal_static_protobuf_RequestPreVoteResponse_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+    internalGetFieldAccessorTable() {
+      return rpc.RpcRequests.internal_static_protobuf_RequestPreVoteResponse_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                      rpc.RpcRequests.RequestPreVoteResponse.class, rpc.RpcRequests.RequestPreVoteResponse.Builder.class);
+    }
+
+    public static final int TERM_FIELD_NUMBER = 1;
+    private long term_;
+    /**
+     * <code>int64 term = 1;</code>
+     */
+    public long getTerm() {
+      return term_;
+    }
+
+    public static final int GRANTED_FIELD_NUMBER = 2;
+    private boolean granted_;
+    /**
+     * <code>bool granted = 2;</code>
+     */
+    public boolean getGranted() {
+      return granted_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+            throws java.io.IOException {
+      if (term_ != 0L) {
+        output.writeInt64(1, term_);
+      }
+      if (granted_ != false) {
+        output.writeBool(2, granted_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (term_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeInt64Size(1, term_);
+      }
+      if (granted_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeBoolSize(2, granted_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof rpc.RpcRequests.RequestPreVoteResponse)) {
+        return super.equals(obj);
+      }
+      rpc.RpcRequests.RequestPreVoteResponse other = (rpc.RpcRequests.RequestPreVoteResponse) obj;
+
+      boolean result = true;
+      result = result && (getTerm()
+              == other.getTerm());
+      result = result && (getGranted()
+              == other.getGranted());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + TERM_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+              getTerm());
+      hash = (37 * hash) + GRANTED_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+              getGranted());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static rpc.RpcRequests.RequestPreVoteResponse parseFrom(
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static rpc.RpcRequests.RequestPreVoteResponse parseFrom(
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static rpc.RpcRequests.RequestPreVoteResponse parseFrom(
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static rpc.RpcRequests.RequestPreVoteResponse parseFrom(
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static rpc.RpcRequests.RequestPreVoteResponse parseFrom(byte[] data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static rpc.RpcRequests.RequestPreVoteResponse parseFrom(
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static rpc.RpcRequests.RequestPreVoteResponse parseFrom(java.io.InputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+    }
+    public static rpc.RpcRequests.RequestPreVoteResponse parseFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static rpc.RpcRequests.RequestPreVoteResponse parseDelimitedFrom(java.io.InputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static rpc.RpcRequests.RequestPreVoteResponse parseDelimitedFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static rpc.RpcRequests.RequestPreVoteResponse parseFrom(
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+    }
+    public static rpc.RpcRequests.RequestPreVoteResponse parseFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(rpc.RpcRequests.RequestPreVoteResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+              ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code protobuf.RequestPreVoteResponse}
+     */
+    public static final class Builder extends
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:protobuf.RequestPreVoteResponse)
+            rpc.RpcRequests.RequestPreVoteResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+      getDescriptor() {
+        return rpc.RpcRequests.internal_static_protobuf_RequestPreVoteResponse_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internalGetFieldAccessorTable() {
+        return rpc.RpcRequests.internal_static_protobuf_RequestPreVoteResponse_fieldAccessorTable
+                .ensureFieldAccessorsInitialized(
+                        rpc.RpcRequests.RequestPreVoteResponse.class, rpc.RpcRequests.RequestPreVoteResponse.Builder.class);
+      }
+
+      // Construct using rpc.RpcRequests.RequestPreVoteResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        term_ = 0L;
+
+        granted_ = false;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+      getDescriptorForType() {
+        return rpc.RpcRequests.internal_static_protobuf_RequestPreVoteResponse_descriptor;
+      }
+
+      @java.lang.Override
+      public rpc.RpcRequests.RequestPreVoteResponse getDefaultInstanceForType() {
+        return rpc.RpcRequests.RequestPreVoteResponse.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public rpc.RpcRequests.RequestPreVoteResponse build() {
+        rpc.RpcRequests.RequestPreVoteResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public rpc.RpcRequests.RequestPreVoteResponse buildPartial() {
+        rpc.RpcRequests.RequestPreVoteResponse result = new rpc.RpcRequests.RequestPreVoteResponse(this);
+        result.term_ = term_;
+        result.granted_ = granted_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof rpc.RpcRequests.RequestPreVoteResponse) {
+          return mergeFrom((rpc.RpcRequests.RequestPreVoteResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(rpc.RpcRequests.RequestPreVoteResponse other) {
+        if (other == rpc.RpcRequests.RequestPreVoteResponse.getDefaultInstance()) return this;
+        if (other.getTerm() != 0L) {
+          setTerm(other.getTerm());
+        }
+        if (other.getGranted() != false) {
+          setGranted(other.getGranted());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
+        rpc.RpcRequests.RequestPreVoteResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (rpc.RpcRequests.RequestPreVoteResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private long term_ ;
+      /**
+       * <code>int64 term = 1;</code>
+       */
+      public long getTerm() {
+        return term_;
+      }
+      /**
+       * <code>int64 term = 1;</code>
+       */
+      public Builder setTerm(long value) {
+
+        term_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 term = 1;</code>
+       */
+      public Builder clearTerm() {
+
+        term_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private boolean granted_ ;
+      /**
+       * <code>bool granted = 2;</code>
+       */
+      public boolean getGranted() {
+        return granted_;
+      }
+      /**
+       * <code>bool granted = 2;</code>
+       */
+      public Builder setGranted(boolean value) {
+
+        granted_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool granted = 2;</code>
+       */
+      public Builder clearGranted() {
+
+        granted_ = false;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:protobuf.RequestPreVoteResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:protobuf.RequestPreVoteResponse)
+    private static final rpc.RpcRequests.RequestPreVoteResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new rpc.RpcRequests.RequestPreVoteResponse();
+    }
+
+    public static rpc.RpcRequests.RequestPreVoteResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<RequestPreVoteResponse>
+            PARSER = new com.google.protobuf.AbstractParser<RequestPreVoteResponse>() {
+      @java.lang.Override
+      public RequestPreVoteResponse parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RequestPreVoteResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<RequestPreVoteResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RequestPreVoteResponse> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public rpc.RpcRequests.RequestPreVoteResponse getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface AppendEntriesRequestHeaderOrBuilder extends
+          // @@protoc_insertion_point(interface_extends:protobuf.AppendEntriesRequestHeader)
+          com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string server_id = 1;</code>
+     */
+    java.lang.String getServerId();
+    /**
+     * <code>string server_id = 1;</code>
+     */
+    com.google.protobuf.ByteString
+    getServerIdBytes();
+
+    /**
+     * <code>string peer_id = 2;</code>
+     */
+    java.lang.String getPeerId();
+    /**
+     * <code>string peer_id = 2;</code>
+     */
+    com.google.protobuf.ByteString
+    getPeerIdBytes();
   }
   /**
    * Protobuf type {@code protobuf.AppendEntriesRequestHeader}
    */
   public  static final class AppendEntriesRequestHeader extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:protobuf.AppendEntriesRequestHeader)
-      AppendEntriesRequestHeaderOrBuilder {
-  private static final long serialVersionUID = 0L;
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:protobuf.AppendEntriesRequestHeader)
+          AppendEntriesRequestHeaderOrBuilder {
+    private static final long serialVersionUID = 0L;
     // Use AppendEntriesRequestHeader.newBuilder() to construct.
     private AppendEntriesRequestHeader(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -3929,16 +5412,16 @@ public final class RpcRequests {
       return this.unknownFields;
     }
     private AppendEntriesRequestHeader(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       this();
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
+              com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -3961,7 +5444,7 @@ public final class RpcRequests {
             }
             default: {
               if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
+                      input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -3972,23 +5455,23 @@ public final class RpcRequests {
         throw e.setUnfinishedMessage(this);
       } catch (java.io.IOException e) {
         throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
+                e).setUnfinishedMessage(this);
       } finally {
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return rpc.RpcRequests.internal_static_protobuf_AppendEntriesRequestHeader_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return rpc.RpcRequests.internal_static_protobuf_AppendEntriesRequestHeader_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              rpc.RpcRequests.AppendEntriesRequestHeader.class, rpc.RpcRequests.AppendEntriesRequestHeader.Builder.class);
+              .ensureFieldAccessorsInitialized(
+                      rpc.RpcRequests.AppendEntriesRequestHeader.class, rpc.RpcRequests.AppendEntriesRequestHeader.Builder.class);
     }
 
     public static final int SERVER_ID_FIELD_NUMBER = 1;
@@ -4001,8 +5484,8 @@ public final class RpcRequests {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         serverId_ = s;
         return s;
@@ -4012,12 +5495,12 @@ public final class RpcRequests {
      * <code>string server_id = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getServerIdBytes() {
+    getServerIdBytes() {
       java.lang.Object ref = serverId_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
         serverId_ = b;
         return b;
       } else {
@@ -4035,8 +5518,8 @@ public final class RpcRequests {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         peerId_ = s;
         return s;
@@ -4046,12 +5529,12 @@ public final class RpcRequests {
      * <code>string peer_id = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getPeerIdBytes() {
+    getPeerIdBytes() {
       java.lang.Object ref = peerId_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
         peerId_ = b;
         return b;
       } else {
@@ -4072,7 +5555,7 @@ public final class RpcRequests {
 
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+            throws java.io.IOException {
       if (!getServerIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, serverId_);
       }
@@ -4102,7 +5585,7 @@ public final class RpcRequests {
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
-       return true;
+        return true;
       }
       if (!(obj instanceof rpc.RpcRequests.AppendEntriesRequestHeader)) {
         return super.equals(obj);
@@ -4111,9 +5594,9 @@ public final class RpcRequests {
 
       boolean result = true;
       result = result && getServerId()
-          .equals(other.getServerId());
+              .equals(other.getServerId());
       result = result && getPeerId()
-          .equals(other.getPeerId());
+              .equals(other.getPeerId());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -4135,73 +5618,73 @@ public final class RpcRequests {
     }
 
     public static rpc.RpcRequests.AppendEntriesRequestHeader parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.AppendEntriesRequestHeader parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.AppendEntriesRequestHeader parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.AppendEntriesRequestHeader parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.AppendEntriesRequestHeader parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.AppendEntriesRequestHeader parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.AppendEntriesRequestHeader parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.AppendEntriesRequestHeader parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.AppendEntriesRequestHeader parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
+              .parseDelimitedWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.AppendEntriesRequestHeader parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.AppendEntriesRequestHeader parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.AppendEntriesRequestHeader parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
@@ -4215,12 +5698,12 @@ public final class RpcRequests {
     @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
+              ? new Builder() : new Builder().mergeFrom(this);
     }
 
     @java.lang.Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -4228,20 +5711,20 @@ public final class RpcRequests {
      * Protobuf type {@code protobuf.AppendEntriesRequestHeader}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:protobuf.AppendEntriesRequestHeader)
-        rpc.RpcRequests.AppendEntriesRequestHeaderOrBuilder {
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:protobuf.AppendEntriesRequestHeader)
+            rpc.RpcRequests.AppendEntriesRequestHeaderOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return rpc.RpcRequests.internal_static_protobuf_AppendEntriesRequestHeader_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return rpc.RpcRequests.internal_static_protobuf_AppendEntriesRequestHeader_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                rpc.RpcRequests.AppendEntriesRequestHeader.class, rpc.RpcRequests.AppendEntriesRequestHeader.Builder.class);
+                .ensureFieldAccessorsInitialized(
+                        rpc.RpcRequests.AppendEntriesRequestHeader.class, rpc.RpcRequests.AppendEntriesRequestHeader.Builder.class);
       }
 
       // Construct using rpc.RpcRequests.AppendEntriesRequestHeader.newBuilder()
@@ -4250,7 +5733,7 @@ public final class RpcRequests {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
@@ -4271,7 +5754,7 @@ public final class RpcRequests {
 
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return rpc.RpcRequests.internal_static_protobuf_AppendEntriesRequestHeader_descriptor;
       }
 
@@ -4304,30 +5787,30 @@ public final class RpcRequests {
       }
       @java.lang.Override
       public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       @java.lang.Override
       public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
         return (Builder) super.clearField(field);
       }
       @java.lang.Override
       public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return (Builder) super.clearOneof(oneof);
       }
       @java.lang.Override
       public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       @java.lang.Override
       public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       @java.lang.Override
@@ -4362,9 +5845,9 @@ public final class RpcRequests {
 
       @java.lang.Override
       public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
         rpc.RpcRequests.AppendEntriesRequestHeader parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
@@ -4387,7 +5870,7 @@ public final class RpcRequests {
         java.lang.Object ref = serverId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
+                  (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           serverId_ = s;
           return s;
@@ -4399,12 +5882,12 @@ public final class RpcRequests {
        * <code>string server_id = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getServerIdBytes() {
+      getServerIdBytes() {
         java.lang.Object ref = serverId_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
           serverId_ = b;
           return b;
         } else {
@@ -4415,11 +5898,11 @@ public final class RpcRequests {
        * <code>string server_id = 1;</code>
        */
       public Builder setServerId(
-          java.lang.String value) {
+              java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  
+          throw new NullPointerException();
+        }
+
         serverId_ = value;
         onChanged();
         return this;
@@ -4428,7 +5911,7 @@ public final class RpcRequests {
        * <code>string server_id = 1;</code>
        */
       public Builder clearServerId() {
-        
+
         serverId_ = getDefaultInstance().getServerId();
         onChanged();
         return this;
@@ -4437,12 +5920,12 @@ public final class RpcRequests {
        * <code>string server_id = 1;</code>
        */
       public Builder setServerIdBytes(
-          com.google.protobuf.ByteString value) {
+              com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
         serverId_ = value;
         onChanged();
         return this;
@@ -4456,7 +5939,7 @@ public final class RpcRequests {
         java.lang.Object ref = peerId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
+                  (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           peerId_ = s;
           return s;
@@ -4468,12 +5951,12 @@ public final class RpcRequests {
        * <code>string peer_id = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getPeerIdBytes() {
+      getPeerIdBytes() {
         java.lang.Object ref = peerId_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
           peerId_ = b;
           return b;
         } else {
@@ -4484,11 +5967,11 @@ public final class RpcRequests {
        * <code>string peer_id = 2;</code>
        */
       public Builder setPeerId(
-          java.lang.String value) {
+              java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  
+          throw new NullPointerException();
+        }
+
         peerId_ = value;
         onChanged();
         return this;
@@ -4497,7 +5980,7 @@ public final class RpcRequests {
        * <code>string peer_id = 2;</code>
        */
       public Builder clearPeerId() {
-        
+
         peerId_ = getDefaultInstance().getPeerId();
         onChanged();
         return this;
@@ -4506,25 +5989,25 @@ public final class RpcRequests {
        * <code>string peer_id = 2;</code>
        */
       public Builder setPeerIdBytes(
-          com.google.protobuf.ByteString value) {
+              com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
         peerId_ = value;
         onChanged();
         return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
       }
 
       @java.lang.Override
       public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
       }
 
@@ -4543,12 +6026,12 @@ public final class RpcRequests {
     }
 
     private static final com.google.protobuf.Parser<AppendEntriesRequestHeader>
-        PARSER = new com.google.protobuf.AbstractParser<AppendEntriesRequestHeader>() {
+            PARSER = new com.google.protobuf.AbstractParser<AppendEntriesRequestHeader>() {
       @java.lang.Override
       public AppendEntriesRequestHeader parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
         return new AppendEntriesRequestHeader(input, extensionRegistry);
       }
     };
@@ -4570,8 +6053,8 @@ public final class RpcRequests {
   }
 
   public interface AppendEntriesRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:protobuf.AppendEntriesRequest)
-      com.google.protobuf.MessageOrBuilder {
+          // @@protoc_insertion_point(interface_extends:protobuf.AppendEntriesRequest)
+          com.google.protobuf.MessageOrBuilder {
 
     /**
      * <code>string group_id = 1;</code>
@@ -4581,7 +6064,7 @@ public final class RpcRequests {
      * <code>string group_id = 1;</code>
      */
     com.google.protobuf.ByteString
-        getGroupIdBytes();
+    getGroupIdBytes();
 
     /**
      * <code>string server_id = 2;</code>
@@ -4591,7 +6074,7 @@ public final class RpcRequests {
      * <code>string server_id = 2;</code>
      */
     com.google.protobuf.ByteString
-        getServerIdBytes();
+    getServerIdBytes();
 
     /**
      * <code>string peer_id = 3;</code>
@@ -4601,7 +6084,7 @@ public final class RpcRequests {
      * <code>string peer_id = 3;</code>
      */
     com.google.protobuf.ByteString
-        getPeerIdBytes();
+    getPeerIdBytes();
 
     /**
      * <code>int64 term = 4;</code>
@@ -4645,10 +6128,10 @@ public final class RpcRequests {
    * Protobuf type {@code protobuf.AppendEntriesRequest}
    */
   public  static final class AppendEntriesRequest extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:protobuf.AppendEntriesRequest)
-      AppendEntriesRequestOrBuilder {
-  private static final long serialVersionUID = 0L;
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:protobuf.AppendEntriesRequest)
+          AppendEntriesRequestOrBuilder {
+    private static final long serialVersionUID = 0L;
     // Use AppendEntriesRequest.newBuilder() to construct.
     private AppendEntriesRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -4670,16 +6153,16 @@ public final class RpcRequests {
       return this.unknownFields;
     }
     private AppendEntriesRequest(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       this();
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
+              com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -4746,7 +6229,7 @@ public final class RpcRequests {
             }
             default: {
               if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
+                      input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -4757,23 +6240,23 @@ public final class RpcRequests {
         throw e.setUnfinishedMessage(this);
       } catch (java.io.IOException e) {
         throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
+                e).setUnfinishedMessage(this);
       } finally {
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return rpc.RpcRequests.internal_static_protobuf_AppendEntriesRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return rpc.RpcRequests.internal_static_protobuf_AppendEntriesRequest_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              rpc.RpcRequests.AppendEntriesRequest.class, rpc.RpcRequests.AppendEntriesRequest.Builder.class);
+              .ensureFieldAccessorsInitialized(
+                      rpc.RpcRequests.AppendEntriesRequest.class, rpc.RpcRequests.AppendEntriesRequest.Builder.class);
     }
 
     public static final int GROUP_ID_FIELD_NUMBER = 1;
@@ -4786,8 +6269,8 @@ public final class RpcRequests {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         groupId_ = s;
         return s;
@@ -4797,12 +6280,12 @@ public final class RpcRequests {
      * <code>string group_id = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getGroupIdBytes() {
+    getGroupIdBytes() {
       java.lang.Object ref = groupId_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
         groupId_ = b;
         return b;
       } else {
@@ -4820,8 +6303,8 @@ public final class RpcRequests {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         serverId_ = s;
         return s;
@@ -4831,12 +6314,12 @@ public final class RpcRequests {
      * <code>string server_id = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getServerIdBytes() {
+    getServerIdBytes() {
       java.lang.Object ref = serverId_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
         serverId_ = b;
         return b;
       } else {
@@ -4854,8 +6337,8 @@ public final class RpcRequests {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         peerId_ = s;
         return s;
@@ -4865,12 +6348,12 @@ public final class RpcRequests {
      * <code>string peer_id = 3;</code>
      */
     public com.google.protobuf.ByteString
-        getPeerIdBytes() {
+    getPeerIdBytes() {
       java.lang.Object ref = peerId_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
         peerId_ = b;
         return b;
       } else {
@@ -4957,7 +6440,7 @@ public final class RpcRequests {
 
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+            throws java.io.IOException {
       if (!getGroupIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, groupId_);
       }
@@ -5005,27 +6488,27 @@ public final class RpcRequests {
       }
       if (term_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(4, term_);
+                .computeInt64Size(4, term_);
       }
       if (prevLogTerm_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(5, prevLogTerm_);
+                .computeInt64Size(5, prevLogTerm_);
       }
       if (prevLogIndex_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(6, prevLogIndex_);
+                .computeInt64Size(6, prevLogIndex_);
       }
       if (entries_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, getEntries());
+                .computeMessageSize(7, getEntries());
       }
       if (committedIndex_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(8, committedIndex_);
+                .computeInt64Size(8, committedIndex_);
       }
       if (!data_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(9, data_);
+                .computeBytesSize(9, data_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -5035,7 +6518,7 @@ public final class RpcRequests {
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
-       return true;
+        return true;
       }
       if (!(obj instanceof rpc.RpcRequests.AppendEntriesRequest)) {
         return super.equals(obj);
@@ -5044,26 +6527,26 @@ public final class RpcRequests {
 
       boolean result = true;
       result = result && getGroupId()
-          .equals(other.getGroupId());
+              .equals(other.getGroupId());
       result = result && getServerId()
-          .equals(other.getServerId());
+              .equals(other.getServerId());
       result = result && getPeerId()
-          .equals(other.getPeerId());
+              .equals(other.getPeerId());
       result = result && (getTerm()
-          == other.getTerm());
+              == other.getTerm());
       result = result && (getPrevLogTerm()
-          == other.getPrevLogTerm());
+              == other.getPrevLogTerm());
       result = result && (getPrevLogIndex()
-          == other.getPrevLogIndex());
+              == other.getPrevLogIndex());
       result = result && (hasEntries() == other.hasEntries());
       if (hasEntries()) {
         result = result && getEntries()
-            .equals(other.getEntries());
+                .equals(other.getEntries());
       }
       result = result && (getCommittedIndex()
-          == other.getCommittedIndex());
+              == other.getCommittedIndex());
       result = result && getData()
-          .equals(other.getData());
+              .equals(other.getData());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -5083,20 +6566,20 @@ public final class RpcRequests {
       hash = (53 * hash) + getPeerId().hashCode();
       hash = (37 * hash) + TERM_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getTerm());
+              getTerm());
       hash = (37 * hash) + PREV_LOG_TERM_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getPrevLogTerm());
+              getPrevLogTerm());
       hash = (37 * hash) + PREV_LOG_INDEX_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getPrevLogIndex());
+              getPrevLogIndex());
       if (hasEntries()) {
         hash = (37 * hash) + ENTRIES_FIELD_NUMBER;
         hash = (53 * hash) + getEntries().hashCode();
       }
       hash = (37 * hash) + COMMITTED_INDEX_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getCommittedIndex());
+              getCommittedIndex());
       hash = (37 * hash) + DATA_FIELD_NUMBER;
       hash = (53 * hash) + getData().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -5105,73 +6588,73 @@ public final class RpcRequests {
     }
 
     public static rpc.RpcRequests.AppendEntriesRequest parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.AppendEntriesRequest parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.AppendEntriesRequest parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.AppendEntriesRequest parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.AppendEntriesRequest parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.AppendEntriesRequest parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.AppendEntriesRequest parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.AppendEntriesRequest parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.AppendEntriesRequest parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
+              .parseDelimitedWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.AppendEntriesRequest parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.AppendEntriesRequest parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.AppendEntriesRequest parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
@@ -5185,12 +6668,12 @@ public final class RpcRequests {
     @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
+              ? new Builder() : new Builder().mergeFrom(this);
     }
 
     @java.lang.Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -5198,20 +6681,20 @@ public final class RpcRequests {
      * Protobuf type {@code protobuf.AppendEntriesRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:protobuf.AppendEntriesRequest)
-        rpc.RpcRequests.AppendEntriesRequestOrBuilder {
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:protobuf.AppendEntriesRequest)
+            rpc.RpcRequests.AppendEntriesRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return rpc.RpcRequests.internal_static_protobuf_AppendEntriesRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return rpc.RpcRequests.internal_static_protobuf_AppendEntriesRequest_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                rpc.RpcRequests.AppendEntriesRequest.class, rpc.RpcRequests.AppendEntriesRequest.Builder.class);
+                .ensureFieldAccessorsInitialized(
+                        rpc.RpcRequests.AppendEntriesRequest.class, rpc.RpcRequests.AppendEntriesRequest.Builder.class);
       }
 
       // Construct using rpc.RpcRequests.AppendEntriesRequest.newBuilder()
@@ -5220,7 +6703,7 @@ public final class RpcRequests {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
@@ -5259,7 +6742,7 @@ public final class RpcRequests {
 
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return rpc.RpcRequests.internal_static_protobuf_AppendEntriesRequest_descriptor;
       }
 
@@ -5303,30 +6786,30 @@ public final class RpcRequests {
       }
       @java.lang.Override
       public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       @java.lang.Override
       public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
         return (Builder) super.clearField(field);
       }
       @java.lang.Override
       public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return (Builder) super.clearOneof(oneof);
       }
       @java.lang.Override
       public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       @java.lang.Override
       public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       @java.lang.Override
@@ -5383,9 +6866,9 @@ public final class RpcRequests {
 
       @java.lang.Override
       public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
         rpc.RpcRequests.AppendEntriesRequest parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
@@ -5408,7 +6891,7 @@ public final class RpcRequests {
         java.lang.Object ref = groupId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
+                  (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           groupId_ = s;
           return s;
@@ -5420,12 +6903,12 @@ public final class RpcRequests {
        * <code>string group_id = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getGroupIdBytes() {
+      getGroupIdBytes() {
         java.lang.Object ref = groupId_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
           groupId_ = b;
           return b;
         } else {
@@ -5436,11 +6919,11 @@ public final class RpcRequests {
        * <code>string group_id = 1;</code>
        */
       public Builder setGroupId(
-          java.lang.String value) {
+              java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  
+          throw new NullPointerException();
+        }
+
         groupId_ = value;
         onChanged();
         return this;
@@ -5449,7 +6932,7 @@ public final class RpcRequests {
        * <code>string group_id = 1;</code>
        */
       public Builder clearGroupId() {
-        
+
         groupId_ = getDefaultInstance().getGroupId();
         onChanged();
         return this;
@@ -5458,12 +6941,12 @@ public final class RpcRequests {
        * <code>string group_id = 1;</code>
        */
       public Builder setGroupIdBytes(
-          com.google.protobuf.ByteString value) {
+              com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
         groupId_ = value;
         onChanged();
         return this;
@@ -5477,7 +6960,7 @@ public final class RpcRequests {
         java.lang.Object ref = serverId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
+                  (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           serverId_ = s;
           return s;
@@ -5489,12 +6972,12 @@ public final class RpcRequests {
        * <code>string server_id = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getServerIdBytes() {
+      getServerIdBytes() {
         java.lang.Object ref = serverId_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
           serverId_ = b;
           return b;
         } else {
@@ -5505,11 +6988,11 @@ public final class RpcRequests {
        * <code>string server_id = 2;</code>
        */
       public Builder setServerId(
-          java.lang.String value) {
+              java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  
+          throw new NullPointerException();
+        }
+
         serverId_ = value;
         onChanged();
         return this;
@@ -5518,7 +7001,7 @@ public final class RpcRequests {
        * <code>string server_id = 2;</code>
        */
       public Builder clearServerId() {
-        
+
         serverId_ = getDefaultInstance().getServerId();
         onChanged();
         return this;
@@ -5527,12 +7010,12 @@ public final class RpcRequests {
        * <code>string server_id = 2;</code>
        */
       public Builder setServerIdBytes(
-          com.google.protobuf.ByteString value) {
+              com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
         serverId_ = value;
         onChanged();
         return this;
@@ -5546,7 +7029,7 @@ public final class RpcRequests {
         java.lang.Object ref = peerId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
+                  (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           peerId_ = s;
           return s;
@@ -5558,12 +7041,12 @@ public final class RpcRequests {
        * <code>string peer_id = 3;</code>
        */
       public com.google.protobuf.ByteString
-          getPeerIdBytes() {
+      getPeerIdBytes() {
         java.lang.Object ref = peerId_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
           peerId_ = b;
           return b;
         } else {
@@ -5574,11 +7057,11 @@ public final class RpcRequests {
        * <code>string peer_id = 3;</code>
        */
       public Builder setPeerId(
-          java.lang.String value) {
+              java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  
+          throw new NullPointerException();
+        }
+
         peerId_ = value;
         onChanged();
         return this;
@@ -5587,7 +7070,7 @@ public final class RpcRequests {
        * <code>string peer_id = 3;</code>
        */
       public Builder clearPeerId() {
-        
+
         peerId_ = getDefaultInstance().getPeerId();
         onChanged();
         return this;
@@ -5596,12 +7079,12 @@ public final class RpcRequests {
        * <code>string peer_id = 3;</code>
        */
       public Builder setPeerIdBytes(
-          com.google.protobuf.ByteString value) {
+              com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
         peerId_ = value;
         onChanged();
         return this;
@@ -5618,7 +7101,7 @@ public final class RpcRequests {
        * <code>int64 term = 4;</code>
        */
       public Builder setTerm(long value) {
-        
+
         term_ = value;
         onChanged();
         return this;
@@ -5627,7 +7110,7 @@ public final class RpcRequests {
        * <code>int64 term = 4;</code>
        */
       public Builder clearTerm() {
-        
+
         term_ = 0L;
         onChanged();
         return this;
@@ -5644,7 +7127,7 @@ public final class RpcRequests {
        * <code>int64 prev_log_term = 5;</code>
        */
       public Builder setPrevLogTerm(long value) {
-        
+
         prevLogTerm_ = value;
         onChanged();
         return this;
@@ -5653,7 +7136,7 @@ public final class RpcRequests {
        * <code>int64 prev_log_term = 5;</code>
        */
       public Builder clearPrevLogTerm() {
-        
+
         prevLogTerm_ = 0L;
         onChanged();
         return this;
@@ -5670,7 +7153,7 @@ public final class RpcRequests {
        * <code>int64 prev_log_index = 6;</code>
        */
       public Builder setPrevLogIndex(long value) {
-        
+
         prevLogIndex_ = value;
         onChanged();
         return this;
@@ -5679,7 +7162,7 @@ public final class RpcRequests {
        * <code>int64 prev_log_index = 6;</code>
        */
       public Builder clearPrevLogIndex() {
-        
+
         prevLogIndex_ = 0L;
         onChanged();
         return this;
@@ -5687,7 +7170,7 @@ public final class RpcRequests {
 
       private rpc.RaftOutter.EntryMeta entries_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
-          rpc.RaftOutter.EntryMeta, rpc.RaftOutter.EntryMeta.Builder, rpc.RaftOutter.EntryMetaOrBuilder> entriesBuilder_;
+              rpc.RaftOutter.EntryMeta, rpc.RaftOutter.EntryMeta.Builder, rpc.RaftOutter.EntryMetaOrBuilder> entriesBuilder_;
       /**
        * <code>.protobuf.EntryMeta entries = 7;</code>
        */
@@ -5724,7 +7207,7 @@ public final class RpcRequests {
        * <code>.protobuf.EntryMeta entries = 7;</code>
        */
       public Builder setEntries(
-          rpc.RaftOutter.EntryMeta.Builder builderForValue) {
+              rpc.RaftOutter.EntryMeta.Builder builderForValue) {
         if (entriesBuilder_ == null) {
           entries_ = builderForValue.build();
           onChanged();
@@ -5741,7 +7224,7 @@ public final class RpcRequests {
         if (entriesBuilder_ == null) {
           if (entries_ != null) {
             entries_ =
-              rpc.RaftOutter.EntryMeta.newBuilder(entries_).mergeFrom(value).buildPartial();
+                    rpc.RaftOutter.EntryMeta.newBuilder(entries_).mergeFrom(value).buildPartial();
           } else {
             entries_ = value;
           }
@@ -5770,7 +7253,7 @@ public final class RpcRequests {
        * <code>.protobuf.EntryMeta entries = 7;</code>
        */
       public rpc.RaftOutter.EntryMeta.Builder getEntriesBuilder() {
-        
+
         onChanged();
         return getEntriesFieldBuilder().getBuilder();
       }
@@ -5782,18 +7265,18 @@ public final class RpcRequests {
           return entriesBuilder_.getMessageOrBuilder();
         } else {
           return entries_ == null ?
-              rpc.RaftOutter.EntryMeta.getDefaultInstance() : entries_;
+                  rpc.RaftOutter.EntryMeta.getDefaultInstance() : entries_;
         }
       }
       /**
        * <code>.protobuf.EntryMeta entries = 7;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          rpc.RaftOutter.EntryMeta, rpc.RaftOutter.EntryMeta.Builder, rpc.RaftOutter.EntryMetaOrBuilder> 
-          getEntriesFieldBuilder() {
+              rpc.RaftOutter.EntryMeta, rpc.RaftOutter.EntryMeta.Builder, rpc.RaftOutter.EntryMetaOrBuilder>
+      getEntriesFieldBuilder() {
         if (entriesBuilder_ == null) {
           entriesBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              rpc.RaftOutter.EntryMeta, rpc.RaftOutter.EntryMeta.Builder, rpc.RaftOutter.EntryMetaOrBuilder>(
+                  rpc.RaftOutter.EntryMeta, rpc.RaftOutter.EntryMeta.Builder, rpc.RaftOutter.EntryMetaOrBuilder>(
                   getEntries(),
                   getParentForChildren(),
                   isClean());
@@ -5813,7 +7296,7 @@ public final class RpcRequests {
        * <code>int64 committed_index = 8;</code>
        */
       public Builder setCommittedIndex(long value) {
-        
+
         committedIndex_ = value;
         onChanged();
         return this;
@@ -5822,7 +7305,7 @@ public final class RpcRequests {
        * <code>int64 committed_index = 8;</code>
        */
       public Builder clearCommittedIndex() {
-        
+
         committedIndex_ = 0L;
         onChanged();
         return this;
@@ -5840,9 +7323,9 @@ public final class RpcRequests {
        */
       public Builder setData(com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  
+          throw new NullPointerException();
+        }
+
         data_ = value;
         onChanged();
         return this;
@@ -5851,20 +7334,20 @@ public final class RpcRequests {
        * <code>bytes data = 9;</code>
        */
       public Builder clearData() {
-        
+
         data_ = getDefaultInstance().getData();
         onChanged();
         return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
       }
 
       @java.lang.Override
       public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
       }
 
@@ -5883,12 +7366,12 @@ public final class RpcRequests {
     }
 
     private static final com.google.protobuf.Parser<AppendEntriesRequest>
-        PARSER = new com.google.protobuf.AbstractParser<AppendEntriesRequest>() {
+            PARSER = new com.google.protobuf.AbstractParser<AppendEntriesRequest>() {
       @java.lang.Override
       public AppendEntriesRequest parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
         return new AppendEntriesRequest(input, extensionRegistry);
       }
     };
@@ -5910,8 +7393,8 @@ public final class RpcRequests {
   }
 
   public interface AppendEntriesResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:protobuf.AppendEntriesResponse)
-      com.google.protobuf.MessageOrBuilder {
+          // @@protoc_insertion_point(interface_extends:protobuf.AppendEntriesResponse)
+          com.google.protobuf.MessageOrBuilder {
 
     /**
      * <code>int64 term = 1;</code>
@@ -5932,10 +7415,10 @@ public final class RpcRequests {
    * Protobuf type {@code protobuf.AppendEntriesResponse}
    */
   public  static final class AppendEntriesResponse extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:protobuf.AppendEntriesResponse)
-      AppendEntriesResponseOrBuilder {
-  private static final long serialVersionUID = 0L;
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:protobuf.AppendEntriesResponse)
+          AppendEntriesResponseOrBuilder {
+    private static final long serialVersionUID = 0L;
     // Use AppendEntriesResponse.newBuilder() to construct.
     private AppendEntriesResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -5952,16 +7435,16 @@ public final class RpcRequests {
       return this.unknownFields;
     }
     private AppendEntriesResponse(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       this();
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
+              com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -5987,7 +7470,7 @@ public final class RpcRequests {
             }
             default: {
               if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
+                      input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -5998,23 +7481,23 @@ public final class RpcRequests {
         throw e.setUnfinishedMessage(this);
       } catch (java.io.IOException e) {
         throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
+                e).setUnfinishedMessage(this);
       } finally {
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return rpc.RpcRequests.internal_static_protobuf_AppendEntriesResponse_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return rpc.RpcRequests.internal_static_protobuf_AppendEntriesResponse_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              rpc.RpcRequests.AppendEntriesResponse.class, rpc.RpcRequests.AppendEntriesResponse.Builder.class);
+              .ensureFieldAccessorsInitialized(
+                      rpc.RpcRequests.AppendEntriesResponse.class, rpc.RpcRequests.AppendEntriesResponse.Builder.class);
     }
 
     public static final int TERM_FIELD_NUMBER = 1;
@@ -6057,7 +7540,7 @@ public final class RpcRequests {
 
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+            throws java.io.IOException {
       if (term_ != 0L) {
         output.writeInt64(1, term_);
       }
@@ -6078,15 +7561,15 @@ public final class RpcRequests {
       size = 0;
       if (term_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(1, term_);
+                .computeInt64Size(1, term_);
       }
       if (success_ != false) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(2, success_);
+                .computeBoolSize(2, success_);
       }
       if (lastLogIndex_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(3, lastLogIndex_);
+                .computeInt64Size(3, lastLogIndex_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -6096,7 +7579,7 @@ public final class RpcRequests {
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
-       return true;
+        return true;
       }
       if (!(obj instanceof rpc.RpcRequests.AppendEntriesResponse)) {
         return super.equals(obj);
@@ -6105,11 +7588,11 @@ public final class RpcRequests {
 
       boolean result = true;
       result = result && (getTerm()
-          == other.getTerm());
+              == other.getTerm());
       result = result && (getSuccess()
-          == other.getSuccess());
+              == other.getSuccess());
       result = result && (getLastLogIndex()
-          == other.getLastLogIndex());
+              == other.getLastLogIndex());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -6123,86 +7606,86 @@ public final class RpcRequests {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + TERM_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getTerm());
+              getTerm());
       hash = (37 * hash) + SUCCESS_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-          getSuccess());
+              getSuccess());
       hash = (37 * hash) + LAST_LOG_INDEX_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getLastLogIndex());
+              getLastLogIndex());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
     public static rpc.RpcRequests.AppendEntriesResponse parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.AppendEntriesResponse parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.AppendEntriesResponse parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.AppendEntriesResponse parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.AppendEntriesResponse parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.AppendEntriesResponse parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.AppendEntriesResponse parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.AppendEntriesResponse parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.AppendEntriesResponse parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
+              .parseDelimitedWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.AppendEntriesResponse parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.AppendEntriesResponse parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.AppendEntriesResponse parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
@@ -6216,12 +7699,12 @@ public final class RpcRequests {
     @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
+              ? new Builder() : new Builder().mergeFrom(this);
     }
 
     @java.lang.Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -6229,20 +7712,20 @@ public final class RpcRequests {
      * Protobuf type {@code protobuf.AppendEntriesResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:protobuf.AppendEntriesResponse)
-        rpc.RpcRequests.AppendEntriesResponseOrBuilder {
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:protobuf.AppendEntriesResponse)
+            rpc.RpcRequests.AppendEntriesResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return rpc.RpcRequests.internal_static_protobuf_AppendEntriesResponse_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return rpc.RpcRequests.internal_static_protobuf_AppendEntriesResponse_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                rpc.RpcRequests.AppendEntriesResponse.class, rpc.RpcRequests.AppendEntriesResponse.Builder.class);
+                .ensureFieldAccessorsInitialized(
+                        rpc.RpcRequests.AppendEntriesResponse.class, rpc.RpcRequests.AppendEntriesResponse.Builder.class);
       }
 
       // Construct using rpc.RpcRequests.AppendEntriesResponse.newBuilder()
@@ -6251,7 +7734,7 @@ public final class RpcRequests {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
@@ -6274,7 +7757,7 @@ public final class RpcRequests {
 
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return rpc.RpcRequests.internal_static_protobuf_AppendEntriesResponse_descriptor;
       }
 
@@ -6308,30 +7791,30 @@ public final class RpcRequests {
       }
       @java.lang.Override
       public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       @java.lang.Override
       public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
         return (Builder) super.clearField(field);
       }
       @java.lang.Override
       public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return (Builder) super.clearOneof(oneof);
       }
       @java.lang.Override
       public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       @java.lang.Override
       public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       @java.lang.Override
@@ -6367,9 +7850,9 @@ public final class RpcRequests {
 
       @java.lang.Override
       public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
         rpc.RpcRequests.AppendEntriesResponse parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
@@ -6395,7 +7878,7 @@ public final class RpcRequests {
        * <code>int64 term = 1;</code>
        */
       public Builder setTerm(long value) {
-        
+
         term_ = value;
         onChanged();
         return this;
@@ -6404,7 +7887,7 @@ public final class RpcRequests {
        * <code>int64 term = 1;</code>
        */
       public Builder clearTerm() {
-        
+
         term_ = 0L;
         onChanged();
         return this;
@@ -6421,7 +7904,7 @@ public final class RpcRequests {
        * <code>bool success = 2;</code>
        */
       public Builder setSuccess(boolean value) {
-        
+
         success_ = value;
         onChanged();
         return this;
@@ -6430,7 +7913,7 @@ public final class RpcRequests {
        * <code>bool success = 2;</code>
        */
       public Builder clearSuccess() {
-        
+
         success_ = false;
         onChanged();
         return this;
@@ -6447,7 +7930,7 @@ public final class RpcRequests {
        * <code>int64 last_log_index = 3;</code>
        */
       public Builder setLastLogIndex(long value) {
-        
+
         lastLogIndex_ = value;
         onChanged();
         return this;
@@ -6456,20 +7939,20 @@ public final class RpcRequests {
        * <code>int64 last_log_index = 3;</code>
        */
       public Builder clearLastLogIndex() {
-        
+
         lastLogIndex_ = 0L;
         onChanged();
         return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
       }
 
       @java.lang.Override
       public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
       }
 
@@ -6488,12 +7971,12 @@ public final class RpcRequests {
     }
 
     private static final com.google.protobuf.Parser<AppendEntriesResponse>
-        PARSER = new com.google.protobuf.AbstractParser<AppendEntriesResponse>() {
+            PARSER = new com.google.protobuf.AbstractParser<AppendEntriesResponse>() {
       @java.lang.Override
       public AppendEntriesResponse parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
         return new AppendEntriesResponse(input, extensionRegistry);
       }
     };
@@ -6515,8 +7998,8 @@ public final class RpcRequests {
   }
 
   public interface ReadIndexRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:protobuf.ReadIndexRequest)
-      com.google.protobuf.MessageOrBuilder {
+          // @@protoc_insertion_point(interface_extends:protobuf.ReadIndexRequest)
+          com.google.protobuf.MessageOrBuilder {
 
     /**
      * <code>string group_id = 1;</code>
@@ -6526,7 +8009,7 @@ public final class RpcRequests {
      * <code>string group_id = 1;</code>
      */
     com.google.protobuf.ByteString
-        getGroupIdBytes();
+    getGroupIdBytes();
 
     /**
      * <code>string server_id = 2;</code>
@@ -6536,7 +8019,7 @@ public final class RpcRequests {
      * <code>string server_id = 2;</code>
      */
     com.google.protobuf.ByteString
-        getServerIdBytes();
+    getServerIdBytes();
 
     /**
      * <code>bytes entries = 3;</code>
@@ -6551,16 +8034,16 @@ public final class RpcRequests {
      * <code>string peer_id = 4;</code>
      */
     com.google.protobuf.ByteString
-        getPeerIdBytes();
+    getPeerIdBytes();
   }
   /**
    * Protobuf type {@code protobuf.ReadIndexRequest}
    */
   public  static final class ReadIndexRequest extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:protobuf.ReadIndexRequest)
-      ReadIndexRequestOrBuilder {
-  private static final long serialVersionUID = 0L;
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:protobuf.ReadIndexRequest)
+          ReadIndexRequestOrBuilder {
+    private static final long serialVersionUID = 0L;
     // Use ReadIndexRequest.newBuilder() to construct.
     private ReadIndexRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -6578,16 +8061,16 @@ public final class RpcRequests {
       return this.unknownFields;
     }
     private ReadIndexRequest(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       this();
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
+              com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -6621,7 +8104,7 @@ public final class RpcRequests {
             }
             default: {
               if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
+                      input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -6632,23 +8115,23 @@ public final class RpcRequests {
         throw e.setUnfinishedMessage(this);
       } catch (java.io.IOException e) {
         throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
+                e).setUnfinishedMessage(this);
       } finally {
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return rpc.RpcRequests.internal_static_protobuf_ReadIndexRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return rpc.RpcRequests.internal_static_protobuf_ReadIndexRequest_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              rpc.RpcRequests.ReadIndexRequest.class, rpc.RpcRequests.ReadIndexRequest.Builder.class);
+              .ensureFieldAccessorsInitialized(
+                      rpc.RpcRequests.ReadIndexRequest.class, rpc.RpcRequests.ReadIndexRequest.Builder.class);
     }
 
     public static final int GROUP_ID_FIELD_NUMBER = 1;
@@ -6661,8 +8144,8 @@ public final class RpcRequests {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         groupId_ = s;
         return s;
@@ -6672,12 +8155,12 @@ public final class RpcRequests {
      * <code>string group_id = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getGroupIdBytes() {
+    getGroupIdBytes() {
       java.lang.Object ref = groupId_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
         groupId_ = b;
         return b;
       } else {
@@ -6695,8 +8178,8 @@ public final class RpcRequests {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         serverId_ = s;
         return s;
@@ -6706,12 +8189,12 @@ public final class RpcRequests {
      * <code>string server_id = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getServerIdBytes() {
+    getServerIdBytes() {
       java.lang.Object ref = serverId_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
         serverId_ = b;
         return b;
       } else {
@@ -6738,8 +8221,8 @@ public final class RpcRequests {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         peerId_ = s;
         return s;
@@ -6749,12 +8232,12 @@ public final class RpcRequests {
      * <code>string peer_id = 4;</code>
      */
     public com.google.protobuf.ByteString
-        getPeerIdBytes() {
+    getPeerIdBytes() {
       java.lang.Object ref = peerId_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
         peerId_ = b;
         return b;
       } else {
@@ -6775,7 +8258,7 @@ public final class RpcRequests {
 
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+            throws java.io.IOException {
       if (!getGroupIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, groupId_);
       }
@@ -6805,7 +8288,7 @@ public final class RpcRequests {
       }
       if (!entries_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, entries_);
+                .computeBytesSize(3, entries_);
       }
       if (!getPeerIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, peerId_);
@@ -6818,7 +8301,7 @@ public final class RpcRequests {
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
-       return true;
+        return true;
       }
       if (!(obj instanceof rpc.RpcRequests.ReadIndexRequest)) {
         return super.equals(obj);
@@ -6827,13 +8310,13 @@ public final class RpcRequests {
 
       boolean result = true;
       result = result && getGroupId()
-          .equals(other.getGroupId());
+              .equals(other.getGroupId());
       result = result && getServerId()
-          .equals(other.getServerId());
+              .equals(other.getServerId());
       result = result && getEntries()
-          .equals(other.getEntries());
+              .equals(other.getEntries());
       result = result && getPeerId()
-          .equals(other.getPeerId());
+              .equals(other.getPeerId());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -6859,73 +8342,73 @@ public final class RpcRequests {
     }
 
     public static rpc.RpcRequests.ReadIndexRequest parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.ReadIndexRequest parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.ReadIndexRequest parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.ReadIndexRequest parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.ReadIndexRequest parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.ReadIndexRequest parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.ReadIndexRequest parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.ReadIndexRequest parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.ReadIndexRequest parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
+              .parseDelimitedWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.ReadIndexRequest parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.ReadIndexRequest parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.ReadIndexRequest parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
@@ -6939,12 +8422,12 @@ public final class RpcRequests {
     @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
+              ? new Builder() : new Builder().mergeFrom(this);
     }
 
     @java.lang.Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -6952,20 +8435,20 @@ public final class RpcRequests {
      * Protobuf type {@code protobuf.ReadIndexRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:protobuf.ReadIndexRequest)
-        rpc.RpcRequests.ReadIndexRequestOrBuilder {
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:protobuf.ReadIndexRequest)
+            rpc.RpcRequests.ReadIndexRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return rpc.RpcRequests.internal_static_protobuf_ReadIndexRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return rpc.RpcRequests.internal_static_protobuf_ReadIndexRequest_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                rpc.RpcRequests.ReadIndexRequest.class, rpc.RpcRequests.ReadIndexRequest.Builder.class);
+                .ensureFieldAccessorsInitialized(
+                        rpc.RpcRequests.ReadIndexRequest.class, rpc.RpcRequests.ReadIndexRequest.Builder.class);
       }
 
       // Construct using rpc.RpcRequests.ReadIndexRequest.newBuilder()
@@ -6974,7 +8457,7 @@ public final class RpcRequests {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
@@ -6999,7 +8482,7 @@ public final class RpcRequests {
 
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return rpc.RpcRequests.internal_static_protobuf_ReadIndexRequest_descriptor;
       }
 
@@ -7034,30 +8517,30 @@ public final class RpcRequests {
       }
       @java.lang.Override
       public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       @java.lang.Override
       public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
         return (Builder) super.clearField(field);
       }
       @java.lang.Override
       public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return (Builder) super.clearOneof(oneof);
       }
       @java.lang.Override
       public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       @java.lang.Override
       public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       @java.lang.Override
@@ -7099,9 +8582,9 @@ public final class RpcRequests {
 
       @java.lang.Override
       public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
         rpc.RpcRequests.ReadIndexRequest parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
@@ -7124,7 +8607,7 @@ public final class RpcRequests {
         java.lang.Object ref = groupId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
+                  (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           groupId_ = s;
           return s;
@@ -7136,12 +8619,12 @@ public final class RpcRequests {
        * <code>string group_id = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getGroupIdBytes() {
+      getGroupIdBytes() {
         java.lang.Object ref = groupId_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
           groupId_ = b;
           return b;
         } else {
@@ -7152,11 +8635,11 @@ public final class RpcRequests {
        * <code>string group_id = 1;</code>
        */
       public Builder setGroupId(
-          java.lang.String value) {
+              java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  
+          throw new NullPointerException();
+        }
+
         groupId_ = value;
         onChanged();
         return this;
@@ -7165,7 +8648,7 @@ public final class RpcRequests {
        * <code>string group_id = 1;</code>
        */
       public Builder clearGroupId() {
-        
+
         groupId_ = getDefaultInstance().getGroupId();
         onChanged();
         return this;
@@ -7174,12 +8657,12 @@ public final class RpcRequests {
        * <code>string group_id = 1;</code>
        */
       public Builder setGroupIdBytes(
-          com.google.protobuf.ByteString value) {
+              com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
         groupId_ = value;
         onChanged();
         return this;
@@ -7193,7 +8676,7 @@ public final class RpcRequests {
         java.lang.Object ref = serverId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
+                  (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           serverId_ = s;
           return s;
@@ -7205,12 +8688,12 @@ public final class RpcRequests {
        * <code>string server_id = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getServerIdBytes() {
+      getServerIdBytes() {
         java.lang.Object ref = serverId_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
           serverId_ = b;
           return b;
         } else {
@@ -7221,11 +8704,11 @@ public final class RpcRequests {
        * <code>string server_id = 2;</code>
        */
       public Builder setServerId(
-          java.lang.String value) {
+              java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  
+          throw new NullPointerException();
+        }
+
         serverId_ = value;
         onChanged();
         return this;
@@ -7234,7 +8717,7 @@ public final class RpcRequests {
        * <code>string server_id = 2;</code>
        */
       public Builder clearServerId() {
-        
+
         serverId_ = getDefaultInstance().getServerId();
         onChanged();
         return this;
@@ -7243,12 +8726,12 @@ public final class RpcRequests {
        * <code>string server_id = 2;</code>
        */
       public Builder setServerIdBytes(
-          com.google.protobuf.ByteString value) {
+              com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
         serverId_ = value;
         onChanged();
         return this;
@@ -7266,9 +8749,9 @@ public final class RpcRequests {
        */
       public Builder setEntries(com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  
+          throw new NullPointerException();
+        }
+
         entries_ = value;
         onChanged();
         return this;
@@ -7277,7 +8760,7 @@ public final class RpcRequests {
        * <code>bytes entries = 3;</code>
        */
       public Builder clearEntries() {
-        
+
         entries_ = getDefaultInstance().getEntries();
         onChanged();
         return this;
@@ -7291,7 +8774,7 @@ public final class RpcRequests {
         java.lang.Object ref = peerId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
+                  (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           peerId_ = s;
           return s;
@@ -7303,12 +8786,12 @@ public final class RpcRequests {
        * <code>string peer_id = 4;</code>
        */
       public com.google.protobuf.ByteString
-          getPeerIdBytes() {
+      getPeerIdBytes() {
         java.lang.Object ref = peerId_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
           peerId_ = b;
           return b;
         } else {
@@ -7319,11 +8802,11 @@ public final class RpcRequests {
        * <code>string peer_id = 4;</code>
        */
       public Builder setPeerId(
-          java.lang.String value) {
+              java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  
+          throw new NullPointerException();
+        }
+
         peerId_ = value;
         onChanged();
         return this;
@@ -7332,7 +8815,7 @@ public final class RpcRequests {
        * <code>string peer_id = 4;</code>
        */
       public Builder clearPeerId() {
-        
+
         peerId_ = getDefaultInstance().getPeerId();
         onChanged();
         return this;
@@ -7341,25 +8824,25 @@ public final class RpcRequests {
        * <code>string peer_id = 4;</code>
        */
       public Builder setPeerIdBytes(
-          com.google.protobuf.ByteString value) {
+              com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
         peerId_ = value;
         onChanged();
         return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
       }
 
       @java.lang.Override
       public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
       }
 
@@ -7378,12 +8861,12 @@ public final class RpcRequests {
     }
 
     private static final com.google.protobuf.Parser<ReadIndexRequest>
-        PARSER = new com.google.protobuf.AbstractParser<ReadIndexRequest>() {
+            PARSER = new com.google.protobuf.AbstractParser<ReadIndexRequest>() {
       @java.lang.Override
       public ReadIndexRequest parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
         return new ReadIndexRequest(input, extensionRegistry);
       }
     };
@@ -7405,8 +8888,8 @@ public final class RpcRequests {
   }
 
   public interface ReadIndexResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:protobuf.ReadIndexResponse)
-      com.google.protobuf.MessageOrBuilder {
+          // @@protoc_insertion_point(interface_extends:protobuf.ReadIndexResponse)
+          com.google.protobuf.MessageOrBuilder {
 
     /**
      * <code>int64 index = 1;</code>
@@ -7422,10 +8905,10 @@ public final class RpcRequests {
    * Protobuf type {@code protobuf.ReadIndexResponse}
    */
   public  static final class ReadIndexResponse extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:protobuf.ReadIndexResponse)
-      ReadIndexResponseOrBuilder {
-  private static final long serialVersionUID = 0L;
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:protobuf.ReadIndexResponse)
+          ReadIndexResponseOrBuilder {
+    private static final long serialVersionUID = 0L;
     // Use ReadIndexResponse.newBuilder() to construct.
     private ReadIndexResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -7441,16 +8924,16 @@ public final class RpcRequests {
       return this.unknownFields;
     }
     private ReadIndexResponse(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       this();
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
+              com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -7471,7 +8954,7 @@ public final class RpcRequests {
             }
             default: {
               if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
+                      input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -7482,23 +8965,23 @@ public final class RpcRequests {
         throw e.setUnfinishedMessage(this);
       } catch (java.io.IOException e) {
         throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
+                e).setUnfinishedMessage(this);
       } finally {
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return rpc.RpcRequests.internal_static_protobuf_ReadIndexResponse_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return rpc.RpcRequests.internal_static_protobuf_ReadIndexResponse_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              rpc.RpcRequests.ReadIndexResponse.class, rpc.RpcRequests.ReadIndexResponse.Builder.class);
+              .ensureFieldAccessorsInitialized(
+                      rpc.RpcRequests.ReadIndexResponse.class, rpc.RpcRequests.ReadIndexResponse.Builder.class);
     }
 
     public static final int INDEX_FIELD_NUMBER = 1;
@@ -7532,7 +9015,7 @@ public final class RpcRequests {
 
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+            throws java.io.IOException {
       if (index_ != 0L) {
         output.writeInt64(1, index_);
       }
@@ -7550,11 +9033,11 @@ public final class RpcRequests {
       size = 0;
       if (index_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(1, index_);
+                .computeInt64Size(1, index_);
       }
       if (success_ != false) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(2, success_);
+                .computeBoolSize(2, success_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -7564,7 +9047,7 @@ public final class RpcRequests {
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
-       return true;
+        return true;
       }
       if (!(obj instanceof rpc.RpcRequests.ReadIndexResponse)) {
         return super.equals(obj);
@@ -7573,9 +9056,9 @@ public final class RpcRequests {
 
       boolean result = true;
       result = result && (getIndex()
-          == other.getIndex());
+              == other.getIndex());
       result = result && (getSuccess()
-          == other.getSuccess());
+              == other.getSuccess());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -7589,83 +9072,83 @@ public final class RpcRequests {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + INDEX_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getIndex());
+              getIndex());
       hash = (37 * hash) + SUCCESS_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-          getSuccess());
+              getSuccess());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
     public static rpc.RpcRequests.ReadIndexResponse parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.ReadIndexResponse parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.ReadIndexResponse parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.ReadIndexResponse parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.ReadIndexResponse parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RpcRequests.ReadIndexResponse parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RpcRequests.ReadIndexResponse parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.ReadIndexResponse parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.ReadIndexResponse parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
+              .parseDelimitedWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.ReadIndexResponse parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RpcRequests.ReadIndexResponse parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RpcRequests.ReadIndexResponse parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
@@ -7679,12 +9162,12 @@ public final class RpcRequests {
     @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
+              ? new Builder() : new Builder().mergeFrom(this);
     }
 
     @java.lang.Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -7692,20 +9175,20 @@ public final class RpcRequests {
      * Protobuf type {@code protobuf.ReadIndexResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:protobuf.ReadIndexResponse)
-        rpc.RpcRequests.ReadIndexResponseOrBuilder {
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:protobuf.ReadIndexResponse)
+            rpc.RpcRequests.ReadIndexResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return rpc.RpcRequests.internal_static_protobuf_ReadIndexResponse_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return rpc.RpcRequests.internal_static_protobuf_ReadIndexResponse_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                rpc.RpcRequests.ReadIndexResponse.class, rpc.RpcRequests.ReadIndexResponse.Builder.class);
+                .ensureFieldAccessorsInitialized(
+                        rpc.RpcRequests.ReadIndexResponse.class, rpc.RpcRequests.ReadIndexResponse.Builder.class);
       }
 
       // Construct using rpc.RpcRequests.ReadIndexResponse.newBuilder()
@@ -7714,7 +9197,7 @@ public final class RpcRequests {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
@@ -7735,7 +9218,7 @@ public final class RpcRequests {
 
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return rpc.RpcRequests.internal_static_protobuf_ReadIndexResponse_descriptor;
       }
 
@@ -7768,30 +9251,30 @@ public final class RpcRequests {
       }
       @java.lang.Override
       public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       @java.lang.Override
       public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
         return (Builder) super.clearField(field);
       }
       @java.lang.Override
       public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return (Builder) super.clearOneof(oneof);
       }
       @java.lang.Override
       public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       @java.lang.Override
       public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       @java.lang.Override
@@ -7824,9 +9307,9 @@ public final class RpcRequests {
 
       @java.lang.Override
       public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
         rpc.RpcRequests.ReadIndexResponse parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
@@ -7852,7 +9335,7 @@ public final class RpcRequests {
        * <code>int64 index = 1;</code>
        */
       public Builder setIndex(long value) {
-        
+
         index_ = value;
         onChanged();
         return this;
@@ -7861,7 +9344,7 @@ public final class RpcRequests {
        * <code>int64 index = 1;</code>
        */
       public Builder clearIndex() {
-        
+
         index_ = 0L;
         onChanged();
         return this;
@@ -7878,7 +9361,7 @@ public final class RpcRequests {
        * <code>bool success = 2;</code>
        */
       public Builder setSuccess(boolean value) {
-        
+
         success_ = value;
         onChanged();
         return this;
@@ -7887,20 +9370,20 @@ public final class RpcRequests {
        * <code>bool success = 2;</code>
        */
       public Builder clearSuccess() {
-        
+
         success_ = false;
         onChanged();
         return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
       }
 
       @java.lang.Override
       public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
       }
 
@@ -7919,12 +9402,12 @@ public final class RpcRequests {
     }
 
     private static final com.google.protobuf.Parser<ReadIndexResponse>
-        PARSER = new com.google.protobuf.AbstractParser<ReadIndexResponse>() {
+            PARSER = new com.google.protobuf.AbstractParser<ReadIndexResponse>() {
       @java.lang.Override
       public ReadIndexResponse parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
         return new ReadIndexResponse(input, extensionRegistry);
       }
     };
@@ -7946,178 +9429,203 @@ public final class RpcRequests {
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_protobuf_PingRequest_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_protobuf_PingRequest_fieldAccessorTable;
+          internal_static_protobuf_PingRequest_descriptor;
+  private static final
+  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internal_static_protobuf_PingRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_protobuf_ErrorResponse_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_protobuf_ErrorResponse_fieldAccessorTable;
+          internal_static_protobuf_ErrorResponse_descriptor;
+  private static final
+  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internal_static_protobuf_ErrorResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_protobuf_TimeoutNowRequest_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_protobuf_TimeoutNowRequest_fieldAccessorTable;
+          internal_static_protobuf_TimeoutNowRequest_descriptor;
+  private static final
+  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internal_static_protobuf_TimeoutNowRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_protobuf_TimeoutNowResponse_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_protobuf_TimeoutNowResponse_fieldAccessorTable;
+          internal_static_protobuf_TimeoutNowResponse_descriptor;
+  private static final
+  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internal_static_protobuf_TimeoutNowResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_protobuf_RequestVoteRequest_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_protobuf_RequestVoteRequest_fieldAccessorTable;
+          internal_static_protobuf_RequestVoteRequest_descriptor;
+  private static final
+  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internal_static_protobuf_RequestVoteRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_protobuf_RequestVoteResponse_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_protobuf_RequestVoteResponse_fieldAccessorTable;
+          internal_static_protobuf_RequestVoteResponse_descriptor;
+  private static final
+  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internal_static_protobuf_RequestVoteResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_protobuf_AppendEntriesRequestHeader_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_protobuf_AppendEntriesRequestHeader_fieldAccessorTable;
+          internal_static_protobuf_RequestPreVoteRequest_descriptor;
+  private static final
+  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internal_static_protobuf_RequestPreVoteRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_protobuf_AppendEntriesRequest_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_protobuf_AppendEntriesRequest_fieldAccessorTable;
+          internal_static_protobuf_RequestPreVoteResponse_descriptor;
+  private static final
+  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internal_static_protobuf_RequestPreVoteResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_protobuf_AppendEntriesResponse_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_protobuf_AppendEntriesResponse_fieldAccessorTable;
+          internal_static_protobuf_AppendEntriesRequestHeader_descriptor;
+  private static final
+  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internal_static_protobuf_AppendEntriesRequestHeader_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_protobuf_ReadIndexRequest_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_protobuf_ReadIndexRequest_fieldAccessorTable;
+          internal_static_protobuf_AppendEntriesRequest_descriptor;
+  private static final
+  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internal_static_protobuf_AppendEntriesRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_protobuf_ReadIndexResponse_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_protobuf_ReadIndexResponse_fieldAccessorTable;
+          internal_static_protobuf_AppendEntriesResponse_descriptor;
+  private static final
+  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internal_static_protobuf_AppendEntriesResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+          internal_static_protobuf_ReadIndexRequest_descriptor;
+  private static final
+  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internal_static_protobuf_ReadIndexRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+          internal_static_protobuf_ReadIndexResponse_descriptor;
+  private static final
+  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internal_static_protobuf_ReadIndexResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
-      getDescriptor() {
+  getDescriptor() {
     return descriptor;
   }
   private static  com.google.protobuf.Descriptors.FileDescriptor
-      descriptor;
+          descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\tRPC.proto\022\010protobuf\032\nraft.proto\"%\n\013Pin" +
-      "gRequest\022\026\n\016send_timestamp\030\001 \001(\003\"4\n\rErro" +
-      "rResponse\022\021\n\terrorCode\030\001 \001(\003\022\020\n\010errorMsg" +
-      "\030\002 \001(\t\"E\n\021TimeoutNowRequest\022\021\n\tserver_id" +
-      "\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\022\014\n\004term\030\003 \001(\003\"3\n" +
-      "\022TimeoutNowResponse\022\014\n\004term\030\001 \001(\003\022\017\n\007suc" +
-      "cess\030\002 \001(\010\"\207\001\n\022RequestVoteRequest\022\021\n\tser" +
-      "ver_id\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\022\014\n\004term\030\003 " +
-      "\001(\003\022\025\n\rlast_log_term\030\004 \001(\003\022\026\n\016last_log_i" +
-      "ndex\030\005 \001(\003\022\020\n\010pre_vote\030\006 \001(\010\"4\n\023RequestV" +
-      "oteResponse\022\014\n\004term\030\001 \001(\003\022\017\n\007granted\030\002 \001" +
-      "(\010\"@\n\032AppendEntriesRequestHeader\022\021\n\tserv" +
-      "er_id\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\"\326\001\n\024AppendE" +
-      "ntriesRequest\022\020\n\010group_id\030\001 \001(\t\022\021\n\tserve" +
-      "r_id\030\002 \001(\t\022\017\n\007peer_id\030\003 \001(\t\022\014\n\004term\030\004 \001(" +
-      "\003\022\025\n\rprev_log_term\030\005 \001(\003\022\026\n\016prev_log_ind" +
-      "ex\030\006 \001(\003\022$\n\007entries\030\007 \001(\0132\023.protobuf.Ent" +
-      "ryMeta\022\027\n\017committed_index\030\010 \001(\003\022\014\n\004data\030" +
-      "\t \001(\014\"N\n\025AppendEntriesResponse\022\014\n\004term\030\001" +
-      " \001(\003\022\017\n\007success\030\002 \001(\010\022\026\n\016last_log_index\030" +
-      "\003 \001(\003\"Y\n\020ReadIndexRequest\022\020\n\010group_id\030\001 " +
-      "\001(\t\022\021\n\tserver_id\030\002 \001(\t\022\017\n\007entries\030\003 \001(\014\022" +
-      "\017\n\007peer_id\030\004 \001(\t\"3\n\021ReadIndexResponse\022\r\n" +
-      "\005index\030\001 \001(\003\022\017\n\007success\030\002 \001(\010B\022\n\003rpcB\013Rp" +
-      "cRequestsb\006proto3"
+            "\n\tRPC.proto\022\010protobuf\032\nraft.proto\"%\n\013Pin" +
+                    "gRequest\022\026\n\016send_timestamp\030\001 \001(\003\"4\n\rErro" +
+                    "rResponse\022\021\n\terrorCode\030\001 \001(\003\022\020\n\010errorMsg" +
+                    "\030\002 \001(\t\"E\n\021TimeoutNowRequest\022\021\n\tserver_id" +
+                    "\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\022\014\n\004term\030\003 \001(\003\"3\n" +
+                    "\022TimeoutNowResponse\022\014\n\004term\030\001 \001(\003\022\017\n\007suc" +
+                    "cess\030\002 \001(\010\"\207\001\n\022RequestVoteRequest\022\021\n\tser" +
+                    "ver_id\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\022\014\n\004term\030\003 " +
+                    "\001(\003\022\025\n\rlast_log_term\030\004 \001(\003\022\026\n\016last_log_i" +
+                    "ndex\030\005 \001(\003\022\020\n\010pre_vote\030\006 \001(\010\"4\n\023RequestV" +
+                    "oteResponse\022\014\n\004term\030\001 \001(\003\022\017\n\007granted\030\002 \001" +
+                    "(\010\"\212\001\n\025RequestPreVoteRequest\022\021\n\tserver_i" +
+                    "d\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\022\014\n\004term\030\003 \001(\003\022\025" +
+                    "\n\rlast_log_term\030\004 \001(\003\022\026\n\016last_log_index\030" +
+                    "\005 \001(\003\022\020\n\010pre_vote\030\006 \001(\010\"7\n\026RequestPreVot" +
+                    "eResponse\022\014\n\004term\030\001 \001(\003\022\017\n\007granted\030\002 \001(\010" +
+                    "\"@\n\032AppendEntriesRequestHeader\022\021\n\tserver" +
+                    "_id\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\"\326\001\n\024AppendEnt" +
+                    "riesRequest\022\020\n\010group_id\030\001 \001(\t\022\021\n\tserver_" +
+                    "id\030\002 \001(\t\022\017\n\007peer_id\030\003 \001(\t\022\014\n\004term\030\004 \001(\003\022" +
+                    "\025\n\rprev_log_term\030\005 \001(\003\022\026\n\016prev_log_index" +
+                    "\030\006 \001(\003\022$\n\007entries\030\007 \001(\0132\023.protobuf.Entry" +
+                    "Meta\022\027\n\017committed_index\030\010 \001(\003\022\014\n\004data\030\t " +
+                    "\001(\014\"N\n\025AppendEntriesResponse\022\014\n\004term\030\001 \001" +
+                    "(\003\022\017\n\007success\030\002 \001(\010\022\026\n\016last_log_index\030\003 " +
+                    "\001(\003\"Y\n\020ReadIndexRequest\022\020\n\010group_id\030\001 \001(" +
+                    "\t\022\021\n\tserver_id\030\002 \001(\t\022\017\n\007entries\030\003 \001(\014\022\017\n" +
+                    "\007peer_id\030\004 \001(\t\"3\n\021ReadIndexResponse\022\r\n\005i" +
+                    "ndex\030\001 \001(\003\022\017\n\007success\030\002 \001(\010B\022\n\003rpcB\013RpcR" +
+                    "equestsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
+            new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+              public com.google.protobuf.ExtensionRegistry assignDescriptors(
+                      com.google.protobuf.Descriptors.FileDescriptor root) {
+                descriptor = root;
+                return null;
+              }
+            };
     com.google.protobuf.Descriptors.FileDescriptor
-      .internalBuildGeneratedFileFrom(descriptorData,
-        new com.google.protobuf.Descriptors.FileDescriptor[] {
-          rpc.RaftOutter.getDescriptor(),
-        }, assigner);
+            .internalBuildGeneratedFileFrom(descriptorData,
+                    new com.google.protobuf.Descriptors.FileDescriptor[] {
+                            rpc.RaftOutter.getDescriptor(),
+                    }, assigner);
     internal_static_protobuf_PingRequest_descriptor =
-      getDescriptor().getMessageTypes().get(0);
+            getDescriptor().getMessageTypes().get(0);
     internal_static_protobuf_PingRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_protobuf_PingRequest_descriptor,
-        new java.lang.String[] { "SendTimestamp", });
+            com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+            internal_static_protobuf_PingRequest_descriptor,
+            new java.lang.String[] { "SendTimestamp", });
     internal_static_protobuf_ErrorResponse_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+            getDescriptor().getMessageTypes().get(1);
     internal_static_protobuf_ErrorResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_protobuf_ErrorResponse_descriptor,
-        new java.lang.String[] { "ErrorCode", "ErrorMsg", });
+            com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+            internal_static_protobuf_ErrorResponse_descriptor,
+            new java.lang.String[] { "ErrorCode", "ErrorMsg", });
     internal_static_protobuf_TimeoutNowRequest_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+            getDescriptor().getMessageTypes().get(2);
     internal_static_protobuf_TimeoutNowRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_protobuf_TimeoutNowRequest_descriptor,
-        new java.lang.String[] { "ServerId", "PeerId", "Term", });
+            com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+            internal_static_protobuf_TimeoutNowRequest_descriptor,
+            new java.lang.String[] { "ServerId", "PeerId", "Term", });
     internal_static_protobuf_TimeoutNowResponse_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+            getDescriptor().getMessageTypes().get(3);
     internal_static_protobuf_TimeoutNowResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_protobuf_TimeoutNowResponse_descriptor,
-        new java.lang.String[] { "Term", "Success", });
+            com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+            internal_static_protobuf_TimeoutNowResponse_descriptor,
+            new java.lang.String[] { "Term", "Success", });
     internal_static_protobuf_RequestVoteRequest_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+            getDescriptor().getMessageTypes().get(4);
     internal_static_protobuf_RequestVoteRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_protobuf_RequestVoteRequest_descriptor,
-        new java.lang.String[] { "ServerId", "PeerId", "Term", "LastLogTerm", "LastLogIndex", "PreVote", });
+            com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+            internal_static_protobuf_RequestVoteRequest_descriptor,
+            new java.lang.String[] { "ServerId", "PeerId", "Term", "LastLogTerm", "LastLogIndex", "PreVote", });
     internal_static_protobuf_RequestVoteResponse_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+            getDescriptor().getMessageTypes().get(5);
     internal_static_protobuf_RequestVoteResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_protobuf_RequestVoteResponse_descriptor,
-        new java.lang.String[] { "Term", "Granted", });
+            com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+            internal_static_protobuf_RequestVoteResponse_descriptor,
+            new java.lang.String[] { "Term", "Granted", });
+    internal_static_protobuf_RequestPreVoteRequest_descriptor =
+            getDescriptor().getMessageTypes().get(6);
+    internal_static_protobuf_RequestPreVoteRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+            internal_static_protobuf_RequestPreVoteRequest_descriptor,
+            new java.lang.String[] { "ServerId", "PeerId", "Term", "LastLogTerm", "LastLogIndex", "PreVote", });
+    internal_static_protobuf_RequestPreVoteResponse_descriptor =
+            getDescriptor().getMessageTypes().get(7);
+    internal_static_protobuf_RequestPreVoteResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+            internal_static_protobuf_RequestPreVoteResponse_descriptor,
+            new java.lang.String[] { "Term", "Granted", });
     internal_static_protobuf_AppendEntriesRequestHeader_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+            getDescriptor().getMessageTypes().get(8);
     internal_static_protobuf_AppendEntriesRequestHeader_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_protobuf_AppendEntriesRequestHeader_descriptor,
-        new java.lang.String[] { "ServerId", "PeerId", });
+            com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+            internal_static_protobuf_AppendEntriesRequestHeader_descriptor,
+            new java.lang.String[] { "ServerId", "PeerId", });
     internal_static_protobuf_AppendEntriesRequest_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+            getDescriptor().getMessageTypes().get(9);
     internal_static_protobuf_AppendEntriesRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_protobuf_AppendEntriesRequest_descriptor,
-        new java.lang.String[] { "GroupId", "ServerId", "PeerId", "Term", "PrevLogTerm", "PrevLogIndex", "Entries", "CommittedIndex", "Data", });
+            com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+            internal_static_protobuf_AppendEntriesRequest_descriptor,
+            new java.lang.String[] { "GroupId", "ServerId", "PeerId", "Term", "PrevLogTerm", "PrevLogIndex", "Entries", "CommittedIndex", "Data", });
     internal_static_protobuf_AppendEntriesResponse_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+            getDescriptor().getMessageTypes().get(10);
     internal_static_protobuf_AppendEntriesResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_protobuf_AppendEntriesResponse_descriptor,
-        new java.lang.String[] { "Term", "Success", "LastLogIndex", });
+            com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+            internal_static_protobuf_AppendEntriesResponse_descriptor,
+            new java.lang.String[] { "Term", "Success", "LastLogIndex", });
     internal_static_protobuf_ReadIndexRequest_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+            getDescriptor().getMessageTypes().get(11);
     internal_static_protobuf_ReadIndexRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_protobuf_ReadIndexRequest_descriptor,
-        new java.lang.String[] { "GroupId", "ServerId", "Entries", "PeerId", });
+            com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+            internal_static_protobuf_ReadIndexRequest_descriptor,
+            new java.lang.String[] { "GroupId", "ServerId", "Entries", "PeerId", });
     internal_static_protobuf_ReadIndexResponse_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+            getDescriptor().getMessageTypes().get(12);
     internal_static_protobuf_ReadIndexResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_protobuf_ReadIndexResponse_descriptor,
-        new java.lang.String[] { "Index", "Success", });
+            com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+            internal_static_protobuf_ReadIndexResponse_descriptor,
+            new java.lang.String[] { "Index", "Success", });
     rpc.RaftOutter.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)
-
-
 }
