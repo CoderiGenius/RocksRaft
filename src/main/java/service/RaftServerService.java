@@ -58,5 +58,5 @@ public interface RaftServerService {
      * @param request   data of the readIndex read
      * @param done      callback
      */
-    void handleReadIndexRequest(RpcRequests.ReadIndexRequest request, RpcResponseClosure<RpcRequests.ReadIndexResponse> done);
+    void handleReadIndexRequest(RpcRequests.ReadIndexRequest request, RpcResponseClosure done);
 }

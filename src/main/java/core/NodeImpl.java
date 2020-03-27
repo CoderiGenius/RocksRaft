@@ -1,11 +1,16 @@
 package core;
 
-import entity.Heartbeat;
-import entity.Node;
-import entity.NodeId;
-import entity.PeerId;
+import entity.*;
+import rpc.RpcServices;
+import utils.Utils;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Created by 周思成 on  2020/3/25 14:09
@@ -18,17 +23,29 @@ public class NodeImpl implements Node {
      * candidate 正式选举
      * preCandidate 预选举
      */
-    public enum NodeState{leader,follwoer,candidate,preCandidate}
+    public enum NodeState {leader, follwoer, candidate, preCandidate,NODE_STATE}
+    private static final NodeImpl NODE_IMPLE = new NodeImpl();
 
+    private NodeImpl() {
+    }
 
+    private final Lock reentrantLock = new ReentrantLock(true);
+    private final ReadWriteLock  readWriteLock = new ReentrantReadWriteLock();
+    protected final Lock     writeLock = this.readWriteLock.writeLock();
+    protected final Lock    readLock  = this.readWriteLock.readLock();
+    private List<PeerId> peerIdList = new CopyOnWriteArrayList<>();
+    private RpcServices rpcServices;
     private NodeState nodeState;
-    private static NodeImpl nodeImple = new NodeImpl();
 
-    private NodeImpl(){}
-
+    /**
+     * Current node entity, including peedId inside
+     */
     private NodeId nodeId;
+    private NodeId leaderId;
 
-    private  Heartbeat heartbeat;
+    private Ballot ballot = new Ballot(peerIdList);
+
+    private Heartbeat heartbeat;
 
 
     private Long term;
@@ -38,17 +55,39 @@ public class NodeImpl implements Node {
     private AtomicLong lastReceiveHeartbeatTime;
 
 
-
     @Override
-    public PeerId getLeaderId() {
-        return null;
+    public NodeId getLeaderId() {
+        return leaderId;
     }
 
     @Override
     public NodeId getNodeId() {
-        return null;
+        return nodeId;
     }
 
+
+    public boolean checkIfCurrentNodeCanVoteOthers(){
+        //only leader, follower, preCandidate, NODE_STATE can vote others
+        if (NodeState.preCandidate.equals(getNodeState())
+                || NodeState.follwoer.equals(getNodeState())
+                || NodeState.leader.equals(getNodeState())
+                || NodeState.NODE_STATE.equals(getNodeState())) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public boolean checkIfCurrentNodeCanStartPreVote(){
+        //only  follower,None_state  can vote others
+        if (NodeState.NODE_STATE.equals(getNodeState())
+                || NodeState.follwoer.equals(getNodeState())
+               ) {
+            return true;
+        }else {
+            return false;
+        }
+    }
 
     public Long getTerm() {
         return term;
@@ -56,6 +95,14 @@ public class NodeImpl implements Node {
 
     public void setTerm(Long term) {
         this.term = term;
+    }
+
+    public RpcServices getRpcServices() {
+        return rpcServices;
+    }
+
+    public void setRpcServices(RpcServices rpcServices) {
+        this.rpcServices = rpcServices;
     }
 
     public void setNodeId(NodeId nodeId) {
@@ -67,15 +114,22 @@ public class NodeImpl implements Node {
     }
 
     public void setLastReceiveHeartbeatTime(AtomicLong lastReceiveHeartbeatTime) {
+
         this.lastReceiveHeartbeatTime = lastReceiveHeartbeatTime;
     }
 
     public static NodeImpl getNodeImple() {
-        return nodeImple;
+        return NODE_IMPLE;
     }
 
-    private static void setNodeImple(NodeImpl nodeImple) {
-        NodeImpl.nodeImple = nodeImple;
+
+    public List<PeerId> getPeerIdList() {
+        return peerIdList;
+    }
+
+
+    public void setPeerIdList(List<PeerId> peerIdList) {
+        this.peerIdList = peerIdList;
     }
 
     public Heartbeat getHeartbeat() {
@@ -94,11 +148,15 @@ public class NodeImpl implements Node {
         this.nodeState = nodeState;
     }
 
-    public boolean checkNodeStateCandidate(){
+    public boolean checkNodeStateCandidate() {
         return NodeState.candidate.equals(getNodeState());
     }
 
-    public boolean checkNodeStatePreCandidate(){
+    public boolean checkNodeStatePreCandidate() {
         return NodeState.preCandidate.equals(getNodeState());
+    }
+
+    public boolean isCurrentLeaderValid() {
+        return Utils.monotonicMs() - this.lastReceiveHeartbeatTime.get() < NodeOptions.getNodeOptions().getMaxHeartBeatTime();
     }
 }

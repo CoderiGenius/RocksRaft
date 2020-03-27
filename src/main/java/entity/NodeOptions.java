@@ -4,7 +4,6 @@ package entity;
  * Created by 周思成 on  2020/3/11 14:30
  */
 
-import config.Configuration;
 import service.RaftServiceFactory;
 import utils.Utils;
 
@@ -32,9 +31,8 @@ public class NodeOptions extends RpcOptions {
 
     // A follower would become a candidate if it doesn't receive any message
     // from the leader in |election_timeout_ms| milliseconds
-    // Default: 1000 (1s)
     // follower to candidate timeout
-    private int                             electionTimeoutMs      = 1000;
+    private long electionTimeOut;
 
     // One node's local priority value would be set to | electionPriority |
     // value when it starts up.If this value is set to 0,the node will never be a leader.
@@ -42,47 +40,21 @@ public class NodeOptions extends RpcOptions {
     // Default: -1
     //private int                             electionPriority       = ElectionPriority.Disabled;
 
-    // If next leader is not elected until next election timeout, it exponentially
-    // decay its local target priority, for example target_priority = target_priority - gap
-    // Default: 10
-    private int                             decayPriorityGap       = 10;
 
-    // Leader lease time's ratio of electionTimeoutMs,
-    // To minimize the effects of clock drift, we should make that:
-    // clockDrift + leaderLeaseTimeoutMs < electionTimeout
-    // Default: 90, Max: 100
-    private int                             leaderLeaseTimeRatio   = 90;
 
-    // A snapshot saving would be triggered every |snapshot_interval_s| seconds
-    // if this was reset as a positive number
-    // If |snapshot_interval_s| <= 0, the time based snapshot would be disabled.
-    //
-    // Default: 3600 (1 hour)
-    private int                             snapshotIntervalSecs   = 3600;
 
-    // A snapshot saving would be triggered every |snapshot_interval_s| seconds,
-    // and at this moment when state machine's lastAppliedIndex value
-    // minus lastSnapshotId value is greater than snapshotLogIndexMargin value,
-    // the snapshot action will be done really.
-    // If |snapshotLogIndexMargin| <= 0, the distance based snapshot would be disable.
-    //
-    // Default: 0
-    private int                             snapshotLogIndexMargin = 0;
 
-    // We will regard a adding peer as caught up if the margin between the
-    // last_log_index of this peer and the last_log_index of leader is less than
-    // |catchup_margin|
-    //
-    // Default: 1000
-    private int                             catchupMargin          = 1000;
 
-    // If node is starting from a empty environment (both LogStorage and
-    // SnapshotStorage are empty), it would use |initial_conf| as the
-    // configuration of the group, otherwise it would load configuration from
-    // the existing environment.
-    //
-    // Default: A empty group
-    private Configuration initialConf            = new Configuration();
+
+
+
+//    // If node is starting from a empty environment (both LogStorage and
+//    // SnapshotStorage are empty), it would use |initial_conf| as the
+//    // configuration of the group, otherwise it would load configuration from
+//    // the existing environment.
+//    //
+//    // Default: A empty group
+//    private Configuration initialConf            = new Configuration();
 
     // The specific StateMachine implemented your business logic, which must be
     // a valid instance.
@@ -97,6 +69,7 @@ public class NodeOptions extends RpcOptions {
     private int port;
     private boolean daemon;
     private String rpcServiceName;
+
 
     // If non-null, we will pass this throughput_snapshot_throttle to SnapshotExecutor
     // Default: NULL
@@ -131,6 +104,14 @@ public class NodeOptions extends RpcOptions {
      */
     private RaftServiceFactory             serviceFactory         = defaultServiceFactory;
 
+
+    public long getElectionTimeOut() {
+        return electionTimeOut;
+    }
+
+    public void setElectionTimeOut(long electionTimeOut) {
+        this.electionTimeOut = electionTimeOut;
+    }
 
     public long getMaxHeartBeatTime() {
         return maxHeartBeatTime;
@@ -184,61 +165,11 @@ public class NodeOptions extends RpcOptions {
         return defaultServiceFactory;
     }
 
-    public int getElectionTimeoutMs() {
-        return electionTimeoutMs;
-    }
 
-    public void setElectionTimeoutMs(int electionTimeoutMs) {
-        this.electionTimeoutMs = electionTimeoutMs;
-    }
 
-    public int getDecayPriorityGap() {
-        return decayPriorityGap;
-    }
 
-    public void setDecayPriorityGap(int decayPriorityGap) {
-        this.decayPriorityGap = decayPriorityGap;
-    }
 
-    public int getLeaderLeaseTimeRatio() {
-        return leaderLeaseTimeRatio;
-    }
 
-    public void setLeaderLeaseTimeRatio(int leaderLeaseTimeRatio) {
-        this.leaderLeaseTimeRatio = leaderLeaseTimeRatio;
-    }
-
-    public int getSnapshotIntervalSecs() {
-        return snapshotIntervalSecs;
-    }
-
-    public void setSnapshotIntervalSecs(int snapshotIntervalSecs) {
-        this.snapshotIntervalSecs = snapshotIntervalSecs;
-    }
-
-    public int getSnapshotLogIndexMargin() {
-        return snapshotLogIndexMargin;
-    }
-
-    public void setSnapshotLogIndexMargin(int snapshotLogIndexMargin) {
-        this.snapshotLogIndexMargin = snapshotLogIndexMargin;
-    }
-
-    public int getCatchupMargin() {
-        return catchupMargin;
-    }
-
-    public void setCatchupMargin(int catchupMargin) {
-        this.catchupMargin = catchupMargin;
-    }
-
-    public Configuration getInitialConf() {
-        return initialConf;
-    }
-
-    public void setInitialConf(Configuration initialConf) {
-        this.initialConf = initialConf;
-    }
 
     public StateMachine getFsm() {
         return fsm;

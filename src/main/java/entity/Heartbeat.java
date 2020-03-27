@@ -22,7 +22,7 @@ public class Heartbeat {
 
    private volatile TimeOutChecker checker;
 
-   private Lock lock = new ReentrantLock();
+   private Lock lock = new ReentrantLock(true);
     public Heartbeat(int corePoolSize, int maximumPoolSize
             , int keepAliveTime, TimeUnit timeUnit, BlockingQueue<Runnable> queue
             , ThreadFactory threadFactory, RejectedExecutionHandler rejectedExecutionHandler){
@@ -46,6 +46,7 @@ public class Heartbeat {
         lock.lock();
         try {
             this.checker = checker;
+            this.getThreadPoolExecutor().execute(checker);
         } catch (Exception e) {
             LOG.error("set Heartbeat checker error:"+e.getMessage());
         }finally {
@@ -57,4 +58,10 @@ public class Heartbeat {
     public ThreadPoolExecutor getThreadPoolExecutor() {
         return threadPoolExecutor;
     }
+
+    public Lock getLock() {
+        return lock;
+    }
+
+
 }

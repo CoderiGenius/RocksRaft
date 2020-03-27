@@ -23,7 +23,7 @@ public class PeerId implements Serializable,Checksum {
     private static final Logger LOG              = LoggerFactory.getLogger(PeerId.class);
 
     /** Peer address. */
-    private Endpoint endpoint = new Endpoint(Utils.IP_ANY, 0);
+    private Endpoint endpoint;
 
 
     public static final PeerId  ANY_PEER         = new PeerId();
@@ -31,8 +31,26 @@ public class PeerId implements Serializable,Checksum {
 
     private long                checksum;
 
+    private String peerName;
+
+    private String id;
+
     public PeerId() {
 
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public PeerId(String id,String peerName,String address,Integer port) {
+            this.endpoint = new Endpoint(address,port);
+            this.id = id;
+            this.peerName = peerName;
     }
 
     public PeerId copy() {
@@ -44,6 +62,15 @@ public class PeerId implements Serializable,Checksum {
             this.checksum = CrcUtil.crc64(AsciiStringUtil.unsafeEncode(toString()));
         }
         return this.checksum;
+    }
+
+
+    public String getPeerName() {
+        return peerName;
+    }
+
+    public void setPeerName(String peerName) {
+        this.peerName = peerName;
     }
 
     /**

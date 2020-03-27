@@ -19,18 +19,37 @@ public class RpcServicesImpl implements RpcServices {
     }
 
     @Override
-    public RpcRequests.RequestPreVoteResponse sendPreVoteRequest(RpcRequests.RequestPreVoteRequest requestPreVoteRequest) {
-       long candidateTerm = requestPreVoteRequest.getLastLogTerm();
-       long selfTerm = NodeImpl.getNodeImple().getTerm();
+    public RpcRequests.RequestPreVoteResponse handlePreVoteRequest(RpcRequests.RequestPreVoteRequest requestPreVoteRequest) {
+       LOG.info("Recevice preVoteRequest from {}",requestPreVoteRequest.getPeerId());
+        long candidateTerm = requestPreVoteRequest.getLastLogTerm();
+        long selfTerm = NodeImpl.getNodeImple().getTerm();
         RpcRequests.RequestPreVoteResponse.Builder builder = RpcRequests.RequestPreVoteResponse.newBuilder();
-        if (candidateTerm < selfTerm) {
+        builder.setTerm(selfTerm);
+
+
+       //check current node status
+        if ( ! NodeImpl.getNodeImple().checkIfCurrentNodeCanVoteOthers()) {
             builder.setGranted(false);
-            builder.setTerm(selfTerm);
-        }else{
-            builder.setGranted(true);
-            builder.setTerm(selfTerm);
+            LOG.info("Current peer ignored the preVote request " +
+                    "as the current node status is not for voting. status:{}",NodeImpl.getNodeImple().getNodeState());
+            return builder.build();
         }
-        RpcRequests.RequestPreVoteResponse requestPreVoteResponse = builder.build();
-        return requestPreVoteResponse;
+
+
+        if (candidateTerm < selfTerm ) {
+            builder.setGranted(false);
+            LOG.info("Current peer ignored the preVote request " +
+                    "as the candidate's term {} is not as newer as the current {}",candidateTerm,selfTerm);
+            return builder.build();
+        } else if (NodeImpl.getNodeImple().isCurrentLeaderValid()) {
+            builder.setGranted(false);
+            LOG.info("Current peer ignored the preVote request " +
+                    "as the current peer leader is still valid");
+            return builder.build();
+        }
+
+        //check log entries
+
+        return builder.build();
     }
 }

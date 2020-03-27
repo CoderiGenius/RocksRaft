@@ -1,0 +1,25 @@
+NodeOptions:
+  electionTimeOut: 5000
+  maxHeartBeatTime: 1000
+  rpcProtocol: bolt
+  serialization: protobuf
+  port: 12200
+  daemon: false
+  groupId: raft
+  address: localhost
+  name: raft-1
+  peerId: raft-1
+OtherNodes:
+  - {peerId: raft-2,
+       name: raft-2,
+       address: 192.168.1.8,
+       port: 12000}
+  - {peerId: raft-3,
+       name: raft-3,
+       address: 192.168.1.9,
+       port: 12000}
+  - {peerId: raft-4,
+       name: raft-4,
+       address: 192.168.1.10,
+       port: 12000}
+

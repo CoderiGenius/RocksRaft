@@ -4,7 +4,6 @@ package storage;
  * Created by 周思成 on  2020/3/13 15:52
  */
 
-import config.LogStorageOptions;
 import core.Lifecycle;
 import entity.LogEntry;
 
@@ -17,7 +16,7 @@ import java.util.List;
  *
  * 2018-Mar-12 3:43:54 PM
  */
-public interface LogStorage extends Lifecycle<LogStorageOptions> {
+public interface LogStorage  {
 
     /**
      * Returns first log index in log.

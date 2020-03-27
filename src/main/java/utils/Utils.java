@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 /**
@@ -99,5 +100,7 @@ public class Utils {
     public static int cpus() {
         return CPUS;
     }
-
+    public static long monotonicMs() {
+        return TimeUnit.NANOSECONDS.toMillis(System.nanoTime());
+    }
 }

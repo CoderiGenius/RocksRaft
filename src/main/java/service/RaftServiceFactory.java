@@ -1,6 +1,6 @@
 package service;
 
-import config.RaftOptions;
+import config.RaftOptionsLoader;
 import entity.LogEntryCodecFactory;
 import storage.LogStorage;
 
@@ -16,7 +16,7 @@ public interface RaftServiceFactory {
      * @param raftOptions  the raft options.
      * @return storage to store raft log entires.
      */
-    LogStorage createLogStorage(final String uri, final RaftOptions raftOptions);
+    LogStorage createLogStorage(final String uri, final RaftOptionsLoader raftOptions);
 
 
     /**

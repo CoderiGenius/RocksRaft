@@ -11,7 +11,7 @@ public interface Node  {
     /**
      * Get the leader peer id for redirect, null if absent.
      */
-    PeerId getLeaderId();
+    NodeId getLeaderId();
 
     /**
      * Get current node id.

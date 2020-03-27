@@ -9,7 +9,7 @@ public interface RpcServices {
 
     public RpcRequests sendRpcRequest(RpcRequests rpcRequests);
 
-    public RpcRequests.RequestPreVoteResponse sendPreVoteRequest(
+    public RpcRequests.RequestPreVoteResponse handlePreVoteRequest(
             RpcRequests.RequestPreVoteRequest requestPreVoteRequest);
 
 

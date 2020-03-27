@@ -1,6 +1,6 @@
 package service;
 
-import config.RaftOptions;
+import config.RaftOptionsLoader;
 import entity.LogEntryCodecFactory;
 import storage.LogStorage;
 
@@ -10,7 +10,7 @@ import storage.LogStorage;
 
 public class RaftServiceFactoryImpl implements RaftServiceFactory {
     @Override
-    public LogStorage createLogStorage(String uri, RaftOptions raftOptions) {
+    public LogStorage createLogStorage(String uri, RaftOptionsLoader raftOptions) {
         return null;
     }
 
