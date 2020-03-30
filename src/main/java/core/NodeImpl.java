@@ -1,10 +1,14 @@
 package core;
 
+import com.alipay.sofa.rpc.config.ConsumerConfig;
 import entity.*;
 import rpc.RpcServices;
 import utils.Utils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
@@ -34,8 +38,10 @@ public class NodeImpl implements Node {
     protected final Lock     writeLock = this.readWriteLock.writeLock();
     protected final Lock    readLock  = this.readWriteLock.readLock();
     private List<PeerId> peerIdList = new CopyOnWriteArrayList<>();
-    private RpcServices rpcServices;
+    private Map<Endpoint,RpcServices> rpcServices = new ConcurrentHashMap<>();
     private NodeState nodeState;
+    private AtomicLong lastLogTerm = new AtomicLong(0);
+    private AtomicLong lastLogIndex = new AtomicLong(0);
 
     /**
      * Current node entity, including peedId inside
@@ -97,11 +103,11 @@ public class NodeImpl implements Node {
         this.term = term;
     }
 
-    public RpcServices getRpcServices() {
+    public Map<Endpoint, RpcServices> getRpcServices() {
         return rpcServices;
     }
 
-    public void setRpcServices(RpcServices rpcServices) {
+    public void setRpcServices(Map<Endpoint, RpcServices> rpcServices) {
         this.rpcServices = rpcServices;
     }
 
@@ -122,6 +128,21 @@ public class NodeImpl implements Node {
         return NODE_IMPLE;
     }
 
+    public AtomicLong getLastLogTerm() {
+        return lastLogTerm;
+    }
+
+    public void setLastLogTerm(AtomicLong lastLogTerm) {
+        this.lastLogTerm = lastLogTerm;
+    }
+
+    public AtomicLong getLastLogIndex() {
+        return lastLogIndex;
+    }
+
+    public void setLastLogIndex(AtomicLong lastLogIndex) {
+        this.lastLogIndex = lastLogIndex;
+    }
 
     public List<PeerId> getPeerIdList() {
         return peerIdList;

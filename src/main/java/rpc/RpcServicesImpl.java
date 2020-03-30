@@ -23,6 +23,8 @@ public class RpcServicesImpl implements RpcServices {
        LOG.info("Recevice preVoteRequest from {}",requestPreVoteRequest.getPeerId());
         long candidateTerm = requestPreVoteRequest.getLastLogTerm();
         long selfTerm = NodeImpl.getNodeImple().getTerm();
+        long candidateLogIndex = requestPreVoteRequest.getLastLogIndex();
+        long selfLogIndex = NodeImpl.getNodeImple().getLastLogIndex().longValue();
         RpcRequests.RequestPreVoteResponse.Builder builder = RpcRequests.RequestPreVoteResponse.newBuilder();
         builder.setTerm(selfTerm);
 
@@ -35,7 +37,7 @@ public class RpcServicesImpl implements RpcServices {
             return builder.build();
         }
 
-
+        //check if the term is valid and current leader is valid
         if (candidateTerm < selfTerm ) {
             builder.setGranted(false);
             LOG.info("Current peer ignored the preVote request " +
@@ -49,7 +51,13 @@ public class RpcServicesImpl implements RpcServices {
         }
 
         //check log entries
-
+        if (candidateLogIndex < selfLogIndex) {
+            builder.setGranted(false);
+            LOG.info("Current peer ignored the preVote request " +
+                    "as the candidate's LogIndex {} is not as newer as the current {}",candidateLogIndex,selfLogIndex);
+            return builder.build();
+        }
+        builder.setGranted(true);
         return builder.build();
     }
 }

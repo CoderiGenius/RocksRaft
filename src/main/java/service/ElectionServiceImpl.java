@@ -1,9 +1,14 @@
 package service;
 
+import com.alipay.sofa.rpc.config.ConsumerConfig;
 import core.NodeImpl;
+import entity.Endpoint;
+import entity.PeerId;
 import exceptions.ElectionException;
 import rpc.RpcRequests;
+import rpc.RpcServices;
 
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 /**
@@ -27,8 +32,14 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
         RpcRequests.RequestPreVoteRequest.Builder builder = RpcRequests.RequestPreVoteRequest.newBuilder();
         builder.setLastLogTerm(NodeImpl.getNodeImple().getTerm());
         builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
-        System.out.println(NodeImpl
-                .getNodeImple().getRpcServices().handlePreVoteRequest(builder.build()).getGranted());
+        builder.setLastLogTerm(NodeImpl.getNodeImple().getLastLogTerm().longValue());
+        builder.setLastLogIndex(NodeImpl.getNodeImple().getLastLogIndex().longValue());
+        //send preVote request to all peers in the list
+        Map<Endpoint, RpcServices> map = NodeImpl.getNodeImple().getRpcServices();
+        for (PeerId p:NodeImpl.getNodeImple().getPeerIdList()
+             ) {
+           map.get(p.getEndpoint()).handlePreVoteRequest(builder.build());
+        }
     }
 
     @Override

@@ -108,28 +108,36 @@ public class RaftGroupService {
            throw new IllegalArgumentException("Blank group id" + this.groupId);
        }
 
+       NodeImpl node = NodeImpl.getNodeImple();
 
-       //开启rpc
+       //start rpc service
        ServerConfig serverConfig = new ServerConfig()
                .setProtocol(nodeOptions.getRpcProtocol())
                .setSerialization(nodeOptions.getSerialization())
                .setPort(nodeOptions.getPort())
-
                .setDaemon(nodeOptions.isDaemon());
 
        ProviderConfig<RpcServices> providerConfig = new ProviderConfig<RpcServices>()
                .setInterfaceId(RpcServices.class.getName())
                .setRef(new RpcServicesImpl())
-
                .setServer(serverConfig);
        providerConfig.export();
 
-       ConsumerConfig<RpcServices> consumerConfig = new ConsumerConfig<RpcServices>()
-               .setInvokeType("callback")
-               .setOnReturn(new RpcResponseClosure())
-               .setInterfaceId(RpcServices.class.getName());
-       NodeImpl node = NodeImpl.getNodeImple();
-       node.setRpcServices(consumerConfig.refer());
+        //save the proxy class in to list
+       for (PeerId p:node.getPeerIdList()
+            ) {
+
+           ConsumerConfig<RpcServices> consumerConfig = new ConsumerConfig<RpcServices>()
+                   .setInvokeType("callback")
+                   .setOnReturn(new RpcResponseClosure())
+                   .setProtocol(nodeOptions.getRpcProtocol())
+                   .setDirectUrl(nodeOptions.getRpcProtocol()
+                           +"://"+p.getEndpoint().getIp()+":"+p.getEndpoint().getPort())
+                   .setInterfaceId(RpcServices.class.getName());
+
+           node.getRpcServices().put(p.getEndpoint(),consumerConfig.refer());
+       }
+
 
 
        //心跳
