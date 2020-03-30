@@ -1,11 +1,7 @@
 package config;
 
 import core.NodeImpl;
-import core.RaftGroupService;
-import entity.Endpoint;
-import entity.NodeId;
-import entity.NodeOptions;
-import entity.PeerId;
+import entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.BootYaml;
@@ -23,8 +19,8 @@ public class RaftOptionsLoader {
     private static final Logger LOG     = LoggerFactory.getLogger(RaftOptionsLoader.class);
 
     Map map;
-    public RaftOptionsLoader(String name) throws FileNotFoundException {
-      this.map=  BootYaml.getYaml(name);
+    public void RaftOptionsLoader0(String name) throws FileNotFoundException {
+      //this.map=  BootYaml.getYaml(name);
       LOG.info("load raftOptions from "+name+" options:"+map);
         Map nodeOptionsMap = (Map)map.get("NodeOptions");
         NodeOptions.getNodeOptions().setDaemon((boolean)nodeOptionsMap.get("daemon"));
@@ -52,5 +48,35 @@ public class RaftOptionsLoader {
         NodeImpl.getNodeImple().setNodeId(nodeId);
     }
 
+    public void RaftOptionsLoader(String name) throws FileNotFoundException {
+        Options options = BootYaml.getYaml(name);
+        LOG.info("load raftOptions from "+name+" options:"+options.toString());
+        CurrentNodeOptions currentNodeOptions = options.getCurrentNodeOptions();
+        OtherNodes[] otherNodes = options.getOtherNodes();
+
+        NodeOptions.getNodeOptions().setDaemon(currentNodeOptions.isDaemon());
+        NodeOptions.getNodeOptions().setElectionTimeOut(currentNodeOptions.getElectionTimeOut());
+        NodeOptions.getNodeOptions().setMaxHeartBeatTime(currentNodeOptions.getMaxHeartBeatTime());
+        NodeOptions.getNodeOptions().setRpcProtocol(currentNodeOptions.getRpcProtocol());
+        NodeOptions.getNodeOptions().setSerialization(currentNodeOptions.getSerialization());
+        NodeOptions.getNodeOptions().setPort(currentNodeOptions.getPort());
+        Endpoint endpoint = new Endpoint(currentNodeOptions.getAddress(),currentNodeOptions.getPort());
+        PeerId peerId = new PeerId();
+        peerId.setPeerName(currentNodeOptions.getName());
+        peerId.setId(currentNodeOptions.getPeerId());
+        peerId.setEndpoint(endpoint);
+        NodeId nodeId = new NodeId(currentNodeOptions.getGroupId(),peerId);
+        List<PeerId> listOtherNode = new CopyOnWriteArrayList<>();
+
+        for (OtherNodes o:otherNodes
+        ) {
+
+            PeerId peerId1 = new PeerId(o.getPeerId(),o.getName()
+                    ,o.getAddress(),o.getPort());
+            listOtherNode.add(peerId1);
+        }
+
+        NodeImpl.getNodeImple().setNodeId(nodeId);
+    }
 
 }
