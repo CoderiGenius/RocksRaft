@@ -135,21 +135,18 @@ public class RaftGroupService {
                            +"://"+p.getEndpoint().getIp()+":"+p.getEndpoint().getPort())
                    .setInterfaceId(RpcServices.class.getName());
 
-           node.getRpcServices().put(p.getEndpoint(),consumerConfig.refer());
+           node.getRpcServicesMap().put(p.getEndpoint(),consumerConfig.refer());
        }
 
 
 
-       //心跳
+       //heartbeat
        Heartbeat heartbeat = new Heartbeat(1,2
                ,0,TimeUnit.MILLISECONDS,new LinkedBlockingDeque<>()
                ,new HeartbeatThreadFactory(),new ThreadPoolExecutor.DiscardPolicy());
 
-
-
-
        heartbeat.setChecker(
-               new TimeOutChecker(NodeOptions.getNodeOptions().getMaxHeartBeatTime(),Utils.monotonicMs()));
+               new TimeOutChecker(NodeOptions.getNodeOptions().getMaxHeartBeatTime(),Utils.monotonicMs(),new ElectionTimeOutClosure()));
 
 
        return node;

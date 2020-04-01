@@ -31,8 +31,10 @@ public class PeerId implements Serializable,Checksum {
 
     private long                checksum;
 
+    /**
+     * peerName and id are equally the same
+     */
     private String peerName;
-
     private String id;
 
     public PeerId() {

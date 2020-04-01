@@ -2,6 +2,8 @@ package core;
 
 import com.alipay.sofa.rpc.config.ConsumerConfig;
 import entity.*;
+
+import rpc.RpcRequests;
 import rpc.RpcServices;
 import utils.Utils;
 
@@ -28,7 +30,7 @@ public class NodeImpl implements Node {
      * preCandidate 预选举
      */
     public enum NodeState {leader, follwoer, candidate, preCandidate,NODE_STATE}
-    private static final NodeImpl NODE_IMPLE = new NodeImpl();
+    private static  final NodeImpl NODE_IMPLE = new NodeImpl();
 
     private NodeImpl() {
     }
@@ -38,7 +40,7 @@ public class NodeImpl implements Node {
     protected final Lock     writeLock = this.readWriteLock.writeLock();
     protected final Lock    readLock  = this.readWriteLock.readLock();
     private List<PeerId> peerIdList = new CopyOnWriteArrayList<>();
-    private Map<Endpoint,RpcServices> rpcServices = new ConcurrentHashMap<>();
+    private Map<Endpoint, RpcServices> rpcServicesMap = new ConcurrentHashMap<>();
     private NodeState nodeState;
     private AtomicLong lastLogTerm = new AtomicLong(0);
     private AtomicLong lastLogIndex = new AtomicLong(0);
@@ -49,12 +51,12 @@ public class NodeImpl implements Node {
     private NodeId nodeId;
     private NodeId leaderId;
 
-    private Ballot ballot = new Ballot(peerIdList);
-
+    private Ballot preVoteBallot;
+    private Ballot electionBallot;
     private Heartbeat heartbeat;
 
 
-    private Long term;
+    private AtomicLong term;
     /**
      * 上一次收到心跳包的时间
      */
@@ -71,6 +73,21 @@ public class NodeImpl implements Node {
         return nodeId;
     }
 
+    @Override
+    public void startToPerformAsLeader() {
+        NodeImpl.getNodeImple().getWriteLock().lock();
+        try {
+            NodeImpl.getNodeImple().setNodeState(NodeState.leader);
+
+
+        } catch (Exception e) {
+
+        }finally {
+            NodeImpl.getNodeImple().getWriteLock().unlock();
+        }
+
+    }
+
 
     public boolean checkIfCurrentNodeCanVoteOthers(){
         //only leader, follower, preCandidate, NODE_STATE can vote others
@@ -84,8 +101,13 @@ public class NodeImpl implements Node {
         }
     }
 
+
+    public Lock getWriteLock() {
+        return writeLock;
+    }
+
     public boolean checkIfCurrentNodeCanStartPreVote(){
-        //only  follower,None_state  can vote others
+        //only  follower,None_state  can start PreVote
         if (NodeState.NODE_STATE.equals(getNodeState())
                 || NodeState.follwoer.equals(getNodeState())
                ) {
@@ -95,21 +117,48 @@ public class NodeImpl implements Node {
         }
     }
 
-    public Long getTerm() {
+    public boolean checkIfCurrentNodeCanStartElection(){
+        //only  PreVote can start PreVote
+        if (NodeState.preCandidate.equals(NodeImpl.getNodeImple().getNodeState())
+        ) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public Ballot getPreVoteBallot() {
+        return preVoteBallot;
+    }
+
+    public void setPreVoteBallot(Ballot preVoteBallot) {
+        this.preVoteBallot = preVoteBallot;
+    }
+
+    public AtomicLong getTerm() {
         return term;
     }
 
-    public void setTerm(Long term) {
+    public void setTerm(AtomicLong term) {
         this.term = term;
     }
 
-    public Map<Endpoint, RpcServices> getRpcServices() {
-        return rpcServices;
+    public Map<Endpoint, RpcServices> getRpcServicesMap() {
+        return rpcServicesMap;
     }
 
-    public void setRpcServices(Map<Endpoint, RpcServices> rpcServices) {
-        this.rpcServices = rpcServices;
+    public Ballot getElectionBallot() {
+        return electionBallot;
     }
+
+    public void setElectionBallot(Ballot electionBallot) {
+        this.electionBallot = electionBallot;
+    }
+
+    public void setRpcServicesMap(Map<Endpoint, RpcServices> rpcServicesMap) {
+        this.rpcServicesMap = rpcServicesMap;
+    }
+
 
     public void setNodeId(NodeId nodeId) {
         this.nodeId = nodeId;

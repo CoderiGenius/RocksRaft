@@ -28,8 +28,13 @@ public class TimeOutChecker implements Runnable{
      */
     private long enterQueueTime;
 
-    public TimeOutChecker(long timeOut,long enterQueueTime) {
+    /**
+     * time out closure
+     */
+    private TimeOutClosure timeOutClosure;
 
+    public TimeOutChecker(long timeOut,long enterQueueTime,TimeOutClosure timeOutClosure) {
+        this.timeOutClosure = timeOutClosure;
         this.enterQueueTime = enterQueueTime;
         this.timeOut = timeOut;
     }
@@ -49,7 +54,7 @@ public class TimeOutChecker implements Runnable{
                 if (currentTimeDifferent > timeOut) {
                     //在队列里等待的时候就已经超时了，检查node是否超时
                     LOG.error("Timeout during waiting int queue");
-                    checkNodeStatus();
+                    checkTimeOut();
                 } else {
                     //还未超时，等待检测超时
                     try {
@@ -59,7 +64,7 @@ public class TimeOutChecker implements Runnable{
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    checkNodeStatus();
+                    checkTimeOut();
 
                 }
             } catch (Exception e) {
@@ -74,13 +79,17 @@ public class TimeOutChecker implements Runnable{
 
     }
 
-    private void checkNodeStatus()  {
+//    private void checkNodeStatus()  {
+//
+//
+//    }
 
+    private void checkTimeOut() {
         if ((Utils.monotonicMs()
-                - NodeImpl.getNodeImple().getLastReceiveHeartbeatTime().get()) >= timeOut) {
+                - timeOutClosure.getBaseTime()) >= timeOut) {
             //超时，执行超时逻辑
-            LOG.error("Node timeout, start to launch ElectionService");
-            ElectionService.checkToStartElection();
+            LOG.error("Node timeout, start to launch TimeOut actions");
+           timeOutClosure.run(null);
         }else {
             //未超时
         }

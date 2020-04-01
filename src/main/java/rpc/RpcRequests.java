@@ -3353,6 +3353,16 @@ public final class RpcRequests {
      * <code>bool granted = 2;</code>
      */
     boolean getGranted();
+
+    /**
+     * <code>string peer_name = 3;</code>
+     */
+    java.lang.String getPeerName();
+    /**
+     * <code>string peer_name = 3;</code>
+     */
+    com.google.protobuf.ByteString
+    getPeerNameBytes();
   }
   /**
    * Protobuf type {@code protobuf.RequestVoteResponse}
@@ -3369,6 +3379,7 @@ public final class RpcRequests {
     private RequestVoteResponse() {
       term_ = 0L;
       granted_ = false;
+      peerName_ = "";
     }
 
     @java.lang.Override
@@ -3403,6 +3414,12 @@ public final class RpcRequests {
             case 16: {
 
               granted_ = input.readBool();
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              peerName_ = s;
               break;
             }
             default: {
@@ -3455,6 +3472,40 @@ public final class RpcRequests {
       return granted_;
     }
 
+    public static final int PEER_NAME_FIELD_NUMBER = 3;
+    private volatile java.lang.Object peerName_;
+    /**
+     * <code>string peer_name = 3;</code>
+     */
+    public java.lang.String getPeerName() {
+      java.lang.Object ref = peerName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        peerName_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string peer_name = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+    getPeerNameBytes() {
+      java.lang.Object ref = peerName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
+        peerName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -3475,6 +3526,9 @@ public final class RpcRequests {
       if (granted_ != false) {
         output.writeBool(2, granted_);
       }
+      if (!getPeerNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, peerName_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -3491,6 +3545,9 @@ public final class RpcRequests {
       if (granted_ != false) {
         size += com.google.protobuf.CodedOutputStream
                 .computeBoolSize(2, granted_);
+      }
+      if (!getPeerNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, peerName_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3512,6 +3569,8 @@ public final class RpcRequests {
               == other.getTerm());
       result = result && (getGranted()
               == other.getGranted());
+      result = result && getPeerName()
+              .equals(other.getPeerName());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -3529,6 +3588,8 @@ public final class RpcRequests {
       hash = (37 * hash) + GRANTED_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
               getGranted());
+      hash = (37 * hash) + PEER_NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getPeerName().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -3666,6 +3727,8 @@ public final class RpcRequests {
 
         granted_ = false;
 
+        peerName_ = "";
+
         return this;
       }
 
@@ -3694,6 +3757,7 @@ public final class RpcRequests {
         rpc.RpcRequests.RequestVoteResponse result = new rpc.RpcRequests.RequestVoteResponse(this);
         result.term_ = term_;
         result.granted_ = granted_;
+        result.peerName_ = peerName_;
         onBuilt();
         return result;
       }
@@ -3747,6 +3811,10 @@ public final class RpcRequests {
         }
         if (other.getGranted() != false) {
           setGranted(other.getGranted());
+        }
+        if (!other.getPeerName().isEmpty()) {
+          peerName_ = other.peerName_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -3825,6 +3893,75 @@ public final class RpcRequests {
       public Builder clearGranted() {
 
         granted_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object peerName_ = "";
+      /**
+       * <code>string peer_name = 3;</code>
+       */
+      public java.lang.String getPeerName() {
+        java.lang.Object ref = peerName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          peerName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string peer_name = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+      getPeerNameBytes() {
+        java.lang.Object ref = peerName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
+          peerName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string peer_name = 3;</code>
+       */
+      public Builder setPeerName(
+              java.lang.String value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+
+        peerName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string peer_name = 3;</code>
+       */
+      public Builder clearPeerName() {
+
+        peerName_ = getDefaultInstance().getPeerName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string peer_name = 3;</code>
+       */
+      public Builder setPeerNameBytes(
+              com.google.protobuf.ByteString value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
+        peerName_ = value;
         onChanged();
         return this;
       }
@@ -4837,6 +4974,16 @@ public final class RpcRequests {
      * <code>bool granted = 2;</code>
      */
     boolean getGranted();
+
+    /**
+     * <code>string peer_name = 3;</code>
+     */
+    java.lang.String getPeerName();
+    /**
+     * <code>string peer_name = 3;</code>
+     */
+    com.google.protobuf.ByteString
+    getPeerNameBytes();
   }
   /**
    * Protobuf type {@code protobuf.RequestPreVoteResponse}
@@ -4853,6 +5000,7 @@ public final class RpcRequests {
     private RequestPreVoteResponse() {
       term_ = 0L;
       granted_ = false;
+      peerName_ = "";
     }
 
     @java.lang.Override
@@ -4887,6 +5035,12 @@ public final class RpcRequests {
             case 16: {
 
               granted_ = input.readBool();
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              peerName_ = s;
               break;
             }
             default: {
@@ -4939,6 +5093,40 @@ public final class RpcRequests {
       return granted_;
     }
 
+    public static final int PEER_NAME_FIELD_NUMBER = 3;
+    private volatile java.lang.Object peerName_;
+    /**
+     * <code>string peer_name = 3;</code>
+     */
+    public java.lang.String getPeerName() {
+      java.lang.Object ref = peerName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        peerName_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string peer_name = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+    getPeerNameBytes() {
+      java.lang.Object ref = peerName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
+        peerName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -4959,6 +5147,9 @@ public final class RpcRequests {
       if (granted_ != false) {
         output.writeBool(2, granted_);
       }
+      if (!getPeerNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, peerName_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -4975,6 +5166,9 @@ public final class RpcRequests {
       if (granted_ != false) {
         size += com.google.protobuf.CodedOutputStream
                 .computeBoolSize(2, granted_);
+      }
+      if (!getPeerNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, peerName_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -4996,6 +5190,8 @@ public final class RpcRequests {
               == other.getTerm());
       result = result && (getGranted()
               == other.getGranted());
+      result = result && getPeerName()
+              .equals(other.getPeerName());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -5013,6 +5209,8 @@ public final class RpcRequests {
       hash = (37 * hash) + GRANTED_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
               getGranted());
+      hash = (37 * hash) + PEER_NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getPeerName().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -5150,6 +5348,8 @@ public final class RpcRequests {
 
         granted_ = false;
 
+        peerName_ = "";
+
         return this;
       }
 
@@ -5178,6 +5378,7 @@ public final class RpcRequests {
         rpc.RpcRequests.RequestPreVoteResponse result = new rpc.RpcRequests.RequestPreVoteResponse(this);
         result.term_ = term_;
         result.granted_ = granted_;
+        result.peerName_ = peerName_;
         onBuilt();
         return result;
       }
@@ -5231,6 +5432,10 @@ public final class RpcRequests {
         }
         if (other.getGranted() != false) {
           setGranted(other.getGranted());
+        }
+        if (!other.getPeerName().isEmpty()) {
+          peerName_ = other.peerName_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -5309,6 +5514,75 @@ public final class RpcRequests {
       public Builder clearGranted() {
 
         granted_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object peerName_ = "";
+      /**
+       * <code>string peer_name = 3;</code>
+       */
+      public java.lang.String getPeerName() {
+        java.lang.Object ref = peerName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          peerName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string peer_name = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+      getPeerNameBytes() {
+        java.lang.Object ref = peerName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
+          peerName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string peer_name = 3;</code>
+       */
+      public Builder setPeerName(
+              java.lang.String value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+
+        peerName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string peer_name = 3;</code>
+       */
+      public Builder clearPeerName() {
+
+        peerName_ = getDefaultInstance().getPeerName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string peer_name = 3;</code>
+       */
+      public Builder setPeerNameBytes(
+              com.google.protobuf.ByteString value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
+        peerName_ = value;
         onChanged();
         return this;
       }
@@ -9511,27 +9785,28 @@ public final class RpcRequests {
                     "cess\030\002 \001(\010\"\207\001\n\022RequestVoteRequest\022\021\n\tser" +
                     "ver_id\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\022\014\n\004term\030\003 " +
                     "\001(\003\022\025\n\rlast_log_term\030\004 \001(\003\022\026\n\016last_log_i" +
-                    "ndex\030\005 \001(\003\022\020\n\010pre_vote\030\006 \001(\010\"4\n\023RequestV" +
+                    "ndex\030\005 \001(\003\022\020\n\010pre_vote\030\006 \001(\010\"G\n\023RequestV" +
                     "oteResponse\022\014\n\004term\030\001 \001(\003\022\017\n\007granted\030\002 \001" +
-                    "(\010\"\212\001\n\025RequestPreVoteRequest\022\021\n\tserver_i" +
-                    "d\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\022\014\n\004term\030\003 \001(\003\022\025" +
-                    "\n\rlast_log_term\030\004 \001(\003\022\026\n\016last_log_index\030" +
-                    "\005 \001(\003\022\020\n\010pre_vote\030\006 \001(\010\"7\n\026RequestPreVot" +
-                    "eResponse\022\014\n\004term\030\001 \001(\003\022\017\n\007granted\030\002 \001(\010" +
-                    "\"@\n\032AppendEntriesRequestHeader\022\021\n\tserver" +
-                    "_id\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\"\326\001\n\024AppendEnt" +
-                    "riesRequest\022\020\n\010group_id\030\001 \001(\t\022\021\n\tserver_" +
-                    "id\030\002 \001(\t\022\017\n\007peer_id\030\003 \001(\t\022\014\n\004term\030\004 \001(\003\022" +
-                    "\025\n\rprev_log_term\030\005 \001(\003\022\026\n\016prev_log_index" +
-                    "\030\006 \001(\003\022$\n\007entries\030\007 \001(\0132\023.protobuf.Entry" +
-                    "Meta\022\027\n\017committed_index\030\010 \001(\003\022\014\n\004data\030\t " +
-                    "\001(\014\"N\n\025AppendEntriesResponse\022\014\n\004term\030\001 \001" +
-                    "(\003\022\017\n\007success\030\002 \001(\010\022\026\n\016last_log_index\030\003 " +
-                    "\001(\003\"Y\n\020ReadIndexRequest\022\020\n\010group_id\030\001 \001(" +
-                    "\t\022\021\n\tserver_id\030\002 \001(\t\022\017\n\007entries\030\003 \001(\014\022\017\n" +
-                    "\007peer_id\030\004 \001(\t\"3\n\021ReadIndexResponse\022\r\n\005i" +
-                    "ndex\030\001 \001(\003\022\017\n\007success\030\002 \001(\010B\022\n\003rpcB\013RpcR" +
-                    "equestsb\006proto3"
+                    "(\010\022\021\n\tpeer_name\030\003 \001(\t\"\212\001\n\025RequestPreVote" +
+                    "Request\022\021\n\tserver_id\030\001 \001(\t\022\017\n\007peer_id\030\002 " +
+                    "\001(\t\022\014\n\004term\030\003 \001(\003\022\025\n\rlast_log_term\030\004 \001(\003" +
+                    "\022\026\n\016last_log_index\030\005 \001(\003\022\020\n\010pre_vote\030\006 \001" +
+                    "(\010\"J\n\026RequestPreVoteResponse\022\014\n\004term\030\001 \001" +
+                    "(\003\022\017\n\007granted\030\002 \001(\010\022\021\n\tpeer_name\030\003 \001(\t\"@" +
+                    "\n\032AppendEntriesRequestHeader\022\021\n\tserver_i" +
+                    "d\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\"\326\001\n\024AppendEntri" +
+                    "esRequest\022\020\n\010group_id\030\001 \001(\t\022\021\n\tserver_id" +
+                    "\030\002 \001(\t\022\017\n\007peer_id\030\003 \001(\t\022\014\n\004term\030\004 \001(\003\022\025\n" +
+                    "\rprev_log_term\030\005 \001(\003\022\026\n\016prev_log_index\030\006" +
+                    " \001(\003\022$\n\007entries\030\007 \001(\0132\023.protobuf.EntryMe" +
+                    "ta\022\027\n\017committed_index\030\010 \001(\003\022\014\n\004data\030\t \001(" +
+                    "\014\"N\n\025AppendEntriesResponse\022\014\n\004term\030\001 \001(\003" +
+                    "\022\017\n\007success\030\002 \001(\010\022\026\n\016last_log_index\030\003 \001(" +
+                    "\003\"Y\n\020ReadIndexRequest\022\020\n\010group_id\030\001 \001(\t\022" +
+                    "\021\n\tserver_id\030\002 \001(\t\022\017\n\007entries\030\003 \001(\014\022\017\n\007p" +
+                    "eer_id\030\004 \001(\t\"3\n\021ReadIndexResponse\022\r\n\005ind" +
+                    "ex\030\001 \001(\003\022\017\n\007success\030\002 \001(\010B\022\n\003rpcB\013RpcReq" +
+                    "uestsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
             new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -9581,7 +9856,7 @@ public final class RpcRequests {
     internal_static_protobuf_RequestVoteResponse_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_RequestVoteResponse_descriptor,
-            new java.lang.String[] { "Term", "Granted", });
+            new java.lang.String[] { "Term", "Granted", "PeerName", });
     internal_static_protobuf_RequestPreVoteRequest_descriptor =
             getDescriptor().getMessageTypes().get(6);
     internal_static_protobuf_RequestPreVoteRequest_fieldAccessorTable = new
@@ -9593,7 +9868,7 @@ public final class RpcRequests {
     internal_static_protobuf_RequestPreVoteResponse_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_RequestPreVoteResponse_descriptor,
-            new java.lang.String[] { "Term", "Granted", });
+            new java.lang.String[] { "Term", "Granted", "PeerName", });
     internal_static_protobuf_AppendEntriesRequestHeader_descriptor =
             getDescriptor().getMessageTypes().get(8);
     internal_static_protobuf_AppendEntriesRequestHeader_fieldAccessorTable = new

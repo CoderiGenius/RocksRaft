@@ -18,4 +18,9 @@ public interface Node  {
      */
     NodeId getNodeId();
 
+    /**
+     * Start To Perform As the Leader
+     */
+    void startToPerformAsLeader();
+
 }

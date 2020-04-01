@@ -34,6 +34,7 @@ message RequestVoteRequest {
 message RequestVoteResponse {
      int64 term = 1;
      bool granted = 2;
+     string peer_name = 3;
 };
 
 
@@ -48,6 +49,7 @@ message RequestPreVoteRequest {
 message RequestPreVoteResponse {
      int64 term = 1;
      bool granted = 2;
+     string peer_name = 3;
 };
 
 message AppendEntriesRequestHeader {

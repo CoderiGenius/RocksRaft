@@ -1,6 +1,7 @@
 package service;
 
 import core.NodeImpl;
+import rpc.RpcRequests;
 
 /**
  * Created by 周思成 on  2020/3/24 16:02
@@ -8,18 +9,33 @@ import core.NodeImpl;
 
 public interface ElectionService {
 
-    public boolean startElection();
+
+
 
     /**
      * 检查是否启动election
      */
-    public static void checkToStartElection(){
+    public static void checkToStartPreVote(){
 
         if ( ! NodeImpl.getNodeImple().checkNodeStatePreCandidate()) {
             ElectionService electionService = new ElectionServiceImpl();
-            electionService.startElection();
+            electionService.startPrevote();
+        }
+    }
+
+    public static void checkToStartElection() {
+        if (NodeImpl.getNodeImple().checkIfCurrentNodeCanStartElection()) {
+            //start election
+            ElectionService electionService = new ElectionServiceImpl();
+            electionService.election();
         }
     }
 
     public void startPrevote();
+
+    public void election();
+
+    public void handlePrevoteResponse(RpcRequests.RequestPreVoteResponse requestPreVoteResponse);
+
+    public void handleElectionResponse(RpcRequests.RequestVoteResponse requestVoteResponse);
 }

@@ -1,5 +1,7 @@
 package entity;
 
+import service.ElectionService;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -17,11 +19,12 @@ public class Ballot {
         this.quorum = new AtomicInteger(this.peerList.size() / 2 + 1);
     }
 
-    public void grant(final PeerId peerId) {
+    public void grant(final String peerId) {
 
-        if(findPeer(peerId.getId())){
+        if(findPeer(peerId)){
             this.quorum.decrementAndGet();
         }
+
     }
 
     private boolean findPeer(final String peerId) {

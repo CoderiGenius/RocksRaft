@@ -48,7 +48,7 @@ public class RaftOptionsLoader {
         NodeImpl.getNodeImple().setNodeId(nodeId);
     }
 
-    public void RaftOptionsLoader(String name) throws FileNotFoundException {
+    public  RaftOptionsLoader(String name) throws FileNotFoundException {
         Options options = BootYaml.getYaml(name);
         LOG.info("load raftOptions from "+name+" options:"+options.toString());
         CurrentNodeOptions currentNodeOptions = options.getCurrentNodeOptions();
