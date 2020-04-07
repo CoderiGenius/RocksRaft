@@ -69,6 +69,8 @@ message AppendEntriesRequest {
      EntryMeta entries = 7;
      int64 committed_index = 8;
      bytes data = 9;
+     string address = 10;
+     int32 port = 11;
 };
 message AppendEntriesResponse {
      int64 term = 1;

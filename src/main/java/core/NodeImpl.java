@@ -1,10 +1,15 @@
 package core;
 
 import com.alipay.sofa.rpc.config.ConsumerConfig;
+import config.ReplicatorOptions;
 import entity.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rpc.RpcRequests;
 import rpc.RpcServices;
+import rpc.RpcServicesImpl;
+import utils.TimerManager;
 import utils.Utils;
 
 import java.util.HashMap;
@@ -23,6 +28,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 
 public class NodeImpl implements Node {
+
+    public static final Logger LOG = LoggerFactory.getLogger(NodeImpl.class);
     /**
      * 表示节点状态的enum
      * leader follower领导者跟随者
@@ -34,6 +41,8 @@ public class NodeImpl implements Node {
 
     private NodeImpl() {
     }
+    /** ReplicatorStateListeners */
+    private final CopyOnWriteArrayList<ReplicatorStateListener> replicatorStateListeners = new CopyOnWriteArrayList<>();
 
     private final Lock reentrantLock = new ReentrantLock(true);
     private final ReadWriteLock  readWriteLock = new ReentrantReadWriteLock();
@@ -41,9 +50,12 @@ public class NodeImpl implements Node {
     protected final Lock    readLock  = this.readWriteLock.readLock();
     private List<PeerId> peerIdList = new CopyOnWriteArrayList<>();
     private Map<Endpoint, RpcServices> rpcServicesMap = new ConcurrentHashMap<>();
+    private Map<Endpoint,Replicator> replicatorMap = new ConcurrentHashMap<>();
     private NodeState nodeState;
     private AtomicLong lastLogTerm = new AtomicLong(0);
     private AtomicLong lastLogIndex = new AtomicLong(0);
+    private PeerId currentLeaderId;
+    private Options options;
 
     /**
      * Current node entity, including peedId inside
@@ -54,14 +66,18 @@ public class NodeImpl implements Node {
     private Ballot preVoteBallot;
     private Ballot electionBallot;
     private Heartbeat heartbeat;
+    private LogManager logManager;
 
 
-    private AtomicLong term;
     /**
      * 上一次收到心跳包的时间
      */
     private AtomicLong lastReceiveHeartbeatTime;
 
+
+    public void setLeaderId(NodeId leaderId) {
+        this.leaderId = leaderId;
+    }
 
     @Override
     public NodeId getLeaderId() {
@@ -75,10 +91,26 @@ public class NodeImpl implements Node {
 
     @Override
     public void startToPerformAsLeader() {
+        if (NodeState.leader.equals(NodeImpl.getNodeImple().getNodeState())) {
+            return;
+        }
         NodeImpl.getNodeImple().getWriteLock().lock();
         try {
             NodeImpl.getNodeImple().setNodeState(NodeState.leader);
+            //generate replicator for all followers
+            for (PeerId peerId : getPeerIdList()) {
 
+                ReplicatorOptions replicatorOptions = new ReplicatorOptions(
+                        getOptions().getCurrentNodeOptions().getMaxHeartBeatTime(),
+                        getOptions().getCurrentNodeOptions().getElectionTimeOut()
+                        ,getNodeId().getGroupId(),getNodeId().getPeerId(),getLogManager()
+                        ,new Ballot(getPeerIdList()),getNodeImple(),getLastLogTerm().longValue()
+                        ,new TimerManager(),ReplicatorType.Follower);
+                Replicator replicator = new Replicator(replicatorOptions,rpcServicesMap.get(peerId.getEndpoint()));
+
+                replicatorMap.put(peerId.getEndpoint(),replicator);
+
+            }
 
         } catch (Exception e) {
 
@@ -86,6 +118,62 @@ public class NodeImpl implements Node {
             NodeImpl.getNodeImple().getWriteLock().unlock();
         }
 
+    }
+
+
+
+//    @Override
+//    public RpcRequests.AppendEntriesResponse nullAppendEntriesHandler(RpcRequests.AppendEntriesRequest appendEntriesRequest) {
+//
+//        getWriteLock().lock();
+//        RpcRequests.AppendEntriesResponse.Builder builder = RpcRequests.AppendEntriesResponse.newBuilder();
+//        try {
+//            //check term and if leader is changed
+//            if (appendEntriesRequest.getTerm() > getLastLogTerm().longValue()
+//                    && getLeaderId().getPeerId().getPeerName().equals(appendEntriesRequest.getPeerId())) {
+//
+//
+//            }
+//        } catch (Exception e) {
+//            LOG.error("handling null appendEntries request error:"+e.getMessage());
+//        }finally {
+//            getWriteLock().unlock();
+//        }
+//        return builder.build();
+//    }
+
+    @Override
+    public List<ReplicatorStateListener> getReplicatorStatueListeners() {
+        return this.replicatorStateListeners;
+    }
+
+    @Override
+    public boolean transformLeader(RpcRequests.AppendEntriesRequest request) {
+        LOG.info("Start to transform Leader from {} to {}"
+                ,getLeaderId().getPeerId().getPeerName(),request.getPeerId());
+        getWriteLock().lock();
+        try {
+            //check if leader is valid
+            if ( ! checkNodeAheadOfCurrent(request.getTerm(), request.getCommittedIndex())) {
+               LOG.error("leader is invalid with term {} index {} while current term {} index {}"
+                       ,request.getTerm(), request.getCommittedIndex()
+                       ,getLastLogTerm(),getLastLogIndex());
+                return false;
+            }
+
+            setNodeState(NodeState.follwoer);
+            PeerId peerId = new PeerId(request.getPeerId(),request.getPeerId()
+                    ,request.getAddress(),request.getPort());
+            NodeId nodeId = new NodeId(request.getGroupId(),peerId);
+            setLeaderId(nodeId);
+
+            return true;
+        } catch (Exception e) {
+            LOG.error("Transform leader error:{}",e.getMessage());
+        }finally {
+            getWriteLock().unlock();
+        }
+        return false;
     }
 
 
@@ -101,6 +189,9 @@ public class NodeImpl implements Node {
         }
     }
 
+    private boolean checkNodeAheadOfCurrent(long term, long index) {
+        return term > getLastLogTerm().longValue() && index > getLastLogIndex().longValue();
+    }
 
     public Lock getWriteLock() {
         return writeLock;
@@ -115,6 +206,22 @@ public class NodeImpl implements Node {
         }else {
             return false;
         }
+    }
+
+    public Options getOptions() {
+        return options;
+    }
+
+    public void setOptions(Options options) {
+        this.options = options;
+    }
+
+    public LogManager getLogManager() {
+        return logManager;
+    }
+
+    public void setLogManager(LogManager logManager) {
+        this.logManager = logManager;
     }
 
     public boolean checkIfCurrentNodeCanStartElection(){
@@ -135,13 +242,9 @@ public class NodeImpl implements Node {
         this.preVoteBallot = preVoteBallot;
     }
 
-    public AtomicLong getTerm() {
-        return term;
-    }
 
-    public void setTerm(AtomicLong term) {
-        this.term = term;
-    }
+
+
 
     public Map<Endpoint, RpcServices> getRpcServicesMap() {
         return rpcServicesMap;

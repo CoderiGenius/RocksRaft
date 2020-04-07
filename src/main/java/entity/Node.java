@@ -1,5 +1,10 @@
 package entity;
 
+import core.ReplicatorStateListener;
+import rpc.RpcRequests;
+
+import java.util.List;
+
 /**
  * raft节点
  * Created by 周思成 on  2020/3/10 14:47
@@ -23,4 +28,9 @@ public interface Node  {
      */
     void startToPerformAsLeader();
 
+//    RpcRequests.AppendEntriesResponse nullAppendEntriesHandler(RpcRequests.AppendEntriesRequest appendEntriesRequest);
+
+    List<ReplicatorStateListener> getReplicatorStatueListeners();
+
+    boolean transformLeader(RpcRequests.AppendEntriesRequest request);
 }

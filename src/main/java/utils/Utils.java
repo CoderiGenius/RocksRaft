@@ -5,6 +5,7 @@ import io.netty.util.internal.SystemPropertyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.Future;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -102,5 +103,12 @@ public class Utils {
     }
     public static long monotonicMs() {
         return TimeUnit.NANOSECONDS.toMillis(System.nanoTime());
+    }
+
+    /**
+     * Run a task in thread pool,returns the future object.
+     */
+    public static Future<?> runInThread(final Runnable runnable) {
+        return CLOSURE_EXECUTOR.submit(runnable);
     }
 }

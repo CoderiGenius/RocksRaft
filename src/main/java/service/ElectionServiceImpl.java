@@ -43,7 +43,7 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
             NodeImpl.getNodeImple().setNodeState(NodeImpl.NodeState.preCandidate);
             NodeImpl.getNodeImple().setPreVoteBallot(new Ballot(NodeImpl.getNodeImple().getPeerIdList()));
             RpcRequests.RequestPreVoteRequest.Builder builder = RpcRequests.RequestPreVoteRequest.newBuilder();
-            builder.setLastLogTerm(NodeImpl.getNodeImple().getTerm().longValue());
+            builder.setLastLogTerm(NodeImpl.getNodeImple().getLastLogTerm().longValue());
             builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
             builder.setLastLogTerm(NodeImpl.getNodeImple().getLastLogTerm().longValue());
             builder.setLastLogIndex(NodeImpl.getNodeImple().getLastLogIndex().longValue());
@@ -55,7 +55,7 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
             ) {
                 long t = Utils.monotonicMs();
 
-                LOG.info("Send preVote request to {} at {} on term {}", p, t, NodeImpl.getNodeImple().getTerm());
+                LOG.info("Send preVote request to {} at {} on term {}", p, t, NodeImpl.getNodeImple().getLastLogTerm());
                 map.get(p.getEndpoint()).handlePreVoteRequest(requestPreVoteRequest);
             }
         } catch (Exception e) {
@@ -77,8 +77,8 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
 
             RpcRequests.RequestVoteRequest.Builder builder = RpcRequests.RequestVoteRequest.newBuilder();
             builder.setLastLogIndex(NodeImpl.getNodeImple().getLastLogIndex().longValue());
-            builder.setLastLogTerm(NodeImpl.getNodeImple().getTerm().longValue());
-            builder.setTerm(NodeImpl.getNodeImple().getTerm().incrementAndGet());
+            builder.setLastLogTerm(NodeImpl.getNodeImple().getLastLogTerm().longValue());
+            builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().incrementAndGet());
             builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getPeerName());
             builder.setServerId(NodeImpl.getNodeImple().getNodeId().getGroupId());
             //send vote request to all peers in the list
@@ -87,7 +87,7 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
             for (PeerId p : NodeImpl.getNodeImple().getPeerIdList()
             ) {
                 long t = Utils.monotonicMs();
-                LOG.info("Send vote request to {} at {} on newTerm {}", p, t, NodeImpl.getNodeImple().getTerm());
+                LOG.info("Send vote request to {} at {} on newTerm {}", p, t, NodeImpl.getNodeImple().getLastLogTerm());
                 map.get(p.getEndpoint()).handleVoteRequest(requestVoteRequest);
             }
         } catch (Exception e) {
@@ -128,6 +128,7 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
             }
             if (NodeImpl.getNodeImple().getPreVoteBallot().isGranted()) {
                 LOG.info("Current node start to perform as leader");
+                NodeImpl.getNodeImple().startToPerformAsLeader();
             }
 
         } catch (Exception e) {

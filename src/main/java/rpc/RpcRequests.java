@@ -6397,6 +6397,21 @@ public final class RpcRequests {
      * <code>bytes data = 9;</code>
      */
     com.google.protobuf.ByteString getData();
+
+    /**
+     * <code>string address = 10;</code>
+     */
+    java.lang.String getAddress();
+    /**
+     * <code>string address = 10;</code>
+     */
+    com.google.protobuf.ByteString
+    getAddressBytes();
+
+    /**
+     * <code>int32 port = 11;</code>
+     */
+    int getPort();
   }
   /**
    * Protobuf type {@code protobuf.AppendEntriesRequest}
@@ -6419,6 +6434,8 @@ public final class RpcRequests {
       prevLogIndex_ = 0L;
       committedIndex_ = 0L;
       data_ = com.google.protobuf.ByteString.EMPTY;
+      address_ = "";
+      port_ = 0;
     }
 
     @java.lang.Override
@@ -6499,6 +6516,17 @@ public final class RpcRequests {
             case 74: {
 
               data_ = input.readBytes();
+              break;
+            }
+            case 82: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              address_ = s;
+              break;
+            }
+            case 88: {
+
+              port_ = input.readInt32();
               break;
             }
             default: {
@@ -6701,6 +6729,49 @@ public final class RpcRequests {
       return data_;
     }
 
+    public static final int ADDRESS_FIELD_NUMBER = 10;
+    private volatile java.lang.Object address_;
+    /**
+     * <code>string address = 10;</code>
+     */
+    public java.lang.String getAddress() {
+      java.lang.Object ref = address_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        address_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string address = 10;</code>
+     */
+    public com.google.protobuf.ByteString
+    getAddressBytes() {
+      java.lang.Object ref = address_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
+        address_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PORT_FIELD_NUMBER = 11;
+    private int port_;
+    /**
+     * <code>int32 port = 11;</code>
+     */
+    public int getPort() {
+      return port_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -6741,6 +6812,12 @@ public final class RpcRequests {
       }
       if (!data_.isEmpty()) {
         output.writeBytes(9, data_);
+      }
+      if (!getAddressBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, address_);
+      }
+      if (port_ != 0) {
+        output.writeInt32(11, port_);
       }
       unknownFields.writeTo(output);
     }
@@ -6784,6 +6861,13 @@ public final class RpcRequests {
         size += com.google.protobuf.CodedOutputStream
                 .computeBytesSize(9, data_);
       }
+      if (!getAddressBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, address_);
+      }
+      if (port_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeInt32Size(11, port_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -6821,6 +6905,10 @@ public final class RpcRequests {
               == other.getCommittedIndex());
       result = result && getData()
               .equals(other.getData());
+      result = result && getAddress()
+              .equals(other.getAddress());
+      result = result && (getPort()
+              == other.getPort());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -6856,6 +6944,10 @@ public final class RpcRequests {
               getCommittedIndex());
       hash = (37 * hash) + DATA_FIELD_NUMBER;
       hash = (53 * hash) + getData().hashCode();
+      hash = (37 * hash) + ADDRESS_FIELD_NUMBER;
+      hash = (53 * hash) + getAddress().hashCode();
+      hash = (37 * hash) + PORT_FIELD_NUMBER;
+      hash = (53 * hash) + getPort();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -7011,6 +7103,10 @@ public final class RpcRequests {
 
         data_ = com.google.protobuf.ByteString.EMPTY;
 
+        address_ = "";
+
+        port_ = 0;
+
         return this;
       }
 
@@ -7050,6 +7146,8 @@ public final class RpcRequests {
         }
         result.committedIndex_ = committedIndex_;
         result.data_ = data_;
+        result.address_ = address_;
+        result.port_ = port_;
         onBuilt();
         return result;
       }
@@ -7127,6 +7225,13 @@ public final class RpcRequests {
         }
         if (other.getData() != com.google.protobuf.ByteString.EMPTY) {
           setData(other.getData());
+        }
+        if (!other.getAddress().isEmpty()) {
+          address_ = other.address_;
+          onChanged();
+        }
+        if (other.getPort() != 0) {
+          setPort(other.getPort());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -7610,6 +7715,101 @@ public final class RpcRequests {
       public Builder clearData() {
 
         data_ = getDefaultInstance().getData();
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object address_ = "";
+      /**
+       * <code>string address = 10;</code>
+       */
+      public java.lang.String getAddress() {
+        java.lang.Object ref = address_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          address_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string address = 10;</code>
+       */
+      public com.google.protobuf.ByteString
+      getAddressBytes() {
+        java.lang.Object ref = address_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
+          address_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string address = 10;</code>
+       */
+      public Builder setAddress(
+              java.lang.String value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+
+        address_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string address = 10;</code>
+       */
+      public Builder clearAddress() {
+
+        address_ = getDefaultInstance().getAddress();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string address = 10;</code>
+       */
+      public Builder setAddressBytes(
+              com.google.protobuf.ByteString value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
+        address_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int port_ ;
+      /**
+       * <code>int32 port = 11;</code>
+       */
+      public int getPort() {
+        return port_;
+      }
+      /**
+       * <code>int32 port = 11;</code>
+       */
+      public Builder setPort(int value) {
+
+        port_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 port = 11;</code>
+       */
+      public Builder clearPort() {
+
+        port_ = 0;
         onChanged();
         return this;
       }
@@ -9794,19 +9994,20 @@ public final class RpcRequests {
                     "(\010\"J\n\026RequestPreVoteResponse\022\014\n\004term\030\001 \001" +
                     "(\003\022\017\n\007granted\030\002 \001(\010\022\021\n\tpeer_name\030\003 \001(\t\"@" +
                     "\n\032AppendEntriesRequestHeader\022\021\n\tserver_i" +
-                    "d\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\"\326\001\n\024AppendEntri" +
+                    "d\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\"\365\001\n\024AppendEntri" +
                     "esRequest\022\020\n\010group_id\030\001 \001(\t\022\021\n\tserver_id" +
                     "\030\002 \001(\t\022\017\n\007peer_id\030\003 \001(\t\022\014\n\004term\030\004 \001(\003\022\025\n" +
                     "\rprev_log_term\030\005 \001(\003\022\026\n\016prev_log_index\030\006" +
                     " \001(\003\022$\n\007entries\030\007 \001(\0132\023.protobuf.EntryMe" +
                     "ta\022\027\n\017committed_index\030\010 \001(\003\022\014\n\004data\030\t \001(" +
-                    "\014\"N\n\025AppendEntriesResponse\022\014\n\004term\030\001 \001(\003" +
-                    "\022\017\n\007success\030\002 \001(\010\022\026\n\016last_log_index\030\003 \001(" +
-                    "\003\"Y\n\020ReadIndexRequest\022\020\n\010group_id\030\001 \001(\t\022" +
-                    "\021\n\tserver_id\030\002 \001(\t\022\017\n\007entries\030\003 \001(\014\022\017\n\007p" +
-                    "eer_id\030\004 \001(\t\"3\n\021ReadIndexResponse\022\r\n\005ind" +
-                    "ex\030\001 \001(\003\022\017\n\007success\030\002 \001(\010B\022\n\003rpcB\013RpcReq" +
-                    "uestsb\006proto3"
+                    "\014\022\017\n\007address\030\n \001(\t\022\014\n\004port\030\013 \001(\005\"N\n\025Appe" +
+                    "ndEntriesResponse\022\014\n\004term\030\001 \001(\003\022\017\n\007succe" +
+                    "ss\030\002 \001(\010\022\026\n\016last_log_index\030\003 \001(\003\"Y\n\020Read" +
+                    "IndexRequest\022\020\n\010group_id\030\001 \001(\t\022\021\n\tserver" +
+                    "_id\030\002 \001(\t\022\017\n\007entries\030\003 \001(\014\022\017\n\007peer_id\030\004 " +
+                    "\001(\t\"3\n\021ReadIndexResponse\022\r\n\005index\030\001 \001(\003\022" +
+                    "\017\n\007success\030\002 \001(\010B\022\n\003rpcB\013RpcRequestsb\006pr" +
+                    "oto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
             new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -9880,7 +10081,7 @@ public final class RpcRequests {
     internal_static_protobuf_AppendEntriesRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_AppendEntriesRequest_descriptor,
-            new java.lang.String[] { "GroupId", "ServerId", "PeerId", "Term", "PrevLogTerm", "PrevLogIndex", "Entries", "CommittedIndex", "Data", });
+            new java.lang.String[] { "GroupId", "ServerId", "PeerId", "Term", "PrevLogTerm", "PrevLogIndex", "Entries", "CommittedIndex", "Data", "Address", "Port", });
     internal_static_protobuf_AppendEntriesResponse_descriptor =
             getDescriptor().getMessageTypes().get(10);
     internal_static_protobuf_AppendEntriesResponse_fieldAccessorTable = new

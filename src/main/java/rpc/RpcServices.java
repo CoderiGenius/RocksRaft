@@ -16,4 +16,7 @@ public interface RpcServices {
 
     public RpcRequests.RequestVoteResponse handleVoteRequest(
             RpcRequests.RequestVoteRequest requestVoteRequest);
+
+    public RpcRequests.AppendEntriesResponse handleApendEntriesRequest(
+            RpcRequests.AppendEntriesRequest appendEntriesRequest);
 }
