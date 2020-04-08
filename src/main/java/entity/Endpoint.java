@@ -24,6 +24,7 @@ public class Endpoint implements  Serializable {
     private int               port;
     private String            str;
 
+
     public Endpoint() {
         super();
     }

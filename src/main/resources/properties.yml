@@ -4,23 +4,30 @@ currentNodeOptions:
   rpcProtocol: bolt
   serialization: protobuf
   port: 12200
+  taskPort: 12201
+  taskExecuteMethod: callback
   daemon: false
   groupId: raft
   address: localhost
   name: raft-1
   peerId: raft-1
+  logStoragePath: E:\Rocksdb
+  logStorageName: log
 otherNodes:
   - {peerId: raft-2,
        name: raft-2,
        address: 192.168.1.8,
+       taskPort: 12201,
        port: 12000}
   - {peerId: raft-3,
        name: raft-3,
        address: 192.168.1.9,
+     taskPort: 12201,
        port: 12000}
   - {peerId: raft-4,
        name: raft-4,
        address: 192.168.1.10,
+     taskPort: 12201,
        port: 12000}
 
 

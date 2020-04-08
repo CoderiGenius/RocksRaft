@@ -4,6 +4,7 @@ package storage;
  * Created by 周思成 on  2020/3/13 15:52
  */
 
+import config.LogStorageOptions;
 import core.Lifecycle;
 import entity.LogEntry;
 
@@ -67,4 +68,7 @@ public interface LogStorage  {
      * This function is called after installing snapshot from leader.
      */
     boolean reset(final long nextLogIndex);
+
+
+    boolean init();
 }

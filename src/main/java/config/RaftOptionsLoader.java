@@ -31,6 +31,7 @@ public class RaftOptionsLoader {
         NodeOptions.getNodeOptions().setRpcProtocol(currentNodeOptions.getRpcProtocol());
         NodeOptions.getNodeOptions().setSerialization(currentNodeOptions.getSerialization());
         NodeOptions.getNodeOptions().setPort(currentNodeOptions.getPort());
+        NodeOptions.getNodeOptions().setTaskPort(currentNodeOptions.getTaskPort());
         Endpoint endpoint = new Endpoint(currentNodeOptions.getAddress(),currentNodeOptions.getPort());
         PeerId peerId = new PeerId();
         peerId.setPeerName(currentNodeOptions.getName());
@@ -43,7 +44,7 @@ public class RaftOptionsLoader {
         ) {
 
             PeerId peerId1 = new PeerId(o.getPeerId(),o.getName()
-                    ,o.getAddress(),o.getPort());
+                    ,o.getAddress(),o.getPort(),o.getTaskPort());
             listOtherNode.add(peerId1);
         }
 

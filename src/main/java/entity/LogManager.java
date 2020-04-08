@@ -1,5 +1,8 @@
 package entity;
 
+import config.LogManagerOptions;
+import exceptions.LogStorageException;
+
 import java.util.List;
 
 /**
@@ -58,4 +61,7 @@ public interface LogManager {
      * @param isFlush whether to flush all pending task.
      */
     LogId getLastLogId(final boolean isFlush);
+
+
+    boolean init(final LogManagerOptions options) throws LogStorageException;
 }

@@ -70,6 +70,8 @@ public class NodeOptions extends RpcOptions {
     private boolean daemon;
     private String rpcServiceName;
 
+    private String taskExecuteMethod;
+
 
     // If non-null, we will pass this throughput_snapshot_throttle to SnapshotExecutor
     // Default: NULL
@@ -104,6 +106,24 @@ public class NodeOptions extends RpcOptions {
      */
     private RaftServiceFactory             serviceFactory         = defaultServiceFactory;
 
+
+    private int taskPort;
+
+    public String getTaskExecuteMethod() {
+        return taskExecuteMethod;
+    }
+
+    public void setTaskExecuteMethod(String taskExecuteMethod) {
+        this.taskExecuteMethod = taskExecuteMethod;
+    }
+
+    public int getTaskPort() {
+        return taskPort;
+    }
+
+    public void setTaskPort(int taskPort) {
+        this.taskPort = taskPort;
+    }
 
     public long getElectionTimeOut() {
         return electionTimeOut;

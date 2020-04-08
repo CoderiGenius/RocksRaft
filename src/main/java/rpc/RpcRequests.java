@@ -6412,6 +6412,11 @@ public final class RpcRequests {
      * <code>int32 port = 11;</code>
      */
     int getPort();
+
+    /**
+     * <code>int32 taskPort = 12;</code>
+     */
+    int getTaskPort();
   }
   /**
    * Protobuf type {@code protobuf.AppendEntriesRequest}
@@ -6436,6 +6441,7 @@ public final class RpcRequests {
       data_ = com.google.protobuf.ByteString.EMPTY;
       address_ = "";
       port_ = 0;
+      taskPort_ = 0;
     }
 
     @java.lang.Override
@@ -6527,6 +6533,11 @@ public final class RpcRequests {
             case 88: {
 
               port_ = input.readInt32();
+              break;
+            }
+            case 96: {
+
+              taskPort_ = input.readInt32();
               break;
             }
             default: {
@@ -6772,6 +6783,15 @@ public final class RpcRequests {
       return port_;
     }
 
+    public static final int TASKPORT_FIELD_NUMBER = 12;
+    private int taskPort_;
+    /**
+     * <code>int32 taskPort = 12;</code>
+     */
+    public int getTaskPort() {
+      return taskPort_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -6818,6 +6838,9 @@ public final class RpcRequests {
       }
       if (port_ != 0) {
         output.writeInt32(11, port_);
+      }
+      if (taskPort_ != 0) {
+        output.writeInt32(12, taskPort_);
       }
       unknownFields.writeTo(output);
     }
@@ -6868,6 +6891,10 @@ public final class RpcRequests {
         size += com.google.protobuf.CodedOutputStream
                 .computeInt32Size(11, port_);
       }
+      if (taskPort_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeInt32Size(12, taskPort_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -6909,6 +6936,8 @@ public final class RpcRequests {
               .equals(other.getAddress());
       result = result && (getPort()
               == other.getPort());
+      result = result && (getTaskPort()
+              == other.getTaskPort());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -6948,6 +6977,8 @@ public final class RpcRequests {
       hash = (53 * hash) + getAddress().hashCode();
       hash = (37 * hash) + PORT_FIELD_NUMBER;
       hash = (53 * hash) + getPort();
+      hash = (37 * hash) + TASKPORT_FIELD_NUMBER;
+      hash = (53 * hash) + getTaskPort();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -7107,6 +7138,8 @@ public final class RpcRequests {
 
         port_ = 0;
 
+        taskPort_ = 0;
+
         return this;
       }
 
@@ -7148,6 +7181,7 @@ public final class RpcRequests {
         result.data_ = data_;
         result.address_ = address_;
         result.port_ = port_;
+        result.taskPort_ = taskPort_;
         onBuilt();
         return result;
       }
@@ -7232,6 +7266,9 @@ public final class RpcRequests {
         }
         if (other.getPort() != 0) {
           setPort(other.getPort());
+        }
+        if (other.getTaskPort() != 0) {
+          setTaskPort(other.getTaskPort());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -7810,6 +7847,32 @@ public final class RpcRequests {
       public Builder clearPort() {
 
         port_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int taskPort_ ;
+      /**
+       * <code>int32 taskPort = 12;</code>
+       */
+      public int getTaskPort() {
+        return taskPort_;
+      }
+      /**
+       * <code>int32 taskPort = 12;</code>
+       */
+      public Builder setTaskPort(int value) {
+
+        taskPort_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 taskPort = 12;</code>
+       */
+      public Builder clearTaskPort() {
+
+        taskPort_ = 0;
         onChanged();
         return this;
       }
@@ -9994,20 +10057,20 @@ public final class RpcRequests {
                     "(\010\"J\n\026RequestPreVoteResponse\022\014\n\004term\030\001 \001" +
                     "(\003\022\017\n\007granted\030\002 \001(\010\022\021\n\tpeer_name\030\003 \001(\t\"@" +
                     "\n\032AppendEntriesRequestHeader\022\021\n\tserver_i" +
-                    "d\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\"\365\001\n\024AppendEntri" +
+                    "d\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\"\207\002\n\024AppendEntri" +
                     "esRequest\022\020\n\010group_id\030\001 \001(\t\022\021\n\tserver_id" +
                     "\030\002 \001(\t\022\017\n\007peer_id\030\003 \001(\t\022\014\n\004term\030\004 \001(\003\022\025\n" +
                     "\rprev_log_term\030\005 \001(\003\022\026\n\016prev_log_index\030\006" +
                     " \001(\003\022$\n\007entries\030\007 \001(\0132\023.protobuf.EntryMe" +
                     "ta\022\027\n\017committed_index\030\010 \001(\003\022\014\n\004data\030\t \001(" +
-                    "\014\022\017\n\007address\030\n \001(\t\022\014\n\004port\030\013 \001(\005\"N\n\025Appe" +
-                    "ndEntriesResponse\022\014\n\004term\030\001 \001(\003\022\017\n\007succe" +
-                    "ss\030\002 \001(\010\022\026\n\016last_log_index\030\003 \001(\003\"Y\n\020Read" +
-                    "IndexRequest\022\020\n\010group_id\030\001 \001(\t\022\021\n\tserver" +
-                    "_id\030\002 \001(\t\022\017\n\007entries\030\003 \001(\014\022\017\n\007peer_id\030\004 " +
-                    "\001(\t\"3\n\021ReadIndexResponse\022\r\n\005index\030\001 \001(\003\022" +
-                    "\017\n\007success\030\002 \001(\010B\022\n\003rpcB\013RpcRequestsb\006pr" +
-                    "oto3"
+                    "\014\022\017\n\007address\030\n \001(\t\022\014\n\004port\030\013 \001(\005\022\020\n\010task" +
+                    "Port\030\014 \001(\005\"N\n\025AppendEntriesResponse\022\014\n\004t" +
+                    "erm\030\001 \001(\003\022\017\n\007success\030\002 \001(\010\022\026\n\016last_log_i" +
+                    "ndex\030\003 \001(\003\"Y\n\020ReadIndexRequest\022\020\n\010group_" +
+                    "id\030\001 \001(\t\022\021\n\tserver_id\030\002 \001(\t\022\017\n\007entries\030\003" +
+                    " \001(\014\022\017\n\007peer_id\030\004 \001(\t\"3\n\021ReadIndexRespon" +
+                    "se\022\r\n\005index\030\001 \001(\003\022\017\n\007success\030\002 \001(\010B\022\n\003rp" +
+                    "cB\013RpcRequestsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
             new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -10081,7 +10144,7 @@ public final class RpcRequests {
     internal_static_protobuf_AppendEntriesRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_AppendEntriesRequest_descriptor,
-            new java.lang.String[] { "GroupId", "ServerId", "PeerId", "Term", "PrevLogTerm", "PrevLogIndex", "Entries", "CommittedIndex", "Data", "Address", "Port", });
+            new java.lang.String[] { "GroupId", "ServerId", "PeerId", "Term", "PrevLogTerm", "PrevLogIndex", "Entries", "CommittedIndex", "Data", "Address", "Port", "TaskPort", });
     internal_static_protobuf_AppendEntriesResponse_descriptor =
             getDescriptor().getMessageTypes().get(10);
     internal_static_protobuf_AppendEntriesResponse_fieldAccessorTable = new

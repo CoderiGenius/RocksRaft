@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import rpc.RpcRequests;
 import rpc.RpcServices;
 import rpc.RpcServicesImpl;
+import rpc.TaskRpcServices;
+import utils.Requires;
 import utils.TimerManager;
 import utils.Utils;
 
@@ -50,6 +52,7 @@ public class NodeImpl implements Node {
     protected final Lock    readLock  = this.readWriteLock.readLock();
     private List<PeerId> peerIdList = new CopyOnWriteArrayList<>();
     private Map<Endpoint, RpcServices> rpcServicesMap = new ConcurrentHashMap<>();
+    private Map<Endpoint, TaskRpcServices> taskRpcServices = new ConcurrentHashMap<>();
     private Map<Endpoint,Replicator> replicatorMap = new ConcurrentHashMap<>();
     private NodeState nodeState;
     private AtomicLong lastLogTerm = new AtomicLong(0);
@@ -77,6 +80,14 @@ public class NodeImpl implements Node {
 
     public void setLeaderId(NodeId leaderId) {
         this.leaderId = leaderId;
+    }
+
+    public Map<Endpoint, TaskRpcServices> getTaskRpcServices() {
+        return taskRpcServices;
+    }
+
+    public void setTaskRpcServices(Map<Endpoint, TaskRpcServices> taskRpcServices) {
+        this.taskRpcServices = taskRpcServices;
     }
 
     @Override
@@ -163,7 +174,7 @@ public class NodeImpl implements Node {
 
             setNodeState(NodeState.follwoer);
             PeerId peerId = new PeerId(request.getPeerId(),request.getPeerId()
-                    ,request.getAddress(),request.getPort());
+                    ,request.getAddress(),request.getPort(),request.getTaskPort());
             NodeId nodeId = new NodeId(request.getGroupId(),peerId);
             setLeaderId(nodeId);
 
@@ -174,6 +185,27 @@ public class NodeImpl implements Node {
             getWriteLock().unlock();
         }
         return false;
+    }
+
+    @Override
+    public void apply(Task task) {
+        Requires.requireNonNull(task, "Null task");
+        LOG.info("Applying task");
+
+        if (NodeState.follwoer.equals(getNodeState())) {
+            LOG.info("Current node is in follower state, leader is {} forwarding request……"
+                    ,getLeaderId().getPeerId().getPeerName());
+            getTaskRpcServices().get(getLeaderId().getPeerId().getEndpoint()).apply(task);
+        } else if (!NodeState.leader.equals(getNodeState())) {
+            LOG.info("Current node is not in valid state {}",getNodeState());
+            Utils.runClosureInThread(task.getDone()
+                    , new Status(RaftError.ENODESHUTDOWN, "Current node is not in valid state {}",getNodeState()));
+
+
+        }
+
+
+
     }
 
 

@@ -71,7 +71,9 @@ message AppendEntriesRequest {
      bytes data = 9;
      string address = 10;
      int32 port = 11;
+     int32 taskPort = 12;
 };
+
 message AppendEntriesResponse {
      int64 term = 1;
      bool success = 2;

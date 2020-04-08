@@ -37,8 +37,17 @@ public class PeerId implements Serializable,Checksum {
     private String peerName;
     private String id;
 
+    private int taskPort;
     public PeerId() {
 
+    }
+
+    public int getTaskPort() {
+        return taskPort;
+    }
+
+    public void setTaskPort(int taskPort) {
+        this.taskPort = taskPort;
     }
 
     public String getId() {
@@ -49,10 +58,11 @@ public class PeerId implements Serializable,Checksum {
         this.id = id;
     }
 
-    public PeerId(String id,String peerName,String address,Integer port) {
+    public PeerId(String id,String peerName,String address,Integer port,Integer taskPort) {
             this.endpoint = new Endpoint(address,port);
             this.id = id;
             this.peerName = peerName;
+            this.taskPort = taskPort;
     }
 
     public PeerId copy() {

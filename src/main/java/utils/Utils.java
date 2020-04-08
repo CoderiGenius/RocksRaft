@@ -1,6 +1,8 @@
 package utils;
 
 import com.alipay.remoting.NamedThreadFactory;
+import entity.Closure;
+import entity.Status;
 import io.netty.util.internal.SystemPropertyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,5 +112,18 @@ public class Utils {
      */
     public static Future<?> runInThread(final Runnable runnable) {
         return CLOSURE_EXECUTOR.submit(runnable);
+    }
+
+    public static Future<?> runClosureInThread(final Closure done, final Status status) {
+        if (done == null) {
+            return null;
+        }
+        return runInThread(() -> {
+            try {
+                done.run(status);
+            } catch (final Throwable t) {
+                LOG.error("Fail to run done closure", t);
+            }
+        });
     }
 }

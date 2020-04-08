@@ -11,12 +11,31 @@ public class CurrentNodeOptions{
     private String rpcProtocol;
     private String serialization;
     private int port;
+    private int taskPort;
     private boolean daemon;
     private String groupId;
     private String address;
     private String name;
     private String peerId;
+    private String logStoragePath;
+    private String logStorageName;
+    private String taskExecuteMethod;
 
+    public String getTaskExecuteMethod() {
+        return taskExecuteMethod;
+    }
+
+    public void setTaskExecuteMethod(String taskExecuteMethod) {
+        this.taskExecuteMethod = taskExecuteMethod;
+    }
+
+    public int getTaskPort() {
+        return taskPort;
+    }
+
+    public void setTaskPort(int taskPort) {
+        this.taskPort = taskPort;
+    }
 
     @Override
     public String toString() {
@@ -31,7 +50,25 @@ public class CurrentNodeOptions{
                 ", address='" + address + '\'' +
                 ", name='" + name + '\'' +
                 ", peerId='" + peerId + '\'' +
+                ", logStoragePath='" + logStoragePath + '\'' +
+                ", logStorageName='" + logStorageName + '\'' +
                 '}';
+    }
+
+    public String getLogStoragePath() {
+        return logStoragePath;
+    }
+
+    public void setLogStoragePath(String logStoragePath) {
+        this.logStoragePath = logStoragePath;
+    }
+
+    public String getLogStorageName() {
+        return logStorageName;
+    }
+
+    public void setLogStorageName(String logStorageName) {
+        this.logStorageName = logStorageName;
     }
 
     public long getElectionTimeOut() {

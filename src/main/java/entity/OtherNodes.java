@@ -9,6 +9,15 @@ public  class OtherNodes{
     private String name;
     private String address;
     private Integer port;
+    private int taskPort;
+
+    public int getTaskPort() {
+        return taskPort;
+    }
+
+    public void setTaskPort(int taskPort) {
+        this.taskPort = taskPort;
+    }
 
     public String getName() {
         return name;

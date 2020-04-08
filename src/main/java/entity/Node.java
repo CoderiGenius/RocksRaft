@@ -33,4 +33,6 @@ public interface Node  {
     List<ReplicatorStateListener> getReplicatorStatueListeners();
 
     boolean transformLeader(RpcRequests.AppendEntriesRequest request);
+
+    void apply(Task task);
 }

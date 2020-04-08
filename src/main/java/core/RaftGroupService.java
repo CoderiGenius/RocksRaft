@@ -9,33 +9,29 @@ import config.RaftOptionsLoader;
 import entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rpc.RpcResponseClosure;
-import rpc.RpcServices;
-import rpc.RpcServicesImpl;
-import utils.RandomTimeUtil;
+import rpc.*;
 import utils.Utils;
 
 import java.io.FileNotFoundException;
-import java.lang.reflect.Type;
-import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
 
 /**
  * Created by 周思成 on  2020/3/13 23:38
+ *
  * @author Mike
  */
 
 public class RaftGroupService {
 
-    private static final Logger LOG     = LoggerFactory.getLogger(RaftGroupService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RaftGroupService.class);
 
-    static{
+    static {
         //加载rpc protobuf
     }
-    private volatile boolean    started = false;
+
+    private volatile boolean started = false;
 
     /**
      * This node serverId
@@ -53,30 +49,29 @@ public class RaftGroupService {
     private RpcServer rpcServer;
 
 
-
     private Heartbeat heartbeat;
 
     /**
      * The raft group id
      */
-    private String              groupId;
+    private String groupId;
     /**
      * The raft node.
      */
     private Node node;
 
-   public RaftGroupService(NodeOptions nodeOptions,String configurationPath){
+    public RaftGroupService(NodeOptions nodeOptions, String configurationPath) {
 
         this.nodeOptions = nodeOptions;
-       try {
-           new RaftOptionsLoader(configurationPath);
-       } catch (FileNotFoundException e) {
-           LOG.error("Configuration not found path:"+configurationPath);
-           e.printStackTrace();
-       }
-       this.peerId = NodeImpl.getNodeImple().getNodeId().getPeerId();
-       this.groupId = NodeImpl.getNodeImple().getNodeId().getGroupId();
-   }
+        try {
+            new RaftOptionsLoader(configurationPath);
+        } catch (FileNotFoundException e) {
+            LOG.error("Configuration not found path:" + configurationPath);
+            e.printStackTrace();
+        }
+        this.peerId = NodeImpl.getNodeImple().getNodeId().getPeerId();
+        this.groupId = NodeImpl.getNodeImple().getNodeId().getGroupId();
+    }
 
     public RaftGroupService(String groupId, PeerId peerId, NodeOptions nodeOptions, RpcServer rpcServer) {
         this.groupId = groupId;
@@ -93,64 +88,94 @@ public class RaftGroupService {
 //
 //        this.heartbeat.getThreadPoolExecutor().execute();
 
-   }
+    }
 
 
-   public Node start()  {
-       if (this.started) {
-           return this.node;
-       }
-       if (this.peerId == null || this.peerId.getEndpoint() == null
-               || this.peerId.getEndpoint().equals(new Endpoint(Utils.IP_ANY, 0))) {
-           throw new IllegalArgumentException("Blank peerId:" + this.peerId);
-       }
-       if (StringUtils.isBlank(this.groupId)) {
-           throw new IllegalArgumentException("Blank group id" + this.groupId);
-       }
+    public Node start() {
+        if (this.started) {
+            return this.node;
+        }
+        if (this.peerId == null || this.peerId.getEndpoint() == null
+                || this.peerId.getEndpoint().equals(new Endpoint(Utils.IP_ANY, 0))) {
+            throw new IllegalArgumentException("Blank peerId:" + this.peerId);
+        }
+        if (StringUtils.isBlank(this.groupId)) {
+            throw new IllegalArgumentException("Blank group id" + this.groupId);
+        }
 
-       NodeImpl node = NodeImpl.getNodeImple();
+        NodeImpl node = NodeImpl.getNodeImple();
 
-       //start rpc service
-       ServerConfig serverConfig = new ServerConfig()
-               .setProtocol(nodeOptions.getRpcProtocol())
-               .setSerialization(nodeOptions.getSerialization())
-               .setPort(nodeOptions.getPort())
-               .setDaemon(nodeOptions.isDaemon());
+        //start rpc service
+        ServerConfig serverConfig = new ServerConfig()
+                .setProtocol(nodeOptions.getRpcProtocol())
+                .setSerialization(nodeOptions.getSerialization())
+                .setPort(nodeOptions.getPort())
+                .setDaemon(nodeOptions.isDaemon());
 
-       ProviderConfig<RpcServices> providerConfig = new ProviderConfig<RpcServices>()
-               .setInterfaceId(RpcServices.class.getName())
-               .setRef(new RpcServicesImpl())
-               .setServer(serverConfig);
-       providerConfig.export();
+        ProviderConfig<RpcServices> providerConfig = new ProviderConfig<RpcServices>()
+                .setInterfaceId(RpcServices.class.getName())
+                .setRef(new RpcServicesImpl())
+                .setServer(serverConfig);
+        providerConfig.export();
+
+        //start TaskRpc service
+        ServerConfig serverConfigForTasks = new ServerConfig()
+                .setProtocol(nodeOptions.getRpcProtocol())
+                //.setSerialization(nodeOptions.getSerialization())
+                .setPort(nodeOptions.getTaskPort())
+                .setDaemon(nodeOptions.isDaemon());
+
+        ProviderConfig<TaskServicesImpl> providerConfigForTasks = new ProviderConfig<TaskServicesImpl>()
+                .setInterfaceId(TaskServicesImpl.class.getName())
+                .setRef(new TaskServicesImpl())
+                .setServer(serverConfigForTasks);
+        providerConfigForTasks.export();
 
         //save the proxy class in to list
-       for (PeerId p:node.getPeerIdList()
-            ) {
-
-           ConsumerConfig<RpcServices> consumerConfig = new ConsumerConfig<RpcServices>()
-                   .setInvokeType("callback")
-                   .setOnReturn(new RpcResponseClosure())
-                   .setProtocol(nodeOptions.getRpcProtocol())
-                   .setDirectUrl(nodeOptions.getRpcProtocol()
-                           +"://"+p.getEndpoint().getIp()+":"+p.getEndpoint().getPort())
-                   .setInterfaceId(RpcServices.class.getName());
-
-           node.getRpcServicesMap().put(p.getEndpoint(),consumerConfig.refer());
-       }
+        for (PeerId p : node.getPeerIdList()
+        ) {
+            ConsumerConfig<RpcServicesImpl> consumerConfig;
+            consumerConfig = new ConsumerConfig<RpcServicesImpl>()
+                    .setInvokeType("callback")
+                    .setOnReturn(new RpcResponseClosure())
+                    .setProtocol(nodeOptions.getRpcProtocol())
+                    .setDirectUrl(nodeOptions.getRpcProtocol()
+                            + "://" + p.getEndpoint().getIp() + ":" + p.getEndpoint().getPort())
+                    .setInterfaceId(RpcServices.class.getName());
+            node.getRpcServicesMap().put(p.getEndpoint(), consumerConfig.refer());
 
 
+            ConsumerConfig<TaskServicesImpl> consumerConfigForTasks;
+            if ("callback".equals(nodeOptions.getTaskExecuteMethod())) {
+                consumerConfigForTasks = new ConsumerConfig<TaskServicesImpl>()
+                        .setInvokeType(nodeOptions.getTaskExecuteMethod())
+                        .setOnReturn(new TaskRpcResponseClosure())
+                        .setProtocol(nodeOptions.getRpcProtocol())
+                        .setDirectUrl(nodeOptions.getRpcProtocol()
+                                + "://" + p.getEndpoint().getIp() + ":" + p.getTaskPort())
+                        .setInterfaceId(RpcServices.class.getName());
+            } else {
+                consumerConfigForTasks = new ConsumerConfig<TaskServicesImpl>()
+                        .setProtocol(nodeOptions.getRpcProtocol())
+                        .setDirectUrl(nodeOptions.getRpcProtocol()
+                                + "://" + p.getEndpoint().getIp() + ":" + p.getTaskPort())
+                        .setInterfaceId(RpcServices.class.getName());
+            }
+            node.getTaskRpcServices().put(p.getEndpoint(), consumerConfigForTasks.refer());
+        }
 
-       //heartbeat
-       Heartbeat heartbeat = new Heartbeat(1,2
-               ,0,TimeUnit.MILLISECONDS,new LinkedBlockingDeque<>()
-               ,new HeartbeatThreadFactory(),new ThreadPoolExecutor.DiscardPolicy());
 
-       heartbeat.setChecker(
-               new TimeOutChecker(NodeOptions.getNodeOptions().getMaxHeartBeatTime(),Utils.monotonicMs(),new ElectionTimeOutClosure()));
+        //heartbeat
+        Heartbeat heartbeat = new Heartbeat(1, 2
+                , 0, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>()
+                , new HeartbeatThreadFactory(), new ThreadPoolExecutor.DiscardPolicy());
+
+        heartbeat.setChecker(
+                new TimeOutChecker(NodeOptions.getNodeOptions().getMaxHeartBeatTime(), Utils.monotonicMs(), new ElectionTimeOutClosure()));
 
 
-       return node;
-   }
+        return node;
+    }
 
 
 }
