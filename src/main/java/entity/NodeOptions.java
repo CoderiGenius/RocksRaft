@@ -63,6 +63,8 @@ public class NodeOptions extends RpcOptions {
     // Describe a specific LogStorage in format ${type}://${parameters}
     private String                          logUri;
 
+    //applyBatch of appendEntries
+    private int applyBatch = 32;
 
     private String rpcProtocol;
     private String serialization;
@@ -72,6 +74,11 @@ public class NodeOptions extends RpcOptions {
 
     private String taskExecuteMethod;
 
+    /**
+     * The maximum timeout in seconds to wait when publishing events into disruptor, default is 10 seconds.
+     * If the timeout happens, it may halt the node.
+     * */
+    private int            disruptorPublishEventWaitTimeoutSecs = 10;
 
     // If non-null, we will pass this throughput_snapshot_throttle to SnapshotExecutor
     // Default: NULL
@@ -95,6 +102,11 @@ public class NodeOptions extends RpcOptions {
      */
     private int                             raftRpcThreadPoolSize  = Utils.cpus() * 6;
 
+    private int            disruptorBufferSize                  = 16384;
+
+    /** Flush buffer to LogStorage if the buffer size reaches the limit */
+    private int            maxAppendBufferSize                  = 256 * 1024;
+
     //心跳包最长时间
     private long maxHeartBeatTime;
 
@@ -109,6 +121,22 @@ public class NodeOptions extends RpcOptions {
 
     private int taskPort;
 
+    public int getApplyBatch() {
+        return applyBatch;
+    }
+
+    public void setApplyBatch(int applyBatch) {
+        this.applyBatch = applyBatch;
+    }
+
+    public int getDisruptorBufferSize() {
+        return disruptorBufferSize;
+    }
+
+    public void setDisruptorBufferSize(int disruptorBufferSize) {
+        this.disruptorBufferSize = disruptorBufferSize;
+    }
+
     public String getTaskExecuteMethod() {
         return taskExecuteMethod;
     }
@@ -119,6 +147,22 @@ public class NodeOptions extends RpcOptions {
 
     public int getTaskPort() {
         return taskPort;
+    }
+
+    public int getDisruptorPublishEventWaitTimeoutSecs() {
+        return disruptorPublishEventWaitTimeoutSecs;
+    }
+
+    public int getMaxAppendBufferSize() {
+        return maxAppendBufferSize;
+    }
+
+    public void setMaxAppendBufferSize(int maxAppendBufferSize) {
+        this.maxAppendBufferSize = maxAppendBufferSize;
+    }
+
+    public void setDisruptorPublishEventWaitTimeoutSecs(int disruptorPublishEventWaitTimeoutSecs) {
+        this.disruptorPublishEventWaitTimeoutSecs = disruptorPublishEventWaitTimeoutSecs;
     }
 
     public void setTaskPort(int taskPort) {

@@ -1,10 +1,7 @@
 package config;
 
 import core.NodeImpl;
-import entity.Ballot;
-import entity.LogManager;
-import entity.PeerId;
-import entity.ReplicatorType;
+import entity.*;
 import utils.TimerManager;
 
 /**
@@ -18,15 +15,24 @@ public class ReplicatorOptions {
     private PeerId serverId;
     private PeerId            peerId;
     private LogManager logManager;
-    private Ballot ballotBox;
+    private BallotBox ballotBox;
     private NodeImpl node;
     private long              term;
     private TimerManager timerManager;
     private ReplicatorType replicatorType;
 
+    public ReplicatorOptions(){
+
+    }
+    public ReplicatorOptions( PeerId peerId) {
+        this.peerId = peerId;
+        this.dynamicHeartBeatTimeoutMs= NodeOptions.getNodeOptions().getMaxHeartBeatTime();
+        this.setElectionTimeoutMs(NodeOptions.getNodeOptions().getElectionTimeOut());
+
+    }
     public ReplicatorOptions(long dynamicHeartBeatTimeoutMs, long electionTimeoutMs
             , String groupId,  PeerId peerId, LogManager logManager
-            , Ballot ballotBox, NodeImpl node, long term, TimerManager timerManager
+            , BallotBox ballotBox, NodeImpl node, long term, TimerManager timerManager
             , ReplicatorType replicatorType) {
         this.dynamicHeartBeatTimeoutMs = dynamicHeartBeatTimeoutMs;
         this.electionTimeoutMs = electionTimeoutMs;
@@ -93,7 +99,7 @@ public class ReplicatorOptions {
         return ballotBox;
     }
 
-    public void setBallotBox(Ballot ballotBox) {
+    public void setBallotBox(BallotBox ballotBox) {
         this.ballotBox = ballotBox;
     }
 

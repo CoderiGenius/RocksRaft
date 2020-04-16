@@ -20,5 +20,6 @@ public interface RpcServices {
     public RpcRequests.AppendEntriesResponse handleApendEntriesRequest(
             RpcRequests.AppendEntriesRequest appendEntriesRequest);
 
-
+    public RpcRequests.AppendEntriesResponses handleApendEntriesRequests(
+            RpcRequests.AppendEntriesRequests appendEntriesRequests);
 }

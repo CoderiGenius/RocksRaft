@@ -8,6 +8,14 @@ message PingRequest {
     int64 send_timestamp = 1;
 }
 
+message AppendEntriesRequests{
+     repeated AppendEntriesRequest args = 1;
+}
+
+message AppendEntriesResponses{
+     repeated AppendEntriesResponse args = 1;
+}
+
 message ErrorResponse{
     int64 errorCode = 1;
     string errorMsg = 2;

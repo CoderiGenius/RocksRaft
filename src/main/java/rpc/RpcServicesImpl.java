@@ -135,5 +135,16 @@ public class RpcServicesImpl implements RpcServices {
 
     }
 
+    @Override
+    public RpcRequests.AppendEntriesResponses handleApendEntriesRequests(RpcRequests.AppendEntriesRequests appendEntriesRequests) {
+        RpcRequests.AppendEntriesResponses.Builder builder = RpcRequests.AppendEntriesResponses.newBuilder();
+
+        for (int i = 0; i <appendEntriesRequests.getArgsCount() ; i++) {
+           builder.addArgs(handleApendEntriesRequest(appendEntriesRequests.getArgs(i)));
+        }
+        return builder.build();
+
+    }
+
 
 }

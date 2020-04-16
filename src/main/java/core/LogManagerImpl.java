@@ -1,17 +1,27 @@
 package core;
 
+import com.alipay.remoting.NamedThreadFactory;
+import com.lmax.disruptor.*;
+import com.lmax.disruptor.dsl.Disruptor;
+import com.lmax.disruptor.dsl.ProducerType;
 import config.LogManagerOptions;
 import config.LogStorageOptions;
-import entity.LogEntry;
-import entity.LogId;
-import entity.LogManager;
-import entity.Options;
+import entity.*;
+import exceptions.LogExceptionHandler;
 import exceptions.LogStorageException;
+import exceptions.RaftException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import rpc.EnumOutter;
 import storage.LogStorage;
+import utils.DisruptorBuilder;
+import utils.Requires;
+import utils.SegmentList;
+import utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -22,26 +32,115 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class LogManagerImpl implements LogManager {
 
-
-    private static final Logger LOG                    = LoggerFactory
+    private LogId                                            diskId                 = new LogId(0, 0);
+    private static final int APPEND_LOG_RETRY_TIMES = 50;
+    private static final Logger LOG = LoggerFactory
             .getLogger(LogManagerImpl.class);
-    private final ReadWriteLock lock                   = new ReentrantReadWriteLock();
-    private final Lock writeLock              = this.lock.writeLock();
-    private final Lock                                       readLock               = this.lock.readLock();
+    private final ReadWriteLock lock = new ReentrantReadWriteLock();
+    private final Lock writeLock = this.lock.writeLock();
+    private final Lock readLock = this.lock.readLock();
     private LogStorage logStorage;
-    private LogId appliedId = new LogId(0,0);
+    private final SegmentList<LogEntry> logsInMemory = new SegmentList<>(true);
+    private Disruptor<StableClosureEvent> disruptor;
+    private RingBuffer<StableClosureEvent> diskQueue;
+    private LogId appliedId = new LogId(0, 0);
     private Options options;
     private long firstLogIndex;
     private long lastLogIndex;
+    private boolean stopped;
+    private boolean hasError = false;
+    private FSMCaller fsmCaller;
+
+    /**
+     * Closure to to run in stable state.
+     *
+     * @author boyan (boyan@alibaba-inc.com)
+     * <p>
+     * 2018-Apr-04 4:35:29 PM
+     */
 
     @Override
     public void join() throws InterruptedException {
 
     }
 
-    @Override
-    public void appendEntries(List<LogEntry> entries) {
+    private static class StableClosureEvent {
+        StableClosure done;
+        EventType type;
 
+        void reset() {
+            this.done = null;
+            this.type = null;
+        }
+    }
+
+    private enum EventType {
+        // other event type.
+        OTHER,
+        // reset
+        RESET,
+        // truncate log from prefix
+        TRUNCATE_PREFIX,
+        // truncate log from suffix
+        TRUNCATE_SUFFIX,
+        SHUTDOWN,
+        // get last log id
+        LAST_LOG_ID
+    }
+
+    @Override
+    public void appendEntries(final List<LogEntry> entries, final StableClosure done) {
+        Requires.requireNonNull(done, "done");
+        this.writeLock.lock();
+        try {
+            for (int i = 0; i < entries.size(); i++) {
+                //final LogEntry logEntry = entries.get(i);
+                if (!entries.isEmpty()) {
+                    done.setFirstLogIndex(entries.get(0).getId().getIndex());
+                    this.logsInMemory.addAll(entries);
+                }
+                done.setEntries(entries);
+            }
+            int retryTimes = 0;
+            final EventTranslator<StableClosureEvent> translator = (event, sequence) -> {
+                event.reset();
+                event.type = EventType.OTHER;
+                event.done = done;
+            };
+            while (true) {
+                if (tryOfferEvent(done, translator)) {
+                    break;
+                } else {
+                    retryTimes++;
+                    if (retryTimes > APPEND_LOG_RETRY_TIMES) {
+                        reportError(RaftError.EBUSY.getNumber(), "LogManager is busy, disk queue overload.");
+                        return;
+                    }
+                    Thread.yield();
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("AppendEntries error {}", e.getMessage());
+        } finally {
+            this.writeLock.unlock();
+        }
+
+    }
+
+
+    private boolean tryOfferEvent(final StableClosure done, final EventTranslator<StableClosureEvent> translator) {
+        if (this.stopped) {
+            Utils.runClosureInThread(done, new Status(RaftError.ESTOP, "Log manager is stopped."));
+            return true;
+        }
+        return this.diskQueue.tryPublishEvent(translator);
+    }
+
+    private void reportError(final int code, final String fmt, final Object... args) {
+        this.hasError = true;
+        final RaftException error = new RaftException(EnumOutter.ErrorType.ERROR_TYPE_LOG);
+        error.setStatus(new Status(code, fmt, args));
+        this.fsmCaller.onError(error);
     }
 
     @Override
@@ -84,24 +183,179 @@ public class LogManagerImpl implements LogManager {
             logStorageOptions.setLogStorageName(opts.getOptions().getCurrentNodeOptions().getLogStorageName());
             logStorageOptions.setLogStoragePath(opts.getOptions().getCurrentNodeOptions().getLogStoragePath());
             LogStorage logStorage = new LogStorageImpl(logStorageOptions);
-            if ( ! logStorage.init()) {
+            if (!logStorage.init()) {
 
                 throw new LogStorageException();
             }
 
             this.firstLogIndex = this.logStorage.getFirstLogIndex();
             this.lastLogIndex = this.logStorage.getLastLogIndex();
-
+            this.disruptor = DisruptorBuilder.<StableClosureEvent> newInstance()
+                    .setEventFactory(new StableClosureEventFactory())
+                    .setRingBufferSize(opts.getDisruptorBufferSize())
+                    .setThreadFactory(new NamedThreadFactory("JRaft-LogManager-Disruptor-", true))
+                    .setProducerType(ProducerType.MULTI)
+                    /*
+                     *  Use timeout strategy in log manager. If timeout happens, it will called reportError to halt the node.
+                     */
+                    .setWaitStrategy(new TimeoutBlockingWaitStrategy(
+                            NodeOptions.getNodeOptions()
+                                    .getDisruptorPublishEventWaitTimeoutSecs(), TimeUnit.SECONDS))
+                    .build();
+            this.disruptor.handleEventsWith(new StableClosureEventHandler());
+            this.disruptor.setDefaultExceptionHandler(
+                    new LogExceptionHandler<Object>(this.getClass().getSimpleName(),
+                            (event, ex) -> reportError(-1, "LogManager handle event error")));
+            this.diskQueue = this.disruptor.start();
+            this.stopped = false;
 
         } catch (Exception e) {
-            LOG.error("init LogManager error {}",e.getMessage());
-        }finally {
+            LOG.error("init LogManager error {}", e.getMessage());
+        } finally {
             this.writeLock.unlock();
         }
         return true;
 
     }
 
+    private static class StableClosureEventFactory implements EventFactory<StableClosureEvent> {
+
+        @Override
+        public StableClosureEvent newInstance() {
+            return new StableClosureEvent();
+        }
+    }
+
+    private class StableClosureEventHandler implements EventHandler<StableClosureEvent> {
+
+        LogId               lastId  = LogManagerImpl.this.diskId;
+        List<StableClosure> storage = new ArrayList<>(256);
+        AppendBatcher       ab      = new AppendBatcher(this.storage, 256, new ArrayList<>(),
+                LogManagerImpl.this.diskId);
+
+        @Override
+        public void onEvent(StableClosureEvent stableClosureEvent, long sequence, boolean endOfBatch) throws Exception {
+            final StableClosure done = stableClosureEvent.done;
+            if (done.getEntries() != null && !done.getEntries().isEmpty()) {
+                this.ab.append(done);
+            }else {
+                this.lastId = this.ab.flush();
+            }
+            if (endOfBatch) {
+                this.lastId = this.ab.flush();
+                setDiskId(this.lastId);
+            }
+        }
+    }
+
+    private void setDiskId(final LogId id) {
+        if (id == null) {
+            return;
+        }
+        LogId clearId;
+        this.writeLock.lock();
+        try {
+            if (id.compareTo(this.diskId) < 0) {
+                return;
+            }
+            this.diskId = id;
+            clearId = this.diskId.compareTo(this.appliedId) <= 0 ? this.diskId : this.appliedId;
+        } finally {
+            this.writeLock.unlock();
+        }
+        if (clearId != null) {
+            clearMemoryLogs(clearId);
+        }
+    }
+    private void clearMemoryLogs(final LogId id) {
+        this.writeLock.lock();
+        try {
+
+            this.logsInMemory.removeFromFirstWhen(entry -> entry.getId().compareTo(id) <= 0);
+        } finally {
+            this.writeLock.unlock();
+        }
+    }
+    private class AppendBatcher {
+        List<StableClosure> storage;
+        int                 cap;
+        int                 size;
+        int                 bufferSize;
+        List<LogEntry>      toAppend;
+        LogId               lastId;
+
+        public AppendBatcher(final List<StableClosure> storage, final int cap, final List<LogEntry> toAppend,
+                             final LogId lastId) {
+            super();
+            this.storage = storage;
+            this.cap = cap;
+            this.toAppend = toAppend;
+            this.lastId = lastId;
+        }
+
+        LogId flush() {
+            if (this.size > 0) {
+                this.lastId = appendToStorage(this.toAppend);
+                for (int i = 0; i < this.size; i++) {
+                    this.storage.get(i).getEntries().clear();
+                    Status st = null;
+                    try {
+                        if (LogManagerImpl.this.hasError) {
+                            st = new Status(RaftError.EIO, "Corrupted LogStorage");
+                        } else {
+                            st = Status.OK();
+                        }
+                        this.storage.get(i).run(st);
+                    } catch (Throwable t) {
+                        LOG.error("Fail to run closure with status: {}.", st, t);
+                    }
+                }
+                this.toAppend.clear();
+                this.storage.clear();
+            }
+            this.size = 0;
+            this.bufferSize = 0;
+            return this.lastId;
+        }
+
+        void append(final StableClosure done) {
+            if (this.size == this.cap || this.bufferSize >= NodeOptions.getNodeOptions().getMaxAppendBufferSize()) {
+                flush();
+            }
+            this.storage.add(done);
+            this.size++;
+            this.toAppend.addAll(done.getEntries());
+            for (final LogEntry entry : done.getEntries()) {
+                this.bufferSize += entry.getData() != null ? entry.getData().remaining() : 0;
+            }
+        }
+    }
+    private LogId appendToStorage(final List<LogEntry> toAppend) {
+        LogId lastId = null;
+        if (!this.hasError) {
+            final long startMs = Utils.monotonicMs();
+            final int entriesCount = toAppend.size();
+            try {
+                int writtenSize = 0;
+                for (final LogEntry entry : toAppend) {
+                    writtenSize += entry.getData() != null ? entry.getData().remaining() : 0;
+                }
+                final int nAppent = this.logStorage.appendEntries(toAppend);
+                if (nAppent != entriesCount) {
+                    LOG.error("**Critical error**, fail to appendEntries, nAppent={}, toAppend={}", nAppent,
+                            toAppend.size());
+                    reportError(RaftError.EIO.getNumber(), "Fail to append log entries");
+                }
+                if (nAppent > 0) {
+                    lastId = toAppend.get(nAppent - 1).getId();
+                }
+                toAppend.clear();
+            } catch (Exception e) {
+                LOG.error("appendToStorage error {}",e.getMessage());
+            }
+        }
+        return lastId;
+    }
     public ReadWriteLock getLock() {
         return lock;
     }

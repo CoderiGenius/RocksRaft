@@ -21,6 +21,7 @@ public class CurrentNodeOptions{
     private String logStorageName;
     private String taskExecuteMethod;
 
+
     public String getTaskExecuteMethod() {
         return taskExecuteMethod;
     }

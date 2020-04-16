@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import com.alipay.remoting.util.StringUtils;
 import org.slf4j.Logger;
@@ -162,5 +163,21 @@ public class PeerId implements Serializable,Checksum {
             LOG.error("Parse peer from string failed: {}.", s, e);
             return false;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PeerId peerId = (PeerId) o;
+        return taskPort == peerId.taskPort &&
+                endpoint.equals(peerId.endpoint) &&
+                Objects.equals(peerName, peerId.peerName) &&
+                Objects.equals(id, peerId.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(endpoint, peerName, id, taskPort);
     }
 }

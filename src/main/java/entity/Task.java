@@ -29,6 +29,9 @@ public class Task implements Serializable {
         this.done = done;
     }
 
+    public Task() {
+
+    }
     public Task(ByteBuffer data, Closure done, long expectedTerm) {
         super();
         this.data = data;

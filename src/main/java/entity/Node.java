@@ -35,4 +35,6 @@ public interface Node  {
     boolean transformLeader(RpcRequests.AppendEntriesRequest request);
 
     void apply(Task task);
+
+    boolean init();
 }

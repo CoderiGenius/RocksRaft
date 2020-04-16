@@ -1,6 +1,7 @@
 package entity;
 
 import config.LogManagerOptions;
+import core.LogManagerImpl;
 import exceptions.LogStorageException;
 
 import java.util.List;
@@ -10,6 +11,45 @@ import java.util.List;
  */
 
 public interface LogManager {
+
+    abstract class StableClosure implements Closure {
+
+        protected long           firstLogIndex = 0;
+        protected List<LogEntry> entries;
+        protected int            nEntries;
+
+        public StableClosure() {
+            // NO-OP
+        }
+
+        public long getFirstLogIndex() {
+            return this.firstLogIndex;
+        }
+
+        public void setFirstLogIndex(final long firstLogIndex) {
+            this.firstLogIndex = firstLogIndex;
+        }
+
+        public List<LogEntry> getEntries() {
+            return this.entries;
+        }
+
+        public void setEntries(final List<LogEntry> entries) {
+            this.entries = entries;
+            if (entries != null) {
+                this.nEntries = entries.size();
+            } else {
+                this.nEntries = 0;
+            }
+        }
+
+        public StableClosure(final List<LogEntry> entries) {
+            super();
+            setEntries(entries);
+        }
+
+    }
+
 
     /**
      * Wait the log manager to be shut down.
@@ -24,7 +64,7 @@ public interface LogManager {
      *
      * @param entries log entries
      */
-    void appendEntries(final List<LogEntry> entries);
+    void appendEntries(final List<LogEntry> entries,final StableClosure done);
 
     /**
      * Get the log entry at index.

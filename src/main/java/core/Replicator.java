@@ -5,16 +5,23 @@ package core;
  * @author Mike
  */
 
+
+import com.alipay.remoting.NamedThreadFactory;
 import com.google.protobuf.Message;
+import com.lmax.disruptor.BlockingWaitStrategy;
+import com.lmax.disruptor.EventFactory;
+import com.lmax.disruptor.EventHandler;
+import com.lmax.disruptor.RingBuffer;
+import com.lmax.disruptor.dsl.Disruptor;
+import com.lmax.disruptor.dsl.ProducerType;
 import config.ReplicatorOptions;
-import entity.Endpoint;
-import entity.Node;
-import entity.PeerId;
-import entity.Status;
+import entity.*;
+import exceptions.LogExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rpc.RpcRequests;
 import rpc.RpcServices;
+import utils.DisruptorBuilder;
 import utils.Requires;
 import utils.TimerManager;
 import utils.Utils;
@@ -28,6 +35,8 @@ import java.util.concurrent.atomic.AtomicLong;
  * Replicator for replicating log entry from leader to followers.
  */
 public class Replicator {
+
+
 
     enum ReplicatorState{
         // idle
@@ -82,19 +91,47 @@ public class Replicator {
 
     }
 
+
     private static final Logger LOG                    = LoggerFactory.getLogger(Replicator.class);
     private final ReplicatorOptions          options;
     private TimerManager timerManager;
     private RpcServices rpcServices;
-    private State state;
+    private ReplicatorState state;
     private AtomicLong currentSuccessTerm;
     private AtomicLong currentSuccessIndex;
+    private List<Task> taskList;
+    private Disruptor<Task> disruptor;
+    private RingBuffer<Task> ringBuffer;
     public Replicator(ReplicatorOptions options,RpcServices rpcServices) {
+        this.state = ReplicatorState.IDLE;
         this.options = options;
         this.rpcServices = rpcServices;
         this.state = State.Probe;
+        this.disruptor = DisruptorBuilder.<Task>newInstance()
+                .setRingBufferSize(NodeOptions.getNodeOptions().getDisruptorBufferSize())
+                .setEventFactory(new TaskEventFactory())
+                .setThreadFactory(new NamedThreadFactory("JRaft-Replicator-Disruptor-", true))
+                .setProducerType(ProducerType.MULTI)
+                .setWaitStrategy(new BlockingWaitStrategy())
+                .build();
+        disruptor.handleEventsWith( new ReplicatorHandler());
+        disruptor.setDefaultExceptionHandler(new LogExceptionHandler<Object>(getClass().getSimpleName()));
     }
 
+    private  class ReplicatorHandler implements EventHandler<entity.Task> {
+
+        @Override
+        public void onEvent(Task task, long l, boolean b) throws Exception {
+
+        }
+    }
+    private static class TaskEventFactory implements EventFactory<Task> {
+
+        @Override
+        public Task newInstance() {
+            return new Task();
+        }
+    }
     /**
      * Notify replicator event(such as created, error, destroyed) to replicatorStateListener which is implemented by users.
      *
@@ -217,11 +254,11 @@ public class Replicator {
         return timerManager;
     }
 
-    public State getState() {
+    public ReplicatorState getState() {
         return state;
     }
 
-    public void setState(State state) {
+    public void setState(ReplicatorState state) {
         this.state = state;
     }
 
@@ -231,6 +268,22 @@ public class Replicator {
 
     public RpcServices getRpcServices() {
         return rpcServices;
+    }
+
+    public Disruptor<Task> getDisruptor() {
+        return disruptor;
+    }
+
+    public void setDisruptor(Disruptor<Task> disruptor) {
+        this.disruptor = disruptor;
+    }
+
+    public RingBuffer<Task> getRingBuffer() {
+        return ringBuffer;
+    }
+
+    public void setRingBuffer(RingBuffer<Task> ringBuffer) {
+        this.ringBuffer = ringBuffer;
     }
 
     public void setRpcServices(RpcServices rpcServices) {

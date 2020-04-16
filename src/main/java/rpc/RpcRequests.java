@@ -491,6 +491,1570 @@ public final class RpcRequests {
 
   }
 
+  public interface AppendEntriesRequestsOrBuilder extends
+          // @@protoc_insertion_point(interface_extends:protobuf.AppendEntriesRequests)
+          com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+     */
+    java.util.List<rpc.RpcRequests.AppendEntriesRequest>
+    getArgsList();
+    /**
+     * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+     */
+    rpc.RpcRequests.AppendEntriesRequest getArgs(int index);
+    /**
+     * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+     */
+    int getArgsCount();
+    /**
+     * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+     */
+    java.util.List<? extends rpc.RpcRequests.AppendEntriesRequestOrBuilder>
+    getArgsOrBuilderList();
+    /**
+     * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+     */
+    rpc.RpcRequests.AppendEntriesRequestOrBuilder getArgsOrBuilder(
+            int index);
+  }
+  /**
+   * Protobuf type {@code protobuf.AppendEntriesRequests}
+   */
+  public  static final class AppendEntriesRequests extends
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:protobuf.AppendEntriesRequests)
+          AppendEntriesRequestsOrBuilder {
+    private static final long serialVersionUID = 0L;
+    // Use AppendEntriesRequests.newBuilder() to construct.
+    private AppendEntriesRequests(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private AppendEntriesRequests() {
+      args_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private AppendEntriesRequests(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+              com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                args_ = new java.util.ArrayList<rpc.RpcRequests.AppendEntriesRequest>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              args_.add(
+                      input.readMessage(rpc.RpcRequests.AppendEntriesRequest.parser(), extensionRegistry));
+              break;
+            }
+            default: {
+              if (!parseUnknownFieldProto3(
+                      input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+                e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          args_ = java.util.Collections.unmodifiableList(args_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+    getDescriptor() {
+      return rpc.RpcRequests.internal_static_protobuf_AppendEntriesRequests_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+    internalGetFieldAccessorTable() {
+      return rpc.RpcRequests.internal_static_protobuf_AppendEntriesRequests_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                      rpc.RpcRequests.AppendEntriesRequests.class, rpc.RpcRequests.AppendEntriesRequests.Builder.class);
+    }
+
+    public static final int ARGS_FIELD_NUMBER = 1;
+    private java.util.List<rpc.RpcRequests.AppendEntriesRequest> args_;
+    /**
+     * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+     */
+    public java.util.List<rpc.RpcRequests.AppendEntriesRequest> getArgsList() {
+      return args_;
+    }
+    /**
+     * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+     */
+    public java.util.List<? extends rpc.RpcRequests.AppendEntriesRequestOrBuilder>
+    getArgsOrBuilderList() {
+      return args_;
+    }
+    /**
+     * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+     */
+    public int getArgsCount() {
+      return args_.size();
+    }
+    /**
+     * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+     */
+    public rpc.RpcRequests.AppendEntriesRequest getArgs(int index) {
+      return args_.get(index);
+    }
+    /**
+     * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+     */
+    public rpc.RpcRequests.AppendEntriesRequestOrBuilder getArgsOrBuilder(
+            int index) {
+      return args_.get(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+            throws java.io.IOException {
+      for (int i = 0; i < args_.size(); i++) {
+        output.writeMessage(1, args_.get(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < args_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeMessageSize(1, args_.get(i));
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof rpc.RpcRequests.AppendEntriesRequests)) {
+        return super.equals(obj);
+      }
+      rpc.RpcRequests.AppendEntriesRequests other = (rpc.RpcRequests.AppendEntriesRequests) obj;
+
+      boolean result = true;
+      result = result && getArgsList()
+              .equals(other.getArgsList());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (getArgsCount() > 0) {
+        hash = (37 * hash) + ARGS_FIELD_NUMBER;
+        hash = (53 * hash) + getArgsList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static rpc.RpcRequests.AppendEntriesRequests parseFrom(
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static rpc.RpcRequests.AppendEntriesRequests parseFrom(
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static rpc.RpcRequests.AppendEntriesRequests parseFrom(
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static rpc.RpcRequests.AppendEntriesRequests parseFrom(
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static rpc.RpcRequests.AppendEntriesRequests parseFrom(byte[] data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static rpc.RpcRequests.AppendEntriesRequests parseFrom(
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static rpc.RpcRequests.AppendEntriesRequests parseFrom(java.io.InputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+    }
+    public static rpc.RpcRequests.AppendEntriesRequests parseFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static rpc.RpcRequests.AppendEntriesRequests parseDelimitedFrom(java.io.InputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static rpc.RpcRequests.AppendEntriesRequests parseDelimitedFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static rpc.RpcRequests.AppendEntriesRequests parseFrom(
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+    }
+    public static rpc.RpcRequests.AppendEntriesRequests parseFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(rpc.RpcRequests.AppendEntriesRequests prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+              ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code protobuf.AppendEntriesRequests}
+     */
+    public static final class Builder extends
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:protobuf.AppendEntriesRequests)
+            rpc.RpcRequests.AppendEntriesRequestsOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+      getDescriptor() {
+        return rpc.RpcRequests.internal_static_protobuf_AppendEntriesRequests_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internalGetFieldAccessorTable() {
+        return rpc.RpcRequests.internal_static_protobuf_AppendEntriesRequests_fieldAccessorTable
+                .ensureFieldAccessorsInitialized(
+                        rpc.RpcRequests.AppendEntriesRequests.class, rpc.RpcRequests.AppendEntriesRequests.Builder.class);
+      }
+
+      // Construct using rpc.RpcRequests.AppendEntriesRequests.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getArgsFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (argsBuilder_ == null) {
+          args_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          argsBuilder_.clear();
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+      getDescriptorForType() {
+        return rpc.RpcRequests.internal_static_protobuf_AppendEntriesRequests_descriptor;
+      }
+
+      @java.lang.Override
+      public rpc.RpcRequests.AppendEntriesRequests getDefaultInstanceForType() {
+        return rpc.RpcRequests.AppendEntriesRequests.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public rpc.RpcRequests.AppendEntriesRequests build() {
+        rpc.RpcRequests.AppendEntriesRequests result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public rpc.RpcRequests.AppendEntriesRequests buildPartial() {
+        rpc.RpcRequests.AppendEntriesRequests result = new rpc.RpcRequests.AppendEntriesRequests(this);
+        int from_bitField0_ = bitField0_;
+        if (argsBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            args_ = java.util.Collections.unmodifiableList(args_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.args_ = args_;
+        } else {
+          result.args_ = argsBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof rpc.RpcRequests.AppendEntriesRequests) {
+          return mergeFrom((rpc.RpcRequests.AppendEntriesRequests)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(rpc.RpcRequests.AppendEntriesRequests other) {
+        if (other == rpc.RpcRequests.AppendEntriesRequests.getDefaultInstance()) return this;
+        if (argsBuilder_ == null) {
+          if (!other.args_.isEmpty()) {
+            if (args_.isEmpty()) {
+              args_ = other.args_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureArgsIsMutable();
+              args_.addAll(other.args_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.args_.isEmpty()) {
+            if (argsBuilder_.isEmpty()) {
+              argsBuilder_.dispose();
+              argsBuilder_ = null;
+              args_ = other.args_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              argsBuilder_ =
+                      com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                              getArgsFieldBuilder() : null;
+            } else {
+              argsBuilder_.addAllMessages(other.args_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
+        rpc.RpcRequests.AppendEntriesRequests parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (rpc.RpcRequests.AppendEntriesRequests) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<rpc.RpcRequests.AppendEntriesRequest> args_ =
+              java.util.Collections.emptyList();
+      private void ensureArgsIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          args_ = new java.util.ArrayList<rpc.RpcRequests.AppendEntriesRequest>(args_);
+          bitField0_ |= 0x00000001;
+        }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+              rpc.RpcRequests.AppendEntriesRequest, rpc.RpcRequests.AppendEntriesRequest.Builder, rpc.RpcRequests.AppendEntriesRequestOrBuilder> argsBuilder_;
+
+      /**
+       * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+       */
+      public java.util.List<rpc.RpcRequests.AppendEntriesRequest> getArgsList() {
+        if (argsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(args_);
+        } else {
+          return argsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+       */
+      public int getArgsCount() {
+        if (argsBuilder_ == null) {
+          return args_.size();
+        } else {
+          return argsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+       */
+      public rpc.RpcRequests.AppendEntriesRequest getArgs(int index) {
+        if (argsBuilder_ == null) {
+          return args_.get(index);
+        } else {
+          return argsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+       */
+      public Builder setArgs(
+              int index, rpc.RpcRequests.AppendEntriesRequest value) {
+        if (argsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureArgsIsMutable();
+          args_.set(index, value);
+          onChanged();
+        } else {
+          argsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+       */
+      public Builder setArgs(
+              int index, rpc.RpcRequests.AppendEntriesRequest.Builder builderForValue) {
+        if (argsBuilder_ == null) {
+          ensureArgsIsMutable();
+          args_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          argsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+       */
+      public Builder addArgs(rpc.RpcRequests.AppendEntriesRequest value) {
+        if (argsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureArgsIsMutable();
+          args_.add(value);
+          onChanged();
+        } else {
+          argsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+       */
+      public Builder addArgs(
+              int index, rpc.RpcRequests.AppendEntriesRequest value) {
+        if (argsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureArgsIsMutable();
+          args_.add(index, value);
+          onChanged();
+        } else {
+          argsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+       */
+      public Builder addArgs(
+              rpc.RpcRequests.AppendEntriesRequest.Builder builderForValue) {
+        if (argsBuilder_ == null) {
+          ensureArgsIsMutable();
+          args_.add(builderForValue.build());
+          onChanged();
+        } else {
+          argsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+       */
+      public Builder addArgs(
+              int index, rpc.RpcRequests.AppendEntriesRequest.Builder builderForValue) {
+        if (argsBuilder_ == null) {
+          ensureArgsIsMutable();
+          args_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          argsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+       */
+      public Builder addAllArgs(
+              java.lang.Iterable<? extends rpc.RpcRequests.AppendEntriesRequest> values) {
+        if (argsBuilder_ == null) {
+          ensureArgsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+                  values, args_);
+          onChanged();
+        } else {
+          argsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+       */
+      public Builder clearArgs() {
+        if (argsBuilder_ == null) {
+          args_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          argsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+       */
+      public Builder removeArgs(int index) {
+        if (argsBuilder_ == null) {
+          ensureArgsIsMutable();
+          args_.remove(index);
+          onChanged();
+        } else {
+          argsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+       */
+      public rpc.RpcRequests.AppendEntriesRequest.Builder getArgsBuilder(
+              int index) {
+        return getArgsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+       */
+      public rpc.RpcRequests.AppendEntriesRequestOrBuilder getArgsOrBuilder(
+              int index) {
+        if (argsBuilder_ == null) {
+          return args_.get(index);  } else {
+          return argsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+       */
+      public java.util.List<? extends rpc.RpcRequests.AppendEntriesRequestOrBuilder>
+      getArgsOrBuilderList() {
+        if (argsBuilder_ != null) {
+          return argsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(args_);
+        }
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+       */
+      public rpc.RpcRequests.AppendEntriesRequest.Builder addArgsBuilder() {
+        return getArgsFieldBuilder().addBuilder(
+                rpc.RpcRequests.AppendEntriesRequest.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+       */
+      public rpc.RpcRequests.AppendEntriesRequest.Builder addArgsBuilder(
+              int index) {
+        return getArgsFieldBuilder().addBuilder(
+                index, rpc.RpcRequests.AppendEntriesRequest.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesRequest args = 1;</code>
+       */
+      public java.util.List<rpc.RpcRequests.AppendEntriesRequest.Builder>
+      getArgsBuilderList() {
+        return getArgsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+              rpc.RpcRequests.AppendEntriesRequest, rpc.RpcRequests.AppendEntriesRequest.Builder, rpc.RpcRequests.AppendEntriesRequestOrBuilder>
+      getArgsFieldBuilder() {
+        if (argsBuilder_ == null) {
+          argsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+                  rpc.RpcRequests.AppendEntriesRequest, rpc.RpcRequests.AppendEntriesRequest.Builder, rpc.RpcRequests.AppendEntriesRequestOrBuilder>(
+                  args_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          args_ = null;
+        }
+        return argsBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:protobuf.AppendEntriesRequests)
+    }
+
+    // @@protoc_insertion_point(class_scope:protobuf.AppendEntriesRequests)
+    private static final rpc.RpcRequests.AppendEntriesRequests DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new rpc.RpcRequests.AppendEntriesRequests();
+    }
+
+    public static rpc.RpcRequests.AppendEntriesRequests getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<AppendEntriesRequests>
+            PARSER = new com.google.protobuf.AbstractParser<AppendEntriesRequests>() {
+      @java.lang.Override
+      public AppendEntriesRequests parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+        return new AppendEntriesRequests(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<AppendEntriesRequests> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<AppendEntriesRequests> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public rpc.RpcRequests.AppendEntriesRequests getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface AppendEntriesResponsesOrBuilder extends
+          // @@protoc_insertion_point(interface_extends:protobuf.AppendEntriesResponses)
+          com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+     */
+    java.util.List<rpc.RpcRequests.AppendEntriesResponse>
+    getArgsList();
+    /**
+     * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+     */
+    rpc.RpcRequests.AppendEntriesResponse getArgs(int index);
+    /**
+     * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+     */
+    int getArgsCount();
+    /**
+     * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+     */
+    java.util.List<? extends rpc.RpcRequests.AppendEntriesResponseOrBuilder>
+    getArgsOrBuilderList();
+    /**
+     * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+     */
+    rpc.RpcRequests.AppendEntriesResponseOrBuilder getArgsOrBuilder(
+            int index);
+  }
+  /**
+   * Protobuf type {@code protobuf.AppendEntriesResponses}
+   */
+  public  static final class AppendEntriesResponses extends
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:protobuf.AppendEntriesResponses)
+          AppendEntriesResponsesOrBuilder {
+    private static final long serialVersionUID = 0L;
+    // Use AppendEntriesResponses.newBuilder() to construct.
+    private AppendEntriesResponses(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private AppendEntriesResponses() {
+      args_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private AppendEntriesResponses(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+              com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                args_ = new java.util.ArrayList<rpc.RpcRequests.AppendEntriesResponse>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              args_.add(
+                      input.readMessage(rpc.RpcRequests.AppendEntriesResponse.parser(), extensionRegistry));
+              break;
+            }
+            default: {
+              if (!parseUnknownFieldProto3(
+                      input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+                e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          args_ = java.util.Collections.unmodifiableList(args_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+    getDescriptor() {
+      return rpc.RpcRequests.internal_static_protobuf_AppendEntriesResponses_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+    internalGetFieldAccessorTable() {
+      return rpc.RpcRequests.internal_static_protobuf_AppendEntriesResponses_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                      rpc.RpcRequests.AppendEntriesResponses.class, rpc.RpcRequests.AppendEntriesResponses.Builder.class);
+    }
+
+    public static final int ARGS_FIELD_NUMBER = 1;
+    private java.util.List<rpc.RpcRequests.AppendEntriesResponse> args_;
+    /**
+     * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+     */
+    public java.util.List<rpc.RpcRequests.AppendEntriesResponse> getArgsList() {
+      return args_;
+    }
+    /**
+     * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+     */
+    public java.util.List<? extends rpc.RpcRequests.AppendEntriesResponseOrBuilder>
+    getArgsOrBuilderList() {
+      return args_;
+    }
+    /**
+     * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+     */
+    public int getArgsCount() {
+      return args_.size();
+    }
+    /**
+     * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+     */
+    public rpc.RpcRequests.AppendEntriesResponse getArgs(int index) {
+      return args_.get(index);
+    }
+    /**
+     * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+     */
+    public rpc.RpcRequests.AppendEntriesResponseOrBuilder getArgsOrBuilder(
+            int index) {
+      return args_.get(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+            throws java.io.IOException {
+      for (int i = 0; i < args_.size(); i++) {
+        output.writeMessage(1, args_.get(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < args_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeMessageSize(1, args_.get(i));
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof rpc.RpcRequests.AppendEntriesResponses)) {
+        return super.equals(obj);
+      }
+      rpc.RpcRequests.AppendEntriesResponses other = (rpc.RpcRequests.AppendEntriesResponses) obj;
+
+      boolean result = true;
+      result = result && getArgsList()
+              .equals(other.getArgsList());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (getArgsCount() > 0) {
+        hash = (37 * hash) + ARGS_FIELD_NUMBER;
+        hash = (53 * hash) + getArgsList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static rpc.RpcRequests.AppendEntriesResponses parseFrom(
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static rpc.RpcRequests.AppendEntriesResponses parseFrom(
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static rpc.RpcRequests.AppendEntriesResponses parseFrom(
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static rpc.RpcRequests.AppendEntriesResponses parseFrom(
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static rpc.RpcRequests.AppendEntriesResponses parseFrom(byte[] data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static rpc.RpcRequests.AppendEntriesResponses parseFrom(
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static rpc.RpcRequests.AppendEntriesResponses parseFrom(java.io.InputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+    }
+    public static rpc.RpcRequests.AppendEntriesResponses parseFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static rpc.RpcRequests.AppendEntriesResponses parseDelimitedFrom(java.io.InputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static rpc.RpcRequests.AppendEntriesResponses parseDelimitedFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static rpc.RpcRequests.AppendEntriesResponses parseFrom(
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+    }
+    public static rpc.RpcRequests.AppendEntriesResponses parseFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(rpc.RpcRequests.AppendEntriesResponses prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+              ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code protobuf.AppendEntriesResponses}
+     */
+    public static final class Builder extends
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:protobuf.AppendEntriesResponses)
+            rpc.RpcRequests.AppendEntriesResponsesOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+      getDescriptor() {
+        return rpc.RpcRequests.internal_static_protobuf_AppendEntriesResponses_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internalGetFieldAccessorTable() {
+        return rpc.RpcRequests.internal_static_protobuf_AppendEntriesResponses_fieldAccessorTable
+                .ensureFieldAccessorsInitialized(
+                        rpc.RpcRequests.AppendEntriesResponses.class, rpc.RpcRequests.AppendEntriesResponses.Builder.class);
+      }
+
+      // Construct using rpc.RpcRequests.AppendEntriesResponses.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getArgsFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (argsBuilder_ == null) {
+          args_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          argsBuilder_.clear();
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+      getDescriptorForType() {
+        return rpc.RpcRequests.internal_static_protobuf_AppendEntriesResponses_descriptor;
+      }
+
+      @java.lang.Override
+      public rpc.RpcRequests.AppendEntriesResponses getDefaultInstanceForType() {
+        return rpc.RpcRequests.AppendEntriesResponses.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public rpc.RpcRequests.AppendEntriesResponses build() {
+        rpc.RpcRequests.AppendEntriesResponses result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public rpc.RpcRequests.AppendEntriesResponses buildPartial() {
+        rpc.RpcRequests.AppendEntriesResponses result = new rpc.RpcRequests.AppendEntriesResponses(this);
+        int from_bitField0_ = bitField0_;
+        if (argsBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            args_ = java.util.Collections.unmodifiableList(args_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.args_ = args_;
+        } else {
+          result.args_ = argsBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof rpc.RpcRequests.AppendEntriesResponses) {
+          return mergeFrom((rpc.RpcRequests.AppendEntriesResponses)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(rpc.RpcRequests.AppendEntriesResponses other) {
+        if (other == rpc.RpcRequests.AppendEntriesResponses.getDefaultInstance()) return this;
+        if (argsBuilder_ == null) {
+          if (!other.args_.isEmpty()) {
+            if (args_.isEmpty()) {
+              args_ = other.args_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureArgsIsMutable();
+              args_.addAll(other.args_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.args_.isEmpty()) {
+            if (argsBuilder_.isEmpty()) {
+              argsBuilder_.dispose();
+              argsBuilder_ = null;
+              args_ = other.args_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              argsBuilder_ =
+                      com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                              getArgsFieldBuilder() : null;
+            } else {
+              argsBuilder_.addAllMessages(other.args_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
+        rpc.RpcRequests.AppendEntriesResponses parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (rpc.RpcRequests.AppendEntriesResponses) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<rpc.RpcRequests.AppendEntriesResponse> args_ =
+              java.util.Collections.emptyList();
+      private void ensureArgsIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          args_ = new java.util.ArrayList<rpc.RpcRequests.AppendEntriesResponse>(args_);
+          bitField0_ |= 0x00000001;
+        }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+              rpc.RpcRequests.AppendEntriesResponse, rpc.RpcRequests.AppendEntriesResponse.Builder, rpc.RpcRequests.AppendEntriesResponseOrBuilder> argsBuilder_;
+
+      /**
+       * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+       */
+      public java.util.List<rpc.RpcRequests.AppendEntriesResponse> getArgsList() {
+        if (argsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(args_);
+        } else {
+          return argsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+       */
+      public int getArgsCount() {
+        if (argsBuilder_ == null) {
+          return args_.size();
+        } else {
+          return argsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+       */
+      public rpc.RpcRequests.AppendEntriesResponse getArgs(int index) {
+        if (argsBuilder_ == null) {
+          return args_.get(index);
+        } else {
+          return argsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+       */
+      public Builder setArgs(
+              int index, rpc.RpcRequests.AppendEntriesResponse value) {
+        if (argsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureArgsIsMutable();
+          args_.set(index, value);
+          onChanged();
+        } else {
+          argsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+       */
+      public Builder setArgs(
+              int index, rpc.RpcRequests.AppendEntriesResponse.Builder builderForValue) {
+        if (argsBuilder_ == null) {
+          ensureArgsIsMutable();
+          args_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          argsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+       */
+      public Builder addArgs(rpc.RpcRequests.AppendEntriesResponse value) {
+        if (argsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureArgsIsMutable();
+          args_.add(value);
+          onChanged();
+        } else {
+          argsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+       */
+      public Builder addArgs(
+              int index, rpc.RpcRequests.AppendEntriesResponse value) {
+        if (argsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureArgsIsMutable();
+          args_.add(index, value);
+          onChanged();
+        } else {
+          argsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+       */
+      public Builder addArgs(
+              rpc.RpcRequests.AppendEntriesResponse.Builder builderForValue) {
+        if (argsBuilder_ == null) {
+          ensureArgsIsMutable();
+          args_.add(builderForValue.build());
+          onChanged();
+        } else {
+          argsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+       */
+      public Builder addArgs(
+              int index, rpc.RpcRequests.AppendEntriesResponse.Builder builderForValue) {
+        if (argsBuilder_ == null) {
+          ensureArgsIsMutable();
+          args_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          argsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+       */
+      public Builder addAllArgs(
+              java.lang.Iterable<? extends rpc.RpcRequests.AppendEntriesResponse> values) {
+        if (argsBuilder_ == null) {
+          ensureArgsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+                  values, args_);
+          onChanged();
+        } else {
+          argsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+       */
+      public Builder clearArgs() {
+        if (argsBuilder_ == null) {
+          args_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          argsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+       */
+      public Builder removeArgs(int index) {
+        if (argsBuilder_ == null) {
+          ensureArgsIsMutable();
+          args_.remove(index);
+          onChanged();
+        } else {
+          argsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+       */
+      public rpc.RpcRequests.AppendEntriesResponse.Builder getArgsBuilder(
+              int index) {
+        return getArgsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+       */
+      public rpc.RpcRequests.AppendEntriesResponseOrBuilder getArgsOrBuilder(
+              int index) {
+        if (argsBuilder_ == null) {
+          return args_.get(index);  } else {
+          return argsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+       */
+      public java.util.List<? extends rpc.RpcRequests.AppendEntriesResponseOrBuilder>
+      getArgsOrBuilderList() {
+        if (argsBuilder_ != null) {
+          return argsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(args_);
+        }
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+       */
+      public rpc.RpcRequests.AppendEntriesResponse.Builder addArgsBuilder() {
+        return getArgsFieldBuilder().addBuilder(
+                rpc.RpcRequests.AppendEntriesResponse.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+       */
+      public rpc.RpcRequests.AppendEntriesResponse.Builder addArgsBuilder(
+              int index) {
+        return getArgsFieldBuilder().addBuilder(
+                index, rpc.RpcRequests.AppendEntriesResponse.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .protobuf.AppendEntriesResponse args = 1;</code>
+       */
+      public java.util.List<rpc.RpcRequests.AppendEntriesResponse.Builder>
+      getArgsBuilderList() {
+        return getArgsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+              rpc.RpcRequests.AppendEntriesResponse, rpc.RpcRequests.AppendEntriesResponse.Builder, rpc.RpcRequests.AppendEntriesResponseOrBuilder>
+      getArgsFieldBuilder() {
+        if (argsBuilder_ == null) {
+          argsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+                  rpc.RpcRequests.AppendEntriesResponse, rpc.RpcRequests.AppendEntriesResponse.Builder, rpc.RpcRequests.AppendEntriesResponseOrBuilder>(
+                  args_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          args_ = null;
+        }
+        return argsBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:protobuf.AppendEntriesResponses)
+    }
+
+    // @@protoc_insertion_point(class_scope:protobuf.AppendEntriesResponses)
+    private static final rpc.RpcRequests.AppendEntriesResponses DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new rpc.RpcRequests.AppendEntriesResponses();
+    }
+
+    public static rpc.RpcRequests.AppendEntriesResponses getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<AppendEntriesResponses>
+            PARSER = new com.google.protobuf.AbstractParser<AppendEntriesResponses>() {
+      @java.lang.Override
+      public AppendEntriesResponses parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+        return new AppendEntriesResponses(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<AppendEntriesResponses> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<AppendEntriesResponses> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public rpc.RpcRequests.AppendEntriesResponses getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface ErrorResponseOrBuilder extends
           // @@protoc_insertion_point(interface_extends:protobuf.ErrorResponse)
           com.google.protobuf.MessageOrBuilder {
@@ -9971,6 +11535,16 @@ public final class RpcRequests {
   com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internal_static_protobuf_PingRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+          internal_static_protobuf_AppendEntriesRequests_descriptor;
+  private static final
+  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internal_static_protobuf_AppendEntriesRequests_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+          internal_static_protobuf_AppendEntriesResponses_descriptor;
+  private static final
+  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internal_static_protobuf_AppendEntriesResponses_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
           internal_static_protobuf_ErrorResponse_descriptor;
   private static final
   com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -10040,37 +11614,41 @@ public final class RpcRequests {
   static {
     java.lang.String[] descriptorData = {
             "\n\tRPC.proto\022\010protobuf\032\nraft.proto\"%\n\013Pin" +
-                    "gRequest\022\026\n\016send_timestamp\030\001 \001(\003\"4\n\rErro" +
-                    "rResponse\022\021\n\terrorCode\030\001 \001(\003\022\020\n\010errorMsg" +
-                    "\030\002 \001(\t\"E\n\021TimeoutNowRequest\022\021\n\tserver_id" +
-                    "\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\022\014\n\004term\030\003 \001(\003\"3\n" +
-                    "\022TimeoutNowResponse\022\014\n\004term\030\001 \001(\003\022\017\n\007suc" +
-                    "cess\030\002 \001(\010\"\207\001\n\022RequestVoteRequest\022\021\n\tser" +
-                    "ver_id\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\022\014\n\004term\030\003 " +
-                    "\001(\003\022\025\n\rlast_log_term\030\004 \001(\003\022\026\n\016last_log_i" +
-                    "ndex\030\005 \001(\003\022\020\n\010pre_vote\030\006 \001(\010\"G\n\023RequestV" +
-                    "oteResponse\022\014\n\004term\030\001 \001(\003\022\017\n\007granted\030\002 \001" +
-                    "(\010\022\021\n\tpeer_name\030\003 \001(\t\"\212\001\n\025RequestPreVote" +
-                    "Request\022\021\n\tserver_id\030\001 \001(\t\022\017\n\007peer_id\030\002 " +
-                    "\001(\t\022\014\n\004term\030\003 \001(\003\022\025\n\rlast_log_term\030\004 \001(\003" +
-                    "\022\026\n\016last_log_index\030\005 \001(\003\022\020\n\010pre_vote\030\006 \001" +
-                    "(\010\"J\n\026RequestPreVoteResponse\022\014\n\004term\030\001 \001" +
-                    "(\003\022\017\n\007granted\030\002 \001(\010\022\021\n\tpeer_name\030\003 \001(\t\"@" +
-                    "\n\032AppendEntriesRequestHeader\022\021\n\tserver_i" +
-                    "d\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\"\207\002\n\024AppendEntri" +
-                    "esRequest\022\020\n\010group_id\030\001 \001(\t\022\021\n\tserver_id" +
-                    "\030\002 \001(\t\022\017\n\007peer_id\030\003 \001(\t\022\014\n\004term\030\004 \001(\003\022\025\n" +
-                    "\rprev_log_term\030\005 \001(\003\022\026\n\016prev_log_index\030\006" +
-                    " \001(\003\022$\n\007entries\030\007 \001(\0132\023.protobuf.EntryMe" +
-                    "ta\022\027\n\017committed_index\030\010 \001(\003\022\014\n\004data\030\t \001(" +
-                    "\014\022\017\n\007address\030\n \001(\t\022\014\n\004port\030\013 \001(\005\022\020\n\010task" +
-                    "Port\030\014 \001(\005\"N\n\025AppendEntriesResponse\022\014\n\004t" +
-                    "erm\030\001 \001(\003\022\017\n\007success\030\002 \001(\010\022\026\n\016last_log_i" +
-                    "ndex\030\003 \001(\003\"Y\n\020ReadIndexRequest\022\020\n\010group_" +
-                    "id\030\001 \001(\t\022\021\n\tserver_id\030\002 \001(\t\022\017\n\007entries\030\003" +
-                    " \001(\014\022\017\n\007peer_id\030\004 \001(\t\"3\n\021ReadIndexRespon" +
-                    "se\022\r\n\005index\030\001 \001(\003\022\017\n\007success\030\002 \001(\010B\022\n\003rp" +
-                    "cB\013RpcRequestsb\006proto3"
+                    "gRequest\022\026\n\016send_timestamp\030\001 \001(\003\"E\n\025Appe" +
+                    "ndEntriesRequests\022,\n\004args\030\001 \003(\0132\036.protob" +
+                    "uf.AppendEntriesRequest\"G\n\026AppendEntries" +
+                    "Responses\022-\n\004args\030\001 \003(\0132\037.protobuf.Appen" +
+                    "dEntriesResponse\"4\n\rErrorResponse\022\021\n\terr" +
+                    "orCode\030\001 \001(\003\022\020\n\010errorMsg\030\002 \001(\t\"E\n\021Timeou" +
+                    "tNowRequest\022\021\n\tserver_id\030\001 \001(\t\022\017\n\007peer_i" +
+                    "d\030\002 \001(\t\022\014\n\004term\030\003 \001(\003\"3\n\022TimeoutNowRespo" +
+                    "nse\022\014\n\004term\030\001 \001(\003\022\017\n\007success\030\002 \001(\010\"\207\001\n\022R" +
+                    "equestVoteRequest\022\021\n\tserver_id\030\001 \001(\t\022\017\n\007" +
+                    "peer_id\030\002 \001(\t\022\014\n\004term\030\003 \001(\003\022\025\n\rlast_log_" +
+                    "term\030\004 \001(\003\022\026\n\016last_log_index\030\005 \001(\003\022\020\n\010pr" +
+                    "e_vote\030\006 \001(\010\"G\n\023RequestVoteResponse\022\014\n\004t" +
+                    "erm\030\001 \001(\003\022\017\n\007granted\030\002 \001(\010\022\021\n\tpeer_name\030" +
+                    "\003 \001(\t\"\212\001\n\025RequestPreVoteRequest\022\021\n\tserve" +
+                    "r_id\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\022\014\n\004term\030\003 \001(" +
+                    "\003\022\025\n\rlast_log_term\030\004 \001(\003\022\026\n\016last_log_ind" +
+                    "ex\030\005 \001(\003\022\020\n\010pre_vote\030\006 \001(\010\"J\n\026RequestPre" +
+                    "VoteResponse\022\014\n\004term\030\001 \001(\003\022\017\n\007granted\030\002 " +
+                    "\001(\010\022\021\n\tpeer_name\030\003 \001(\t\"@\n\032AppendEntriesR" +
+                    "equestHeader\022\021\n\tserver_id\030\001 \001(\t\022\017\n\007peer_" +
+                    "id\030\002 \001(\t\"\207\002\n\024AppendEntriesRequest\022\020\n\010gro" +
+                    "up_id\030\001 \001(\t\022\021\n\tserver_id\030\002 \001(\t\022\017\n\007peer_i" +
+                    "d\030\003 \001(\t\022\014\n\004term\030\004 \001(\003\022\025\n\rprev_log_term\030\005" +
+                    " \001(\003\022\026\n\016prev_log_index\030\006 \001(\003\022$\n\007entries\030" +
+                    "\007 \001(\0132\023.protobuf.EntryMeta\022\027\n\017committed_" +
+                    "index\030\010 \001(\003\022\014\n\004data\030\t \001(\014\022\017\n\007address\030\n \001" +
+                    "(\t\022\014\n\004port\030\013 \001(\005\022\020\n\010taskPort\030\014 \001(\005\"N\n\025Ap" +
+                    "pendEntriesResponse\022\014\n\004term\030\001 \001(\003\022\017\n\007suc" +
+                    "cess\030\002 \001(\010\022\026\n\016last_log_index\030\003 \001(\003\"Y\n\020Re" +
+                    "adIndexRequest\022\020\n\010group_id\030\001 \001(\t\022\021\n\tserv" +
+                    "er_id\030\002 \001(\t\022\017\n\007entries\030\003 \001(\014\022\017\n\007peer_id\030" +
+                    "\004 \001(\t\"3\n\021ReadIndexResponse\022\r\n\005index\030\001 \001(" +
+                    "\003\022\017\n\007success\030\002 \001(\010B\022\n\003rpcB\013RpcRequestsb\006" +
+                    "proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
             new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -10091,74 +11669,86 @@ public final class RpcRequests {
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_PingRequest_descriptor,
             new java.lang.String[] { "SendTimestamp", });
-    internal_static_protobuf_ErrorResponse_descriptor =
+    internal_static_protobuf_AppendEntriesRequests_descriptor =
             getDescriptor().getMessageTypes().get(1);
+    internal_static_protobuf_AppendEntriesRequests_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+            internal_static_protobuf_AppendEntriesRequests_descriptor,
+            new java.lang.String[] { "Args", });
+    internal_static_protobuf_AppendEntriesResponses_descriptor =
+            getDescriptor().getMessageTypes().get(2);
+    internal_static_protobuf_AppendEntriesResponses_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+            internal_static_protobuf_AppendEntriesResponses_descriptor,
+            new java.lang.String[] { "Args", });
+    internal_static_protobuf_ErrorResponse_descriptor =
+            getDescriptor().getMessageTypes().get(3);
     internal_static_protobuf_ErrorResponse_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_ErrorResponse_descriptor,
             new java.lang.String[] { "ErrorCode", "ErrorMsg", });
     internal_static_protobuf_TimeoutNowRequest_descriptor =
-            getDescriptor().getMessageTypes().get(2);
+            getDescriptor().getMessageTypes().get(4);
     internal_static_protobuf_TimeoutNowRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_TimeoutNowRequest_descriptor,
             new java.lang.String[] { "ServerId", "PeerId", "Term", });
     internal_static_protobuf_TimeoutNowResponse_descriptor =
-            getDescriptor().getMessageTypes().get(3);
+            getDescriptor().getMessageTypes().get(5);
     internal_static_protobuf_TimeoutNowResponse_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_TimeoutNowResponse_descriptor,
             new java.lang.String[] { "Term", "Success", });
     internal_static_protobuf_RequestVoteRequest_descriptor =
-            getDescriptor().getMessageTypes().get(4);
+            getDescriptor().getMessageTypes().get(6);
     internal_static_protobuf_RequestVoteRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_RequestVoteRequest_descriptor,
             new java.lang.String[] { "ServerId", "PeerId", "Term", "LastLogTerm", "LastLogIndex", "PreVote", });
     internal_static_protobuf_RequestVoteResponse_descriptor =
-            getDescriptor().getMessageTypes().get(5);
+            getDescriptor().getMessageTypes().get(7);
     internal_static_protobuf_RequestVoteResponse_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_RequestVoteResponse_descriptor,
             new java.lang.String[] { "Term", "Granted", "PeerName", });
     internal_static_protobuf_RequestPreVoteRequest_descriptor =
-            getDescriptor().getMessageTypes().get(6);
+            getDescriptor().getMessageTypes().get(8);
     internal_static_protobuf_RequestPreVoteRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_RequestPreVoteRequest_descriptor,
             new java.lang.String[] { "ServerId", "PeerId", "Term", "LastLogTerm", "LastLogIndex", "PreVote", });
     internal_static_protobuf_RequestPreVoteResponse_descriptor =
-            getDescriptor().getMessageTypes().get(7);
+            getDescriptor().getMessageTypes().get(9);
     internal_static_protobuf_RequestPreVoteResponse_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_RequestPreVoteResponse_descriptor,
             new java.lang.String[] { "Term", "Granted", "PeerName", });
     internal_static_protobuf_AppendEntriesRequestHeader_descriptor =
-            getDescriptor().getMessageTypes().get(8);
+            getDescriptor().getMessageTypes().get(10);
     internal_static_protobuf_AppendEntriesRequestHeader_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_AppendEntriesRequestHeader_descriptor,
             new java.lang.String[] { "ServerId", "PeerId", });
     internal_static_protobuf_AppendEntriesRequest_descriptor =
-            getDescriptor().getMessageTypes().get(9);
+            getDescriptor().getMessageTypes().get(11);
     internal_static_protobuf_AppendEntriesRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_AppendEntriesRequest_descriptor,
             new java.lang.String[] { "GroupId", "ServerId", "PeerId", "Term", "PrevLogTerm", "PrevLogIndex", "Entries", "CommittedIndex", "Data", "Address", "Port", "TaskPort", });
     internal_static_protobuf_AppendEntriesResponse_descriptor =
-            getDescriptor().getMessageTypes().get(10);
+            getDescriptor().getMessageTypes().get(12);
     internal_static_protobuf_AppendEntriesResponse_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_AppendEntriesResponse_descriptor,
             new java.lang.String[] { "Term", "Success", "LastLogIndex", });
     internal_static_protobuf_ReadIndexRequest_descriptor =
-            getDescriptor().getMessageTypes().get(11);
+            getDescriptor().getMessageTypes().get(13);
     internal_static_protobuf_ReadIndexRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_ReadIndexRequest_descriptor,
             new java.lang.String[] { "GroupId", "ServerId", "Entries", "PeerId", });
     internal_static_protobuf_ReadIndexResponse_descriptor =
-            getDescriptor().getMessageTypes().get(12);
+            getDescriptor().getMessageTypes().get(14);
     internal_static_protobuf_ReadIndexResponse_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_ReadIndexResponse_descriptor,
