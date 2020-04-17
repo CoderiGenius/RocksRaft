@@ -63,10 +63,12 @@ public class NodeImpl implements Node {
     private Map<Endpoint, RpcServices> rpcServicesMap = new ConcurrentHashMap<>();
     private Map<Endpoint, TaskRpcServices> taskRpcServices = new ConcurrentHashMap<>();
     private Map<Endpoint, Replicator> replicatorMap = new ConcurrentHashMap<>();
+    private Map<Long, BallotBox> ballotBoxConcurrentHashMap = new ConcurrentHashMap<>();
     private ReplicatorGroup replicatorGroup;
     private NodeState nodeState;
     private AtomicLong lastLogTerm = new AtomicLong(0);
     private AtomicLong lastLogIndex = new AtomicLong(0);
+    private AtomicLong stableLogIndex = new AtomicLong(0);
     private PeerId currentLeaderId;
     private Options options;
 
@@ -141,7 +143,7 @@ public class NodeImpl implements Node {
                         getOptions().getCurrentNodeOptions().getMaxHeartBeatTime(),
                         getOptions().getCurrentNodeOptions().getElectionTimeOut()
                         , getNodeId().getGroupId(), getNodeId().getPeerId(), getLogManager()
-                        , new BallotBox(getPeerIdList()), getNodeImple(), getLastLogTerm().longValue()
+                       , getNodeImple(), getLastLogTerm().longValue()
                         , new TimerManager(), ReplicatorType.Follower);
                 Replicator replicator = new Replicator(replicatorOptions, rpcServicesMap.get(peerId.getEndpoint()));
 
@@ -234,6 +236,7 @@ public class NodeImpl implements Node {
 
             LogEntry logEntry = new LogEntry();
             logEntry.setData(task.getData());
+            logEntry.setLeaderId(getLeaderId().getPeerId());
             int retryTimes = 0;
             try {
                 final EventTranslator<LogEntryEvent> translator = (event, sequence) -> {
@@ -309,7 +312,9 @@ public class NodeImpl implements Node {
                     continue;
                 }
                 // set task entry info before adding to list.
+                task.entry.getId().setIndex(this.lastLogIndex.getAndIncrement());
                 task.entry.getId().setTerm(this.getLastLogTerm().get());
+
                 task.entry.setType(EnumOutter.EntryType.ENTRY_TYPE_DATA);
                 entries.add(task.entry);
             }
@@ -330,8 +335,10 @@ public class NodeImpl implements Node {
         @Override
         public void run(final Status status) {
             if (status.isOk()) {
-                NodeImpl.this.ballotBox.commitAt(this.firstLogIndex, this.firstLogIndex + this.nEntries - 1,
-                        NodeImpl.this.serverId);
+                BallotBox ballotBox = new BallotBox(getPeerIdList(),
+                        this.firstLogIndex, this.nEntries);
+                ballotBox.grant(getLeaderId().getPeerId().getId());
+                getBallotBoxConcurrentHashMap().put(this.firstLogIndex,ballotBox);
             } else {
                 LOG.error("Node {} append [{}, {}] failed, status={}.", getNodeId(), this.firstLogIndex,
                         this.firstLogIndex + this.nEntries - 1, status);
@@ -513,5 +520,21 @@ public class NodeImpl implements Node {
 
     public boolean isCurrentLeaderValid() {
         return Utils.monotonicMs() - this.lastReceiveHeartbeatTime.get() < NodeOptions.getNodeOptions().getMaxHeartBeatTime();
+    }
+
+    public Map<Long, BallotBox> getBallotBoxConcurrentHashMap() {
+        return ballotBoxConcurrentHashMap;
+    }
+
+    public void setBallotBoxConcurrentHashMap(Map<Long, BallotBox> ballotBoxConcurrentHashMap) {
+        this.ballotBoxConcurrentHashMap = ballotBoxConcurrentHashMap;
+    }
+
+    public AtomicLong getStableLogIndex() {
+        return stableLogIndex;
+    }
+
+    public void setStableLogIndex(AtomicLong stableLogIndex) {
+        this.stableLogIndex = stableLogIndex;
     }
 }

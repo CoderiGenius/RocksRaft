@@ -1,5 +1,6 @@
 package core;
 
+import com.lmax.disruptor.EventTranslator;
 import config.ReplicatorOptions;
 import entity.*;
 import org.slf4j.Logger;
@@ -27,6 +28,7 @@ public class ReplicatorGroupImpl implements ReplicatorGroup {
     // <peerId, replicatorId>
     //private final ConcurrentMap<PeerId, ThreadId> replicatorMap      = new ConcurrentHashMap<>();
     private final ConcurrentMap<PeerId, Replicator> replicatorMap      = new ConcurrentHashMap<>();
+    private final List<Replicator> replicatorList      = new CopyOnWriteArrayList<>();
     /** common replicator options */
     private ReplicatorOptions commonOptions;
     private int                                   dynamicTimeoutMs   = -1;
@@ -79,6 +81,7 @@ public class ReplicatorGroupImpl implements ReplicatorGroup {
         Requires.requireNonNull(peer,"peer");
         Requires.requireNonNull(replicator,"replicator");
         replicatorMap.put(peer,replicator);
+        replicatorList.add(replicator);
         replicator.start();
         LOG.info("add replicator: {}",peer);
         return true;
@@ -97,15 +100,29 @@ public class ReplicatorGroupImpl implements ReplicatorGroup {
 
     @Override
     public void sendHeartbeatToAll() {
-        for (Map.Entry<PeerId, Replicator> peerIdReplicatorEntry : replicatorMap.entrySet()) {
-            PeerId peerId = (PeerId) peerIdReplicatorEntry;
-            sendHeartbeat(replicatorMap.get(peerId));
+        for (Replicator r :
+                replicatorList) {
+            sendHeartbeat(r);
         }
     }
 
     @Override
     public Replicator getReplicator(PeerId peer) {
         return replicatorMap.get(peer);
+    }
+
+    @Override
+    public void sendAppendEntriesToAllReplicator(List<LogEntry> logEntries) {
+
+        for (Replicator r :
+                replicatorList) {
+            for (LogEntry l :
+                    logEntries) {
+            final EventTranslator<LogEntry> translator = (event, sequence) -> { event = l; };
+                r.getDisruptor().publishEvent(translator);
+            }
+
+        }
     }
 
     @Override
@@ -186,6 +203,42 @@ public class ReplicatorGroupImpl implements ReplicatorGroup {
 
     public ThreadPoolExecutor getReplicatorGroupThreadPool() {
         return replicatorGroupThreadPool;
+    }
+
+    public ConcurrentMap<PeerId, Replicator> getReplicatorMap() {
+        return replicatorMap;
+    }
+
+    public List<Replicator> getReplicatorList() {
+        return replicatorList;
+    }
+
+    public ReplicatorOptions getCommonOptions() {
+        return commonOptions;
+    }
+
+    public void setCommonOptions(ReplicatorOptions commonOptions) {
+        this.commonOptions = commonOptions;
+    }
+
+    public int getDynamicTimeoutMs() {
+        return dynamicTimeoutMs;
+    }
+
+    public void setDynamicTimeoutMs(int dynamicTimeoutMs) {
+        this.dynamicTimeoutMs = dynamicTimeoutMs;
+    }
+
+    public int getElectionTimeoutMs() {
+        return electionTimeoutMs;
+    }
+
+    public void setElectionTimeoutMs(int electionTimeoutMs) {
+        this.electionTimeoutMs = electionTimeoutMs;
+    }
+
+    public Map<PeerId, ReplicatorType> getFailureReplicators() {
+        return failureReplicators;
     }
 }
 

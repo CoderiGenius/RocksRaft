@@ -90,7 +90,7 @@ public class LogManagerImpl implements LogManager {
 
     @Override
     public void appendEntries(final List<LogEntry> entries, final StableClosure done) {
-        Requires.requireNonNull(done, "done");
+        //Requires.requireNonNull(done, "done");
         this.writeLock.lock();
         try {
             for (int i = 0; i < entries.size(); i++) {
@@ -244,6 +244,9 @@ public class LogManagerImpl implements LogManager {
             if (endOfBatch) {
                 this.lastId = this.ab.flush();
                 setDiskId(this.lastId);
+                //send to all replicators
+                NodeImpl.getNodeImple().getReplicatorGroup()
+                        .sendAppendEntriesToAllReplicator(stableClosureEvent.done.getEntries());
             }
         }
     }

@@ -14,6 +14,104 @@ public final class RpcRequests {
     registerAllExtensions(
             (com.google.protobuf.ExtensionRegistryLite) registry);
   }
+  /**
+   * Protobuf enum {@code protobuf.AppendEntriesStatus}
+   */
+  public enum AppendEntriesStatus
+          implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>APPROVED = 0;</code>
+     */
+    APPROVED(0),
+    /**
+     * <code>FAILED = 1;</code>
+     */
+    FAILED(1),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <code>APPROVED = 0;</code>
+     */
+    public static final int APPROVED_VALUE = 0;
+    /**
+     * <code>FAILED = 1;</code>
+     */
+    public static final int FAILED_VALUE = 1;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+                "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static AppendEntriesStatus valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static AppendEntriesStatus forNumber(int value) {
+      switch (value) {
+        case 0: return APPROVED;
+        case 1: return FAILED;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<AppendEntriesStatus>
+    internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+            AppendEntriesStatus> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<AppendEntriesStatus>() {
+              public AppendEntriesStatus findValueByNumber(int number) {
+                return AppendEntriesStatus.forNumber(number);
+              }
+            };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+    getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+    getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+    getDescriptor() {
+      return rpc.RpcRequests.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final AppendEntriesStatus[] VALUES = values();
+
+    public static AppendEntriesStatus valueOf(
+            com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+                "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private AppendEntriesStatus(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:protobuf.AppendEntriesStatus)
+  }
+
   public interface PingRequestOrBuilder extends
           // @@protoc_insertion_point(interface_extends:protobuf.PingRequest)
           com.google.protobuf.MessageOrBuilder {
@@ -1300,6 +1398,15 @@ public final class RpcRequests {
      */
     rpc.RpcRequests.AppendEntriesResponseOrBuilder getArgsOrBuilder(
             int index);
+
+    /**
+     * <code>.protobuf.AppendEntriesStatus appendEntriesStatus = 2;</code>
+     */
+    int getAppendEntriesStatusValue();
+    /**
+     * <code>.protobuf.AppendEntriesStatus appendEntriesStatus = 2;</code>
+     */
+    rpc.RpcRequests.AppendEntriesStatus getAppendEntriesStatus();
   }
   /**
    * Protobuf type {@code protobuf.AppendEntriesResponses}
@@ -1315,6 +1422,7 @@ public final class RpcRequests {
     }
     private AppendEntriesResponses() {
       args_ = java.util.Collections.emptyList();
+      appendEntriesStatus_ = 0;
     }
 
     @java.lang.Override
@@ -1348,6 +1456,12 @@ public final class RpcRequests {
               }
               args_.add(
                       input.readMessage(rpc.RpcRequests.AppendEntriesResponse.parser(), extensionRegistry));
+              break;
+            }
+            case 16: {
+              int rawValue = input.readEnum();
+
+              appendEntriesStatus_ = rawValue;
               break;
             }
             default: {
@@ -1385,6 +1499,7 @@ public final class RpcRequests {
                       rpc.RpcRequests.AppendEntriesResponses.class, rpc.RpcRequests.AppendEntriesResponses.Builder.class);
     }
 
+    private int bitField0_;
     public static final int ARGS_FIELD_NUMBER = 1;
     private java.util.List<rpc.RpcRequests.AppendEntriesResponse> args_;
     /**
@@ -1420,6 +1535,23 @@ public final class RpcRequests {
       return args_.get(index);
     }
 
+    public static final int APPENDENTRIESSTATUS_FIELD_NUMBER = 2;
+    private int appendEntriesStatus_;
+    /**
+     * <code>.protobuf.AppendEntriesStatus appendEntriesStatus = 2;</code>
+     */
+    public int getAppendEntriesStatusValue() {
+      return appendEntriesStatus_;
+    }
+    /**
+     * <code>.protobuf.AppendEntriesStatus appendEntriesStatus = 2;</code>
+     */
+    public rpc.RpcRequests.AppendEntriesStatus getAppendEntriesStatus() {
+      @SuppressWarnings("deprecation")
+      rpc.RpcRequests.AppendEntriesStatus result = rpc.RpcRequests.AppendEntriesStatus.valueOf(appendEntriesStatus_);
+      return result == null ? rpc.RpcRequests.AppendEntriesStatus.UNRECOGNIZED : result;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1437,6 +1569,9 @@ public final class RpcRequests {
       for (int i = 0; i < args_.size(); i++) {
         output.writeMessage(1, args_.get(i));
       }
+      if (appendEntriesStatus_ != rpc.RpcRequests.AppendEntriesStatus.APPROVED.getNumber()) {
+        output.writeEnum(2, appendEntriesStatus_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1449,6 +1584,10 @@ public final class RpcRequests {
       for (int i = 0; i < args_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
                 .computeMessageSize(1, args_.get(i));
+      }
+      if (appendEntriesStatus_ != rpc.RpcRequests.AppendEntriesStatus.APPROVED.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeEnumSize(2, appendEntriesStatus_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1468,6 +1607,7 @@ public final class RpcRequests {
       boolean result = true;
       result = result && getArgsList()
               .equals(other.getArgsList());
+      result = result && appendEntriesStatus_ == other.appendEntriesStatus_;
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -1483,6 +1623,8 @@ public final class RpcRequests {
         hash = (37 * hash) + ARGS_FIELD_NUMBER;
         hash = (53 * hash) + getArgsList().hashCode();
       }
+      hash = (37 * hash) + APPENDENTRIESSTATUS_FIELD_NUMBER;
+      hash = (53 * hash) + appendEntriesStatus_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1623,6 +1765,8 @@ public final class RpcRequests {
         } else {
           argsBuilder_.clear();
         }
+        appendEntriesStatus_ = 0;
+
         return this;
       }
 
@@ -1650,6 +1794,7 @@ public final class RpcRequests {
       public rpc.RpcRequests.AppendEntriesResponses buildPartial() {
         rpc.RpcRequests.AppendEntriesResponses result = new rpc.RpcRequests.AppendEntriesResponses(this);
         int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         if (argsBuilder_ == null) {
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
             args_ = java.util.Collections.unmodifiableList(args_);
@@ -1659,6 +1804,8 @@ public final class RpcRequests {
         } else {
           result.args_ = argsBuilder_.build();
         }
+        result.appendEntriesStatus_ = appendEntriesStatus_;
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -1732,6 +1879,9 @@ public final class RpcRequests {
               argsBuilder_.addAllMessages(other.args_);
             }
           }
+        }
+        if (other.appendEntriesStatus_ != 0) {
+          setAppendEntriesStatusValue(other.getAppendEntriesStatusValue());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -2001,6 +2151,51 @@ public final class RpcRequests {
           args_ = null;
         }
         return argsBuilder_;
+      }
+
+      private int appendEntriesStatus_ = 0;
+      /**
+       * <code>.protobuf.AppendEntriesStatus appendEntriesStatus = 2;</code>
+       */
+      public int getAppendEntriesStatusValue() {
+        return appendEntriesStatus_;
+      }
+      /**
+       * <code>.protobuf.AppendEntriesStatus appendEntriesStatus = 2;</code>
+       */
+      public Builder setAppendEntriesStatusValue(int value) {
+        appendEntriesStatus_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.protobuf.AppendEntriesStatus appendEntriesStatus = 2;</code>
+       */
+      public rpc.RpcRequests.AppendEntriesStatus getAppendEntriesStatus() {
+        @SuppressWarnings("deprecation")
+        rpc.RpcRequests.AppendEntriesStatus result = rpc.RpcRequests.AppendEntriesStatus.valueOf(appendEntriesStatus_);
+        return result == null ? rpc.RpcRequests.AppendEntriesStatus.UNRECOGNIZED : result;
+      }
+      /**
+       * <code>.protobuf.AppendEntriesStatus appendEntriesStatus = 2;</code>
+       */
+      public Builder setAppendEntriesStatus(rpc.RpcRequests.AppendEntriesStatus value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+
+        appendEntriesStatus_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.protobuf.AppendEntriesStatus appendEntriesStatus = 2;</code>
+       */
+      public Builder clearAppendEntriesStatus() {
+
+        appendEntriesStatus_ = 0;
+        onChanged();
+        return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -11616,39 +11811,41 @@ public final class RpcRequests {
             "\n\tRPC.proto\022\010protobuf\032\nraft.proto\"%\n\013Pin" +
                     "gRequest\022\026\n\016send_timestamp\030\001 \001(\003\"E\n\025Appe" +
                     "ndEntriesRequests\022,\n\004args\030\001 \003(\0132\036.protob" +
-                    "uf.AppendEntriesRequest\"G\n\026AppendEntries" +
-                    "Responses\022-\n\004args\030\001 \003(\0132\037.protobuf.Appen" +
-                    "dEntriesResponse\"4\n\rErrorResponse\022\021\n\terr" +
-                    "orCode\030\001 \001(\003\022\020\n\010errorMsg\030\002 \001(\t\"E\n\021Timeou" +
-                    "tNowRequest\022\021\n\tserver_id\030\001 \001(\t\022\017\n\007peer_i" +
-                    "d\030\002 \001(\t\022\014\n\004term\030\003 \001(\003\"3\n\022TimeoutNowRespo" +
-                    "nse\022\014\n\004term\030\001 \001(\003\022\017\n\007success\030\002 \001(\010\"\207\001\n\022R" +
-                    "equestVoteRequest\022\021\n\tserver_id\030\001 \001(\t\022\017\n\007" +
-                    "peer_id\030\002 \001(\t\022\014\n\004term\030\003 \001(\003\022\025\n\rlast_log_" +
-                    "term\030\004 \001(\003\022\026\n\016last_log_index\030\005 \001(\003\022\020\n\010pr" +
-                    "e_vote\030\006 \001(\010\"G\n\023RequestVoteResponse\022\014\n\004t" +
-                    "erm\030\001 \001(\003\022\017\n\007granted\030\002 \001(\010\022\021\n\tpeer_name\030" +
-                    "\003 \001(\t\"\212\001\n\025RequestPreVoteRequest\022\021\n\tserve" +
-                    "r_id\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\022\014\n\004term\030\003 \001(" +
-                    "\003\022\025\n\rlast_log_term\030\004 \001(\003\022\026\n\016last_log_ind" +
-                    "ex\030\005 \001(\003\022\020\n\010pre_vote\030\006 \001(\010\"J\n\026RequestPre" +
-                    "VoteResponse\022\014\n\004term\030\001 \001(\003\022\017\n\007granted\030\002 " +
-                    "\001(\010\022\021\n\tpeer_name\030\003 \001(\t\"@\n\032AppendEntriesR" +
-                    "equestHeader\022\021\n\tserver_id\030\001 \001(\t\022\017\n\007peer_" +
-                    "id\030\002 \001(\t\"\207\002\n\024AppendEntriesRequest\022\020\n\010gro" +
-                    "up_id\030\001 \001(\t\022\021\n\tserver_id\030\002 \001(\t\022\017\n\007peer_i" +
-                    "d\030\003 \001(\t\022\014\n\004term\030\004 \001(\003\022\025\n\rprev_log_term\030\005" +
-                    " \001(\003\022\026\n\016prev_log_index\030\006 \001(\003\022$\n\007entries\030" +
-                    "\007 \001(\0132\023.protobuf.EntryMeta\022\027\n\017committed_" +
-                    "index\030\010 \001(\003\022\014\n\004data\030\t \001(\014\022\017\n\007address\030\n \001" +
-                    "(\t\022\014\n\004port\030\013 \001(\005\022\020\n\010taskPort\030\014 \001(\005\"N\n\025Ap" +
-                    "pendEntriesResponse\022\014\n\004term\030\001 \001(\003\022\017\n\007suc" +
-                    "cess\030\002 \001(\010\022\026\n\016last_log_index\030\003 \001(\003\"Y\n\020Re" +
-                    "adIndexRequest\022\020\n\010group_id\030\001 \001(\t\022\021\n\tserv" +
-                    "er_id\030\002 \001(\t\022\017\n\007entries\030\003 \001(\014\022\017\n\007peer_id\030" +
-                    "\004 \001(\t\"3\n\021ReadIndexResponse\022\r\n\005index\030\001 \001(" +
-                    "\003\022\017\n\007success\030\002 \001(\010B\022\n\003rpcB\013RpcRequestsb\006" +
-                    "proto3"
+                    "uf.AppendEntriesRequest\"\203\001\n\026AppendEntrie" +
+                    "sResponses\022-\n\004args\030\001 \003(\0132\037.protobuf.Appe" +
+                    "ndEntriesResponse\022:\n\023appendEntriesStatus" +
+                    "\030\002 \001(\0162\035.protobuf.AppendEntriesStatus\"4\n" +
+                    "\rErrorResponse\022\021\n\terrorCode\030\001 \001(\003\022\020\n\010err" +
+                    "orMsg\030\002 \001(\t\"E\n\021TimeoutNowRequest\022\021\n\tserv" +
+                    "er_id\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\022\014\n\004term\030\003 \001" +
+                    "(\003\"3\n\022TimeoutNowResponse\022\014\n\004term\030\001 \001(\003\022\017" +
+                    "\n\007success\030\002 \001(\010\"\207\001\n\022RequestVoteRequest\022\021" +
+                    "\n\tserver_id\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\022\014\n\004te" +
+                    "rm\030\003 \001(\003\022\025\n\rlast_log_term\030\004 \001(\003\022\026\n\016last_" +
+                    "log_index\030\005 \001(\003\022\020\n\010pre_vote\030\006 \001(\010\"G\n\023Req" +
+                    "uestVoteResponse\022\014\n\004term\030\001 \001(\003\022\017\n\007grante" +
+                    "d\030\002 \001(\010\022\021\n\tpeer_name\030\003 \001(\t\"\212\001\n\025RequestPr" +
+                    "eVoteRequest\022\021\n\tserver_id\030\001 \001(\t\022\017\n\007peer_" +
+                    "id\030\002 \001(\t\022\014\n\004term\030\003 \001(\003\022\025\n\rlast_log_term\030" +
+                    "\004 \001(\003\022\026\n\016last_log_index\030\005 \001(\003\022\020\n\010pre_vot" +
+                    "e\030\006 \001(\010\"J\n\026RequestPreVoteResponse\022\014\n\004ter" +
+                    "m\030\001 \001(\003\022\017\n\007granted\030\002 \001(\010\022\021\n\tpeer_name\030\003 " +
+                    "\001(\t\"@\n\032AppendEntriesRequestHeader\022\021\n\tser" +
+                    "ver_id\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\"\207\002\n\024Append" +
+                    "EntriesRequest\022\020\n\010group_id\030\001 \001(\t\022\021\n\tserv" +
+                    "er_id\030\002 \001(\t\022\017\n\007peer_id\030\003 \001(\t\022\014\n\004term\030\004 \001" +
+                    "(\003\022\025\n\rprev_log_term\030\005 \001(\003\022\026\n\016prev_log_in" +
+                    "dex\030\006 \001(\003\022$\n\007entries\030\007 \001(\0132\023.protobuf.En" +
+                    "tryMeta\022\027\n\017committed_index\030\010 \001(\003\022\014\n\004data" +
+                    "\030\t \001(\014\022\017\n\007address\030\n \001(\t\022\014\n\004port\030\013 \001(\005\022\020\n" +
+                    "\010taskPort\030\014 \001(\005\"N\n\025AppendEntriesResponse" +
+                    "\022\014\n\004term\030\001 \001(\003\022\017\n\007success\030\002 \001(\010\022\026\n\016last_" +
+                    "log_index\030\003 \001(\003\"Y\n\020ReadIndexRequest\022\020\n\010g" +
+                    "roup_id\030\001 \001(\t\022\021\n\tserver_id\030\002 \001(\t\022\017\n\007entr" +
+                    "ies\030\003 \001(\014\022\017\n\007peer_id\030\004 \001(\t\"3\n\021ReadIndexR" +
+                    "esponse\022\r\n\005index\030\001 \001(\003\022\017\n\007success\030\002 \001(\010*" +
+                    "/\n\023AppendEntriesStatus\022\014\n\010APPROVED\020\000\022\n\n\006" +
+                    "FAILED\020\001B\022\n\003rpcB\013RpcRequestsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
             new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -11680,7 +11877,7 @@ public final class RpcRequests {
     internal_static_protobuf_AppendEntriesResponses_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_AppendEntriesResponses_descriptor,
-            new java.lang.String[] { "Args", });
+            new java.lang.String[] { "Args", "AppendEntriesStatus", });
     internal_static_protobuf_ErrorResponse_descriptor =
             getDescriptor().getMessageTypes().get(3);
     internal_static_protobuf_ErrorResponse_fieldAccessorTable = new

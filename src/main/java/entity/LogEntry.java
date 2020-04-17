@@ -16,6 +16,7 @@ public class LogEntry implements Checksum {
     private EnumOutter.EntryType type;
     /** log id with index/term */
     private LogId                id = new LogId(0, 0);
+    private PeerId leaderId;
     /** log entry current peers */
     private List<PeerId> peers;
     /** log entry old peers */
@@ -124,4 +125,11 @@ public class LogEntry implements Checksum {
         return c;
     }
 
+    public PeerId getLeaderId() {
+        return leaderId;
+    }
+
+    public void setLeaderId(PeerId leaderId) {
+        this.leaderId = leaderId;
+    }
 }

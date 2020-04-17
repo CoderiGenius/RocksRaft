@@ -7,6 +7,7 @@ package core;
 
 
 import com.alipay.remoting.NamedThreadFactory;
+import com.google.protobuf.ByteString;
 import com.google.protobuf.Message;
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.EventFactory;
@@ -26,6 +27,8 @@ import utils.Requires;
 import utils.TimerManager;
 import utils.Utils;
 
+import java.nio.ByteBuffer;
+import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -70,23 +73,32 @@ public class Replicator {
         // Entries size in bytes
         final int             size;
         // RPC future
-        final Future<Message> rpcFuture;
+//        final Future<Message> rpcFuture;
+
 
         // Request sequence.
-        final int             seq;
-        public Inflight( final long startIndex, final int count, final int size,
-                        final int seq, final Future<Message> rpcFuture) {
+//        final int             seq;
+//        public Inflight( final long startIndex, final int count, final int size,
+//                        final int seq) {
+//            super();
+//            this.seq = seq;
+//            this.count = count;
+//            this.startIndex = startIndex;
+//            this.size = size;
+//
+//        }
+
+        public Inflight(long committedIndex, int size, int serializedSize) {
             super();
-            this.seq = seq;
-            this.count = count;
-            this.startIndex = startIndex;
-            this.size = size;
-            this.rpcFuture = rpcFuture;
+            this.count = size;
+            this.startIndex = committedIndex;
+            this.size = serializedSize;
         }
+
         @Override
         public String toString() {
             return "Inflight [count=" + this.count + ", startIndex=" + this.startIndex + ", size=" + this.size
-                    + ", rpcFuture=" + this.rpcFuture  + ", seq=" + this.seq + "]";
+                      ;
         }
 
     }
@@ -97,19 +109,24 @@ public class Replicator {
     private TimerManager timerManager;
     private RpcServices rpcServices;
     private ReplicatorState state;
+    private State followerState;
     private AtomicLong currentSuccessTerm;
     private AtomicLong currentSuccessIndex;
-    private List<Task> taskList;
-    private Disruptor<Task> disruptor;
-    private RingBuffer<Task> ringBuffer;
+    private List<RpcRequests.AppendEntriesRequest> appendEntriesRequestList;
+    private Disruptor<LogEntry> disruptor;
+    private RingBuffer<LogEntry> ringBuffer;
+    // In-flight RPC requests, FIFO queue
+    private final ArrayDeque<Inflight> inflights              = new ArrayDeque<>();
+
     public Replicator(ReplicatorOptions options,RpcServices rpcServices) {
         this.state = ReplicatorState.IDLE;
         this.options = options;
         this.rpcServices = rpcServices;
-        this.state = State.Probe;
-        this.disruptor = DisruptorBuilder.<Task>newInstance()
+
+        this.followerState = State.Probe;
+        this.disruptor = DisruptorBuilder.<LogEntry>newInstance()
                 .setRingBufferSize(NodeOptions.getNodeOptions().getDisruptorBufferSize())
-                .setEventFactory(new TaskEventFactory())
+                .setEventFactory(new LogEntryEventFactory())
                 .setThreadFactory(new NamedThreadFactory("JRaft-Replicator-Disruptor-", true))
                 .setProducerType(ProducerType.MULTI)
                 .setWaitStrategy(new BlockingWaitStrategy())
@@ -118,18 +135,43 @@ public class Replicator {
         disruptor.setDefaultExceptionHandler(new LogExceptionHandler<Object>(getClass().getSimpleName()));
     }
 
-    private  class ReplicatorHandler implements EventHandler<entity.Task> {
+    private  class ReplicatorHandler implements EventHandler<LogEntry> {
+
 
         @Override
-        public void onEvent(Task task, long l, boolean b) throws Exception {
+        public void onEvent(LogEntry logEntry, long l, boolean b) throws Exception {
+            if (b && !getAppendEntriesRequestList().isEmpty()){
+               final RpcRequests.AppendEntriesRequests.Builder builder
+                       = RpcRequests.AppendEntriesRequests.newBuilder();
+                builder.addAllArgs(getAppendEntriesRequestList());
+                RpcRequests.AppendEntriesRequests appendEntriesRequests = builder.build();
+                rpcServices.handleApendEntriesRequests(appendEntriesRequests);
 
+                Inflight inflight = new Inflight(
+                        getAppendEntriesRequestList().get(0).getCommittedIndex(),
+                        getAppendEntriesRequestList().size(),
+                        appendEntriesRequests.getSerializedSize());
+                getInflights().add(inflight);
+                getAppendEntriesRequestList().clear();
+
+                return;
+            }
+            if(!b){
+                final RpcRequests.AppendEntriesRequest.Builder builder
+                        = RpcRequests.AppendEntriesRequest.newBuilder();
+                builder.setData(ByteString.copyFrom(logEntry.getData()));
+                builder.setCommittedIndex(logEntry.getId().getIndex());
+                builder.setTerm(logEntry.getId().getTerm());
+                builder.setPeerId(logEntry.getLeaderId().getId());
+                getAppendEntriesRequestList().add(builder.build());
+            }
         }
     }
-    private static class TaskEventFactory implements EventFactory<Task> {
+    private static class LogEntryEventFactory implements EventFactory<LogEntry> {
 
         @Override
-        public Task newInstance() {
-            return new Task();
+        public LogEntry newInstance() {
+            return new LogEntry();
         }
     }
     /**
@@ -270,23 +312,43 @@ public class Replicator {
         return rpcServices;
     }
 
-    public Disruptor<Task> getDisruptor() {
+    public Disruptor<LogEntry> getDisruptor() {
         return disruptor;
     }
 
-    public void setDisruptor(Disruptor<Task> disruptor) {
+    public void setDisruptor(Disruptor<LogEntry> disruptor) {
         this.disruptor = disruptor;
     }
 
-    public RingBuffer<Task> getRingBuffer() {
+    public RingBuffer<LogEntry> getRingBuffer() {
         return ringBuffer;
     }
 
-    public void setRingBuffer(RingBuffer<Task> ringBuffer) {
+    public void setRingBuffer(RingBuffer<LogEntry> ringBuffer) {
         this.ringBuffer = ringBuffer;
     }
 
     public void setRpcServices(RpcServices rpcServices) {
         this.rpcServices = rpcServices;
+    }
+
+    public List<RpcRequests.AppendEntriesRequest> getAppendEntriesRequestList() {
+        return appendEntriesRequestList;
+    }
+
+    public ArrayDeque<Inflight> getInflights() {
+        return inflights;
+    }
+
+    public void setAppendEntriesRequestList(List<RpcRequests.AppendEntriesRequest> appendEntriesRequestList) {
+        this.appendEntriesRequestList = appendEntriesRequestList;
+    }
+
+    public State getFollowerState() {
+        return followerState;
+    }
+
+    public void setFollowerState(State followerState) {
+        this.followerState = followerState;
     }
 }

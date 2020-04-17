@@ -125,6 +125,11 @@ public class RpcServicesImpl implements RpcServices {
         }else {
             //normal appendEntry request
 
+            //check term
+            //check index
+            //check leader illegal
+            //storage to log
+            appendEntriesRequest
         }
 
         builder.setLastLogIndex(NodeImpl.getNodeImple().getLastLogIndex().longValue());
@@ -137,10 +142,23 @@ public class RpcServicesImpl implements RpcServices {
 
     @Override
     public RpcRequests.AppendEntriesResponses handleApendEntriesRequests(RpcRequests.AppendEntriesRequests appendEntriesRequests) {
-        RpcRequests.AppendEntriesResponses.Builder builder = RpcRequests.AppendEntriesResponses.newBuilder();
+        RpcRequests.AppendEntriesResponses.Builder builder
+                = RpcRequests.AppendEntriesResponses.newBuilder();
 
+        boolean ret = true;
         for (int i = 0; i <appendEntriesRequests.getArgsCount() ; i++) {
-           builder.addArgs(handleApendEntriesRequest(appendEntriesRequests.getArgs(i)));
+            RpcRequests.AppendEntriesResponse appendEntriesResponse
+                    = handleApendEntriesRequest(appendEntriesRequests.getArgs(i));
+           builder.addArgs(appendEntriesResponse);
+           if(!appendEntriesResponse.getSuccess()){
+               ret = false;
+           }
+
+        }
+        if (ret) {
+            builder.setAppendEntriesStatus(RpcRequests.AppendEntriesStatus.APPROVED);
+        }else {
+            builder.setAppendEntriesStatus(RpcRequests.AppendEntriesStatus.FAILED);
         }
         return builder.build();
 

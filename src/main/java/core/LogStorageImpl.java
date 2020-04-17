@@ -2,6 +2,7 @@ package core;
 
 import config.LogStorageOptions;
 import entity.LogEntry;
+import entity.RocksBatch;
 import org.rocksdb.Options;
 import org.rocksdb.RocksDB;
 import org.rocksdb.RocksDBException;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import storage.LogStorage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,6 +18,8 @@ import java.util.List;
  */
 
 public class LogStorageImpl implements LogStorage {
+
+    private final RocksDBStorage rocksDBStorage = new RocksDBStorageImpl();
 
     LogStorageImpl(LogStorageOptions logStorageOptions){
         this.logStorageOptions = logStorageOptions;
@@ -75,7 +79,16 @@ public class LogStorageImpl implements LogStorage {
 
     @Override
     public int appendEntries(List<LogEntry> entries) {
-        return 0;
+        if (entries == null || entries.isEmpty()) {
+            return 0;
+        }
+        final int entriesCount = entries.size();
+        ArrayList<RocksBatch> rocksBatches = new ArrayList<>(entriesCount);
+        for (LogEntry l :
+                entries) {
+            rocksBatches.add(new RocksBatch())
+        }
+        if(rocksDBStorage.putBatch())
     }
 
     @Override

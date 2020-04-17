@@ -15,7 +15,7 @@ public class ReplicatorOptions {
     private PeerId serverId;
     private PeerId            peerId;
     private LogManager logManager;
-    private BallotBox ballotBox;
+
     private NodeImpl node;
     private long              term;
     private TimerManager timerManager;
@@ -32,7 +32,7 @@ public class ReplicatorOptions {
     }
     public ReplicatorOptions(long dynamicHeartBeatTimeoutMs, long electionTimeoutMs
             , String groupId,  PeerId peerId, LogManager logManager
-            , BallotBox ballotBox, NodeImpl node, long term, TimerManager timerManager
+            , NodeImpl node, long term, TimerManager timerManager
             , ReplicatorType replicatorType) {
         this.dynamicHeartBeatTimeoutMs = dynamicHeartBeatTimeoutMs;
         this.electionTimeoutMs = electionTimeoutMs;
@@ -40,7 +40,7 @@ public class ReplicatorOptions {
 
         this.peerId = peerId;
         this.logManager = logManager;
-        this.ballotBox = ballotBox;
+        //this.ballotBox = ballotBox;
         this.node = node;
         this.term = term;
         this.timerManager = timerManager;
@@ -95,13 +95,7 @@ public class ReplicatorOptions {
         this.logManager = logManager;
     }
 
-    public Ballot getBallotBox() {
-        return ballotBox;
-    }
 
-    public void setBallotBox(BallotBox ballotBox) {
-        this.ballotBox = ballotBox;
-    }
 
     public NodeImpl getNode() {
         return node;

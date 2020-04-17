@@ -59,6 +59,8 @@ public interface ReplicatorGroup  {
      */
     Replicator getReplicator(final PeerId peer);
 
+    void sendAppendEntriesToAllReplicator(List<LogEntry> logEntries);
+
     /**
      * Check replicator state, if it's not started, start it;
      * if it is blocked, unblock it. It should be called by leader.
