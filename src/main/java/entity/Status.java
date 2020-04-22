@@ -7,6 +7,34 @@ package entity;
 public class Status {
 
 
+    private long firstIndex;
+    private long lastIndex;
+
+
+    public long getFirstIndex() {
+        return firstIndex;
+    }
+
+    public void setFirstIndex(long firstIndex) {
+        this.firstIndex = firstIndex;
+    }
+
+    public long getLastIndex() {
+        return lastIndex;
+    }
+
+    public void setLastIndex(long lastIndex) {
+        this.lastIndex = lastIndex;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
     /**
      * Status internal state.
      *

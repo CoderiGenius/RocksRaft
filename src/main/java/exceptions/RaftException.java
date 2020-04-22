@@ -23,6 +23,11 @@ public class RaftException extends Throwable{
         super(type.name());
         this.type = type;
     }
+
+    public RaftException() {
+
+    }
+
     public Status getStatus() {
         return status;
     }

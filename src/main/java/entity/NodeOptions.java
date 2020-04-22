@@ -42,6 +42,8 @@ public class NodeOptions extends RpcOptions {
 
 
 
+    private String peerId;
+
 
 
 
@@ -73,6 +75,14 @@ public class NodeOptions extends RpcOptions {
     private String rpcServiceName;
 
     private String taskExecuteMethod;
+
+    public String getPeerId() {
+        return peerId;
+    }
+
+    public void setPeerId(String peerId) {
+        this.peerId = peerId;
+    }
 
     /**
      * The maximum timeout in seconds to wait when publishing events into disruptor, default is 10 seconds.

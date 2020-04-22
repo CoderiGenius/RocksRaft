@@ -104,3 +104,16 @@ message ReadIndexResponse {
      int64 index = 1;
      bool success = 2;
 };
+
+message NotifyFollowerStableRequest{
+     int64 lastIndex = 1;
+     int64 firstIndex = 2;
+     string peerId = 3;
+     bool success = 4;
+}
+message NotifyFollowerStableResponse{
+     int64 lastIndex = 1;
+     int64 firstIndex = 2;
+     int64 term = 3;
+     bool success = 4;
+}

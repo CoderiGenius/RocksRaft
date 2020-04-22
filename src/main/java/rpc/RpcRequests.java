@@ -11724,6 +11724,1417 @@ public final class RpcRequests {
 
   }
 
+  public interface NotifyFollowerStableRequestOrBuilder extends
+          // @@protoc_insertion_point(interface_extends:protobuf.NotifyFollowerStableRequest)
+          com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>int64 lastIndex = 1;</code>
+     */
+    long getLastIndex();
+
+    /**
+     * <code>int64 firstIndex = 2;</code>
+     */
+    long getFirstIndex();
+
+    /**
+     * <code>string peerId = 3;</code>
+     */
+    java.lang.String getPeerId();
+    /**
+     * <code>string peerId = 3;</code>
+     */
+    com.google.protobuf.ByteString
+    getPeerIdBytes();
+
+    /**
+     * <code>bool success = 4;</code>
+     */
+    boolean getSuccess();
+  }
+  /**
+   * Protobuf type {@code protobuf.NotifyFollowerStableRequest}
+   */
+  public  static final class NotifyFollowerStableRequest extends
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:protobuf.NotifyFollowerStableRequest)
+          NotifyFollowerStableRequestOrBuilder {
+    private static final long serialVersionUID = 0L;
+    // Use NotifyFollowerStableRequest.newBuilder() to construct.
+    private NotifyFollowerStableRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private NotifyFollowerStableRequest() {
+      lastIndex_ = 0L;
+      firstIndex_ = 0L;
+      peerId_ = "";
+      success_ = false;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private NotifyFollowerStableRequest(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+              com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              lastIndex_ = input.readInt64();
+              break;
+            }
+            case 16: {
+
+              firstIndex_ = input.readInt64();
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              peerId_ = s;
+              break;
+            }
+            case 32: {
+
+              success_ = input.readBool();
+              break;
+            }
+            default: {
+              if (!parseUnknownFieldProto3(
+                      input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+                e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+    getDescriptor() {
+      return rpc.RpcRequests.internal_static_protobuf_NotifyFollowerStableRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+    internalGetFieldAccessorTable() {
+      return rpc.RpcRequests.internal_static_protobuf_NotifyFollowerStableRequest_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                      rpc.RpcRequests.NotifyFollowerStableRequest.class, rpc.RpcRequests.NotifyFollowerStableRequest.Builder.class);
+    }
+
+    public static final int LASTINDEX_FIELD_NUMBER = 1;
+    private long lastIndex_;
+    /**
+     * <code>int64 lastIndex = 1;</code>
+     */
+    public long getLastIndex() {
+      return lastIndex_;
+    }
+
+    public static final int FIRSTINDEX_FIELD_NUMBER = 2;
+    private long firstIndex_;
+    /**
+     * <code>int64 firstIndex = 2;</code>
+     */
+    public long getFirstIndex() {
+      return firstIndex_;
+    }
+
+    public static final int PEERID_FIELD_NUMBER = 3;
+    private volatile java.lang.Object peerId_;
+    /**
+     * <code>string peerId = 3;</code>
+     */
+    public java.lang.String getPeerId() {
+      java.lang.Object ref = peerId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        peerId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string peerId = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+    getPeerIdBytes() {
+      java.lang.Object ref = peerId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
+        peerId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SUCCESS_FIELD_NUMBER = 4;
+    private boolean success_;
+    /**
+     * <code>bool success = 4;</code>
+     */
+    public boolean getSuccess() {
+      return success_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+            throws java.io.IOException {
+      if (lastIndex_ != 0L) {
+        output.writeInt64(1, lastIndex_);
+      }
+      if (firstIndex_ != 0L) {
+        output.writeInt64(2, firstIndex_);
+      }
+      if (!getPeerIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, peerId_);
+      }
+      if (success_ != false) {
+        output.writeBool(4, success_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (lastIndex_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeInt64Size(1, lastIndex_);
+      }
+      if (firstIndex_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeInt64Size(2, firstIndex_);
+      }
+      if (!getPeerIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, peerId_);
+      }
+      if (success_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeBoolSize(4, success_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof rpc.RpcRequests.NotifyFollowerStableRequest)) {
+        return super.equals(obj);
+      }
+      rpc.RpcRequests.NotifyFollowerStableRequest other = (rpc.RpcRequests.NotifyFollowerStableRequest) obj;
+
+      boolean result = true;
+      result = result && (getLastIndex()
+              == other.getLastIndex());
+      result = result && (getFirstIndex()
+              == other.getFirstIndex());
+      result = result && getPeerId()
+              .equals(other.getPeerId());
+      result = result && (getSuccess()
+              == other.getSuccess());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + LASTINDEX_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+              getLastIndex());
+      hash = (37 * hash) + FIRSTINDEX_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+              getFirstIndex());
+      hash = (37 * hash) + PEERID_FIELD_NUMBER;
+      hash = (53 * hash) + getPeerId().hashCode();
+      hash = (37 * hash) + SUCCESS_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+              getSuccess());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static rpc.RpcRequests.NotifyFollowerStableRequest parseFrom(
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableRequest parseFrom(
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableRequest parseFrom(
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableRequest parseFrom(
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableRequest parseFrom(byte[] data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableRequest parseFrom(
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableRequest parseFrom(java.io.InputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableRequest parseFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableRequest parseDelimitedFrom(java.io.InputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableRequest parseDelimitedFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableRequest parseFrom(
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableRequest parseFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(rpc.RpcRequests.NotifyFollowerStableRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+              ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code protobuf.NotifyFollowerStableRequest}
+     */
+    public static final class Builder extends
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:protobuf.NotifyFollowerStableRequest)
+            rpc.RpcRequests.NotifyFollowerStableRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+      getDescriptor() {
+        return rpc.RpcRequests.internal_static_protobuf_NotifyFollowerStableRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internalGetFieldAccessorTable() {
+        return rpc.RpcRequests.internal_static_protobuf_NotifyFollowerStableRequest_fieldAccessorTable
+                .ensureFieldAccessorsInitialized(
+                        rpc.RpcRequests.NotifyFollowerStableRequest.class, rpc.RpcRequests.NotifyFollowerStableRequest.Builder.class);
+      }
+
+      // Construct using rpc.RpcRequests.NotifyFollowerStableRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        lastIndex_ = 0L;
+
+        firstIndex_ = 0L;
+
+        peerId_ = "";
+
+        success_ = false;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+      getDescriptorForType() {
+        return rpc.RpcRequests.internal_static_protobuf_NotifyFollowerStableRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public rpc.RpcRequests.NotifyFollowerStableRequest getDefaultInstanceForType() {
+        return rpc.RpcRequests.NotifyFollowerStableRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public rpc.RpcRequests.NotifyFollowerStableRequest build() {
+        rpc.RpcRequests.NotifyFollowerStableRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public rpc.RpcRequests.NotifyFollowerStableRequest buildPartial() {
+        rpc.RpcRequests.NotifyFollowerStableRequest result = new rpc.RpcRequests.NotifyFollowerStableRequest(this);
+        result.lastIndex_ = lastIndex_;
+        result.firstIndex_ = firstIndex_;
+        result.peerId_ = peerId_;
+        result.success_ = success_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof rpc.RpcRequests.NotifyFollowerStableRequest) {
+          return mergeFrom((rpc.RpcRequests.NotifyFollowerStableRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(rpc.RpcRequests.NotifyFollowerStableRequest other) {
+        if (other == rpc.RpcRequests.NotifyFollowerStableRequest.getDefaultInstance()) return this;
+        if (other.getLastIndex() != 0L) {
+          setLastIndex(other.getLastIndex());
+        }
+        if (other.getFirstIndex() != 0L) {
+          setFirstIndex(other.getFirstIndex());
+        }
+        if (!other.getPeerId().isEmpty()) {
+          peerId_ = other.peerId_;
+          onChanged();
+        }
+        if (other.getSuccess() != false) {
+          setSuccess(other.getSuccess());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
+        rpc.RpcRequests.NotifyFollowerStableRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (rpc.RpcRequests.NotifyFollowerStableRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private long lastIndex_ ;
+      /**
+       * <code>int64 lastIndex = 1;</code>
+       */
+      public long getLastIndex() {
+        return lastIndex_;
+      }
+      /**
+       * <code>int64 lastIndex = 1;</code>
+       */
+      public Builder setLastIndex(long value) {
+
+        lastIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 lastIndex = 1;</code>
+       */
+      public Builder clearLastIndex() {
+
+        lastIndex_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long firstIndex_ ;
+      /**
+       * <code>int64 firstIndex = 2;</code>
+       */
+      public long getFirstIndex() {
+        return firstIndex_;
+      }
+      /**
+       * <code>int64 firstIndex = 2;</code>
+       */
+      public Builder setFirstIndex(long value) {
+
+        firstIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 firstIndex = 2;</code>
+       */
+      public Builder clearFirstIndex() {
+
+        firstIndex_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object peerId_ = "";
+      /**
+       * <code>string peerId = 3;</code>
+       */
+      public java.lang.String getPeerId() {
+        java.lang.Object ref = peerId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          peerId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string peerId = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+      getPeerIdBytes() {
+        java.lang.Object ref = peerId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
+          peerId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string peerId = 3;</code>
+       */
+      public Builder setPeerId(
+              java.lang.String value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+
+        peerId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string peerId = 3;</code>
+       */
+      public Builder clearPeerId() {
+
+        peerId_ = getDefaultInstance().getPeerId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string peerId = 3;</code>
+       */
+      public Builder setPeerIdBytes(
+              com.google.protobuf.ByteString value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
+        peerId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private boolean success_ ;
+      /**
+       * <code>bool success = 4;</code>
+       */
+      public boolean getSuccess() {
+        return success_;
+      }
+      /**
+       * <code>bool success = 4;</code>
+       */
+      public Builder setSuccess(boolean value) {
+
+        success_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool success = 4;</code>
+       */
+      public Builder clearSuccess() {
+
+        success_ = false;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:protobuf.NotifyFollowerStableRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:protobuf.NotifyFollowerStableRequest)
+    private static final rpc.RpcRequests.NotifyFollowerStableRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new rpc.RpcRequests.NotifyFollowerStableRequest();
+    }
+
+    public static rpc.RpcRequests.NotifyFollowerStableRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<NotifyFollowerStableRequest>
+            PARSER = new com.google.protobuf.AbstractParser<NotifyFollowerStableRequest>() {
+      @java.lang.Override
+      public NotifyFollowerStableRequest parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+        return new NotifyFollowerStableRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<NotifyFollowerStableRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<NotifyFollowerStableRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public rpc.RpcRequests.NotifyFollowerStableRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface NotifyFollowerStableResponseOrBuilder extends
+          // @@protoc_insertion_point(interface_extends:protobuf.NotifyFollowerStableResponse)
+          com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>int64 lastIndex = 1;</code>
+     */
+    long getLastIndex();
+
+    /**
+     * <code>int64 firstIndex = 2;</code>
+     */
+    long getFirstIndex();
+
+    /**
+     * <code>int64 term = 3;</code>
+     */
+    long getTerm();
+
+    /**
+     * <code>bool success = 4;</code>
+     */
+    boolean getSuccess();
+  }
+  /**
+   * Protobuf type {@code protobuf.NotifyFollowerStableResponse}
+   */
+  public  static final class NotifyFollowerStableResponse extends
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:protobuf.NotifyFollowerStableResponse)
+          NotifyFollowerStableResponseOrBuilder {
+    private static final long serialVersionUID = 0L;
+    // Use NotifyFollowerStableResponse.newBuilder() to construct.
+    private NotifyFollowerStableResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private NotifyFollowerStableResponse() {
+      lastIndex_ = 0L;
+      firstIndex_ = 0L;
+      term_ = 0L;
+      success_ = false;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private NotifyFollowerStableResponse(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+              com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              lastIndex_ = input.readInt64();
+              break;
+            }
+            case 16: {
+
+              firstIndex_ = input.readInt64();
+              break;
+            }
+            case 24: {
+
+              term_ = input.readInt64();
+              break;
+            }
+            case 32: {
+
+              success_ = input.readBool();
+              break;
+            }
+            default: {
+              if (!parseUnknownFieldProto3(
+                      input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+                e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+    getDescriptor() {
+      return rpc.RpcRequests.internal_static_protobuf_NotifyFollowerStableResponse_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+    internalGetFieldAccessorTable() {
+      return rpc.RpcRequests.internal_static_protobuf_NotifyFollowerStableResponse_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                      rpc.RpcRequests.NotifyFollowerStableResponse.class, rpc.RpcRequests.NotifyFollowerStableResponse.Builder.class);
+    }
+
+    public static final int LASTINDEX_FIELD_NUMBER = 1;
+    private long lastIndex_;
+    /**
+     * <code>int64 lastIndex = 1;</code>
+     */
+    public long getLastIndex() {
+      return lastIndex_;
+    }
+
+    public static final int FIRSTINDEX_FIELD_NUMBER = 2;
+    private long firstIndex_;
+    /**
+     * <code>int64 firstIndex = 2;</code>
+     */
+    public long getFirstIndex() {
+      return firstIndex_;
+    }
+
+    public static final int TERM_FIELD_NUMBER = 3;
+    private long term_;
+    /**
+     * <code>int64 term = 3;</code>
+     */
+    public long getTerm() {
+      return term_;
+    }
+
+    public static final int SUCCESS_FIELD_NUMBER = 4;
+    private boolean success_;
+    /**
+     * <code>bool success = 4;</code>
+     */
+    public boolean getSuccess() {
+      return success_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+            throws java.io.IOException {
+      if (lastIndex_ != 0L) {
+        output.writeInt64(1, lastIndex_);
+      }
+      if (firstIndex_ != 0L) {
+        output.writeInt64(2, firstIndex_);
+      }
+      if (term_ != 0L) {
+        output.writeInt64(3, term_);
+      }
+      if (success_ != false) {
+        output.writeBool(4, success_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (lastIndex_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeInt64Size(1, lastIndex_);
+      }
+      if (firstIndex_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeInt64Size(2, firstIndex_);
+      }
+      if (term_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeInt64Size(3, term_);
+      }
+      if (success_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeBoolSize(4, success_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof rpc.RpcRequests.NotifyFollowerStableResponse)) {
+        return super.equals(obj);
+      }
+      rpc.RpcRequests.NotifyFollowerStableResponse other = (rpc.RpcRequests.NotifyFollowerStableResponse) obj;
+
+      boolean result = true;
+      result = result && (getLastIndex()
+              == other.getLastIndex());
+      result = result && (getFirstIndex()
+              == other.getFirstIndex());
+      result = result && (getTerm()
+              == other.getTerm());
+      result = result && (getSuccess()
+              == other.getSuccess());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + LASTINDEX_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+              getLastIndex());
+      hash = (37 * hash) + FIRSTINDEX_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+              getFirstIndex());
+      hash = (37 * hash) + TERM_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+              getTerm());
+      hash = (37 * hash) + SUCCESS_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+              getSuccess());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static rpc.RpcRequests.NotifyFollowerStableResponse parseFrom(
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableResponse parseFrom(
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableResponse parseFrom(
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableResponse parseFrom(
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableResponse parseFrom(byte[] data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableResponse parseFrom(
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableResponse parseFrom(java.io.InputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableResponse parseFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableResponse parseDelimitedFrom(java.io.InputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableResponse parseDelimitedFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableResponse parseFrom(
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+    }
+    public static rpc.RpcRequests.NotifyFollowerStableResponse parseFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(rpc.RpcRequests.NotifyFollowerStableResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+              ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code protobuf.NotifyFollowerStableResponse}
+     */
+    public static final class Builder extends
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:protobuf.NotifyFollowerStableResponse)
+            rpc.RpcRequests.NotifyFollowerStableResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+      getDescriptor() {
+        return rpc.RpcRequests.internal_static_protobuf_NotifyFollowerStableResponse_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internalGetFieldAccessorTable() {
+        return rpc.RpcRequests.internal_static_protobuf_NotifyFollowerStableResponse_fieldAccessorTable
+                .ensureFieldAccessorsInitialized(
+                        rpc.RpcRequests.NotifyFollowerStableResponse.class, rpc.RpcRequests.NotifyFollowerStableResponse.Builder.class);
+      }
+
+      // Construct using rpc.RpcRequests.NotifyFollowerStableResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        lastIndex_ = 0L;
+
+        firstIndex_ = 0L;
+
+        term_ = 0L;
+
+        success_ = false;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+      getDescriptorForType() {
+        return rpc.RpcRequests.internal_static_protobuf_NotifyFollowerStableResponse_descriptor;
+      }
+
+      @java.lang.Override
+      public rpc.RpcRequests.NotifyFollowerStableResponse getDefaultInstanceForType() {
+        return rpc.RpcRequests.NotifyFollowerStableResponse.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public rpc.RpcRequests.NotifyFollowerStableResponse build() {
+        rpc.RpcRequests.NotifyFollowerStableResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public rpc.RpcRequests.NotifyFollowerStableResponse buildPartial() {
+        rpc.RpcRequests.NotifyFollowerStableResponse result = new rpc.RpcRequests.NotifyFollowerStableResponse(this);
+        result.lastIndex_ = lastIndex_;
+        result.firstIndex_ = firstIndex_;
+        result.term_ = term_;
+        result.success_ = success_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof rpc.RpcRequests.NotifyFollowerStableResponse) {
+          return mergeFrom((rpc.RpcRequests.NotifyFollowerStableResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(rpc.RpcRequests.NotifyFollowerStableResponse other) {
+        if (other == rpc.RpcRequests.NotifyFollowerStableResponse.getDefaultInstance()) return this;
+        if (other.getLastIndex() != 0L) {
+          setLastIndex(other.getLastIndex());
+        }
+        if (other.getFirstIndex() != 0L) {
+          setFirstIndex(other.getFirstIndex());
+        }
+        if (other.getTerm() != 0L) {
+          setTerm(other.getTerm());
+        }
+        if (other.getSuccess() != false) {
+          setSuccess(other.getSuccess());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
+        rpc.RpcRequests.NotifyFollowerStableResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (rpc.RpcRequests.NotifyFollowerStableResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private long lastIndex_ ;
+      /**
+       * <code>int64 lastIndex = 1;</code>
+       */
+      public long getLastIndex() {
+        return lastIndex_;
+      }
+      /**
+       * <code>int64 lastIndex = 1;</code>
+       */
+      public Builder setLastIndex(long value) {
+
+        lastIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 lastIndex = 1;</code>
+       */
+      public Builder clearLastIndex() {
+
+        lastIndex_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long firstIndex_ ;
+      /**
+       * <code>int64 firstIndex = 2;</code>
+       */
+      public long getFirstIndex() {
+        return firstIndex_;
+      }
+      /**
+       * <code>int64 firstIndex = 2;</code>
+       */
+      public Builder setFirstIndex(long value) {
+
+        firstIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 firstIndex = 2;</code>
+       */
+      public Builder clearFirstIndex() {
+
+        firstIndex_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long term_ ;
+      /**
+       * <code>int64 term = 3;</code>
+       */
+      public long getTerm() {
+        return term_;
+      }
+      /**
+       * <code>int64 term = 3;</code>
+       */
+      public Builder setTerm(long value) {
+
+        term_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 term = 3;</code>
+       */
+      public Builder clearTerm() {
+
+        term_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private boolean success_ ;
+      /**
+       * <code>bool success = 4;</code>
+       */
+      public boolean getSuccess() {
+        return success_;
+      }
+      /**
+       * <code>bool success = 4;</code>
+       */
+      public Builder setSuccess(boolean value) {
+
+        success_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool success = 4;</code>
+       */
+      public Builder clearSuccess() {
+
+        success_ = false;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:protobuf.NotifyFollowerStableResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:protobuf.NotifyFollowerStableResponse)
+    private static final rpc.RpcRequests.NotifyFollowerStableResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new rpc.RpcRequests.NotifyFollowerStableResponse();
+    }
+
+    public static rpc.RpcRequests.NotifyFollowerStableResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<NotifyFollowerStableResponse>
+            PARSER = new com.google.protobuf.AbstractParser<NotifyFollowerStableResponse>() {
+      @java.lang.Override
+      public NotifyFollowerStableResponse parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+        return new NotifyFollowerStableResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<NotifyFollowerStableResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<NotifyFollowerStableResponse> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public rpc.RpcRequests.NotifyFollowerStableResponse getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
           internal_static_protobuf_PingRequest_descriptor;
   private static final
@@ -11799,6 +13210,16 @@ public final class RpcRequests {
   private static final
   com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internal_static_protobuf_ReadIndexResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+          internal_static_protobuf_NotifyFollowerStableRequest_descriptor;
+  private static final
+  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internal_static_protobuf_NotifyFollowerStableRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+          internal_static_protobuf_NotifyFollowerStableResponse_descriptor;
+  private static final
+  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internal_static_protobuf_NotifyFollowerStableResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
   getDescriptor() {
@@ -11843,9 +13264,15 @@ public final class RpcRequests {
                     "log_index\030\003 \001(\003\"Y\n\020ReadIndexRequest\022\020\n\010g" +
                     "roup_id\030\001 \001(\t\022\021\n\tserver_id\030\002 \001(\t\022\017\n\007entr" +
                     "ies\030\003 \001(\014\022\017\n\007peer_id\030\004 \001(\t\"3\n\021ReadIndexR" +
-                    "esponse\022\r\n\005index\030\001 \001(\003\022\017\n\007success\030\002 \001(\010*" +
-                    "/\n\023AppendEntriesStatus\022\014\n\010APPROVED\020\000\022\n\n\006" +
-                    "FAILED\020\001B\022\n\003rpcB\013RpcRequestsb\006proto3"
+                    "esponse\022\r\n\005index\030\001 \001(\003\022\017\n\007success\030\002 \001(\010\"" +
+                    "e\n\033NotifyFollowerStableRequest\022\021\n\tlastIn" +
+                    "dex\030\001 \001(\003\022\022\n\nfirstIndex\030\002 \001(\003\022\016\n\006peerId\030" +
+                    "\003 \001(\t\022\017\n\007success\030\004 \001(\010\"d\n\034NotifyFollower" +
+                    "StableResponse\022\021\n\tlastIndex\030\001 \001(\003\022\022\n\nfir" +
+                    "stIndex\030\002 \001(\003\022\014\n\004term\030\003 \001(\003\022\017\n\007success\030\004" +
+                    " \001(\010*/\n\023AppendEntriesStatus\022\014\n\010APPROVED\020" +
+                    "\000\022\n\n\006FAILED\020\001B\022\n\003rpcB\013RpcRequestsb\006proto" +
+                    "3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
             new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -11950,6 +13377,18 @@ public final class RpcRequests {
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_ReadIndexResponse_descriptor,
             new java.lang.String[] { "Index", "Success", });
+    internal_static_protobuf_NotifyFollowerStableRequest_descriptor =
+            getDescriptor().getMessageTypes().get(15);
+    internal_static_protobuf_NotifyFollowerStableRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+            internal_static_protobuf_NotifyFollowerStableRequest_descriptor,
+            new java.lang.String[] { "LastIndex", "FirstIndex", "PeerId", "Success", });
+    internal_static_protobuf_NotifyFollowerStableResponse_descriptor =
+            getDescriptor().getMessageTypes().get(16);
+    internal_static_protobuf_NotifyFollowerStableResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+            internal_static_protobuf_NotifyFollowerStableResponse_descriptor,
+            new java.lang.String[] { "LastIndex", "FirstIndex", "Term", "Success", });
     rpc.RaftOutter.getDescriptor();
   }
 

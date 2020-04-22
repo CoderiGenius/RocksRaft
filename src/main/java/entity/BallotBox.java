@@ -54,6 +54,12 @@ public class BallotBox {
 
     }
 
+    public void checkGranted(final String peerId,final long currentIndex, final long length) {
+        if (this.currentIndex == currentIndex && this.length == length) {
+            grant(peerId);
+        }
+    }
+
     private boolean findPeer(final String peerId) {
         for (PeerId p:
                 peerList) {

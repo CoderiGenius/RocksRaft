@@ -115,29 +115,42 @@ public class RpcServicesImpl implements RpcServices {
         //find out if it is null request and check if it is new leader request
         if (appendEntriesRequest.getEntries() == null &&
                 !NodeImpl.getNodeImple().getLeaderId().getPeerId().getId().equals(appendEntriesRequest.getPeerId())) {
-            //if new leader failed
+            //if add new leader failed
             if (!NodeImpl.getNodeImple().transformLeader(appendEntriesRequest)) {
-                builder.setLastLogIndex(NodeImpl.getNodeImple().getLastLogIndex().longValue());
-                builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().longValue());
-                builder.setSuccess(false);
-                return builder.build();
+              return appendEntriesBuilder(builder,false).build();
             }
         }else {
             //normal appendEntry request
 
             //check term
+            if (appendEntriesRequest.getTerm() != NodeImpl.getNodeImple().getLastLogTerm().get()) {
+                return appendEntriesBuilder(builder,false).build();
+            }
             //check index
-            //check leader illegal
-            //storage to log
-            appendEntriesRequest
+            if (appendEntriesRequest.getCommittedIndex() <= NodeImpl.getNodeImple().getLastLogIndex().get()) {
+                return appendEntriesBuilder(builder,false).build();
+            }
+                //check leader illegal
+
+                //storage to log
+
+                if(NodeImpl.getNodeImple().followerSetLogEvent(appendEntriesRequest)) {
+                    return appendEntriesBuilder(builder, true).build();
+                }
         }
 
-        builder.setLastLogIndex(NodeImpl.getNodeImple().getLastLogIndex().longValue());
-        builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().longValue());
-        builder.setSuccess(true);
-        return builder.build();
+        return appendEntriesBuilder(builder,false).build();
 
 
+
+    }
+
+    private RpcRequests.AppendEntriesResponse.Builder appendEntriesBuilder(
+            RpcRequests.AppendEntriesResponse.Builder builder,boolean result) {
+        builder.setSuccess(result);
+        builder.setLastLogIndex(NodeImpl.getNodeImple().getLastLogIndex().get());
+        builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
+        return builder;
     }
 
     @Override
@@ -162,6 +175,30 @@ public class RpcServicesImpl implements RpcServices {
         }
         return builder.build();
 
+    }
+
+
+    /**
+     * Come from follower, leader invokes this method to handle follower stable event
+     * @param notifyFollowerStableRequest
+     * @return
+     */
+    @Override
+    public RpcRequests.NotifyFollowerStableResponse handleFollowerStableRequest
+    (RpcRequests.NotifyFollowerStableRequest notifyFollowerStableRequest) {
+        RpcRequests.NotifyFollowerStableResponse.Builder builder = RpcRequests.NotifyFollowerStableResponse.newBuilder();
+
+        if (NodeImpl.getNodeImple().handleFollowerStableEvent(notifyFollowerStableRequest)) {
+            builder.setLastIndex(NodeImpl.getNodeImple().getLastLogIndex().get());
+            builder.setSuccess(true);
+            builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
+            return builder.build();
+        }else {
+            builder.setLastIndex(NodeImpl.getNodeImple().getLastLogIndex().get());
+            builder.setSuccess(false);
+            builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
+            return builder.build();
+        }
     }
 
 

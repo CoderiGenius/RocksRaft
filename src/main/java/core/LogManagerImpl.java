@@ -307,6 +307,9 @@ public class LogManagerImpl implements LogManager {
                             st = new Status(RaftError.EIO, "Corrupted LogStorage");
                         } else {
                             st = Status.OK();
+                            st.setFirstIndex(storage.get(i).getFirstLogIndex());
+                            st.setLastIndex(storage.get(i).getFirstLogIndex()+size);
+                            //st.setTerm(storage.get(i));
                         }
                         this.storage.get(i).run(st);
                     } catch (Throwable t) {

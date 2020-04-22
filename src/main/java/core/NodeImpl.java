@@ -18,6 +18,7 @@ import utils.Requires;
 import utils.TimerManager;
 import utils.Utils;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +62,7 @@ public class NodeImpl implements Node {
     protected final Lock readLock = this.readWriteLock.readLock();
     private List<PeerId> peerIdList = new CopyOnWriteArrayList<>();
     private Map<Endpoint, RpcServices> rpcServicesMap = new ConcurrentHashMap<>();
+    private Map<String, PeerId> peerIdConcurrentHashMap = new ConcurrentHashMap<>();
     private Map<Endpoint, TaskRpcServices> taskRpcServices = new ConcurrentHashMap<>();
     private Map<Endpoint, Replicator> replicatorMap = new ConcurrentHashMap<>();
     private Map<Long, BallotBox> ballotBoxConcurrentHashMap = new ConcurrentHashMap<>();
@@ -70,7 +72,9 @@ public class NodeImpl implements Node {
     private AtomicLong lastLogIndex = new AtomicLong(0);
     private AtomicLong stableLogIndex = new AtomicLong(0);
     private PeerId currentLeaderId;
+    private String currentId;
     private Options options;
+    private FSMCaller fsmCaller;
 
     // Max retry times when applying tasks.
     private static final int                                               MAX_APPLY_RETRY_TIMES    = 3;
@@ -79,6 +83,12 @@ public class NodeImpl implements Node {
      */
     private Disruptor<LogEntryEvent> applyDisruptor;
     private RingBuffer<LogEntryEvent> applyQueue;
+
+    /**
+     * Disruptor to run follower service
+     */
+    private Disruptor<LogEntryEvent> followerDisruptor;
+    private RingBuffer<LogEntryEvent> followerQueue;
 
     /**
      * Current node entity, including peedId inside
@@ -90,6 +100,7 @@ public class NodeImpl implements Node {
     private Ballot electionBallot;
     private Heartbeat heartbeat;
     private LogManager logManager;
+    private StateMachine stateMachine;
 
 
     /**
@@ -175,6 +186,31 @@ public class NodeImpl implements Node {
                 new LogExceptionHandler<Object>(getClass().getSimpleName()));
         this.applyQueue = this.applyDisruptor.start();
         this.replicatorGroup = new ReplicatorGroupImpl();
+
+
+        this.followerDisruptor = DisruptorBuilder.<LogEntryEvent>newInstance()
+                .setRingBufferSize(NodeOptions.getNodeOptions().getDisruptorBufferSize())
+                .setEventFactory(new LogEntryEventFactory())
+                .setThreadFactory(new NamedThreadFactory("JRaft-NodeImpl-Disruptor-", true))
+                .setProducerType(ProducerType.MULTI)
+                .setWaitStrategy(new BlockingWaitStrategy())
+                .build();
+        this.followerDisruptor.handleEventsWith(new LogEntryEventHandlerForFollower());
+        this.followerDisruptor.setDefaultExceptionHandler(
+                new LogExceptionHandler<Object>(getClass().getSimpleName()));
+        this.followerQueue = this.followerDisruptor.start();
+
+        //init FSMCaller
+        this.fsmCaller = new FSMCallerImpl();
+        final FSMCallerOptions fsmCallerOptions = new FSMCallerOptions();
+        //fsmCallerOptions.setAfterShutdown(status -> afterShutdown());
+        fsmCallerOptions.setLogManager(this.logManager);
+        fsmCallerOptions.setFsm(getStateMachine());
+        fsmCallerOptions.setNode(NodeImpl.getNodeImple());
+        fsmCallerOptions.setBootstrapId(new LogId(0, 0));
+        getFsmCaller().init(fsmCallerOptions);
+
+        LOG.info("Node init finished successfully");
         return true;
     }
 
@@ -183,6 +219,11 @@ public class NodeImpl implements Node {
         return this.replicatorStateListeners;
     }
 
+    /**
+     * Called by follower when receive prob request from new leader
+     * @param request
+     * @return
+     */
     @Override
     public boolean transformLeader(RpcRequests.AppendEntriesRequest request) {
         LOG.info("Start to transform Leader from {} to {}"
@@ -202,15 +243,15 @@ public class NodeImpl implements Node {
                     , request.getAddress(), request.getPort(), request.getTaskPort());
             NodeId nodeId = new NodeId(request.getGroupId(), peerId);
             setLeaderId(nodeId);
-            ReplicatorGroupOptions replicatorGroupOptions = new ReplicatorGroupOptions();
-            //there is no need to set properties for replicatorGroupOptions as we get options directly
-            this.replicatorGroup.init(getNodeId(),replicatorGroupOptions);
-            for (PeerId p:peerIdList
-                 ) {
-                ReplicatorOptions replicatorOptions =new ReplicatorOptions(p);
-                Replicator replicator = new Replicator(replicatorOptions,getRpcServicesMap().get(p.getEndpoint()));
-                getReplicatorGroup().addReplicator(p,replicator);
-            }
+//            ReplicatorGroupOptions replicatorGroupOptions = new ReplicatorGroupOptions();
+//            //there is no need to set properties for replicatorGroupOptions as we get options directly
+//            this.replicatorGroup.init(getNodeId(),replicatorGroupOptions);
+//            for (PeerId p:peerIdList
+//                 ) {
+//                ReplicatorOptions replicatorOptions =new ReplicatorOptions(p);
+//                Replicator replicator = new Replicator(replicatorOptions,getRpcServicesMap().get(p.getEndpoint()));
+//                getReplicatorGroup().addReplicator(p,replicator);
+//            }
             return true;
         } catch (Exception e) {
             LOG.error("Transform leader error:{}", e.getMessage());
@@ -245,6 +286,7 @@ public class NodeImpl implements Node {
                     event.done = task.getDone();
                     event.expectedTerm = task.getExpectedTerm();
                 };
+
                 while (true) {
                     if (this.applyQueue.tryPublishEvent(translator)) {
                         break;
@@ -277,6 +319,21 @@ public class NodeImpl implements Node {
             this.tasks.add(logEntryEvent);
             if (this.tasks.size() >= NodeOptions.getNodeOptions().getApplyBatch() || endOfBatch) {
                 executeApplyingTasks(this.tasks);
+                this.tasks.clear();
+            }
+        }
+    }
+
+    private class LogEntryEventHandlerForFollower implements EventHandler<LogEntryEvent> {
+        // task list for batch
+        private final List<LogEntryEvent> tasks =
+                new ArrayList<LogEntryEvent>(NodeOptions.getNodeOptions().getApplyBatch());
+
+        @Override
+        public void onEvent(LogEntryEvent logEntryEvent, long l, boolean endOfBatch) throws Exception {
+            this.tasks.add(logEntryEvent);
+            if (this.tasks.size() >= NodeOptions.getNodeOptions().getApplyBatch() || endOfBatch) {
+                executeFollowerTasks(tasks);
                 this.tasks.clear();
             }
         }
@@ -325,6 +382,83 @@ public class NodeImpl implements Node {
             getWriteLock().unlock();
         }
     }
+    private void executeFollowerTasks(final List<LogEntryEvent> tasks) {
+        this.writeLock.lock();
+        try {
+            final int size = tasks.size();
+
+            final List<LogEntry> entries = new ArrayList<>(size);
+            for (int i = 0; i < size; i++) {
+                final LogEntryEvent task = tasks.get(i);
+                if (task.expectedTerm != -1 && task.expectedTerm != getLastLogTerm().get()) {
+                    LOG.debug("Node {} can't apply task whose expectedTerm={} doesn't match currTerm={}.", getNodeId(),
+                            task.expectedTerm, this.getLastLogTerm());
+                    if (task.done != null) {
+                        final Status st = new Status(RaftError.EPERM, "expected_term=%d doesn't match current_term=%d",
+                                task.expectedTerm, this.getLastLogTerm());
+                        Utils.runClosureInThread(task.done, st);
+                    }
+                    continue;
+                }
+                // set task entry info before adding to list.
+                task.entry.getId().setIndex(this.lastLogIndex.getAndIncrement());
+                task.entry.getId().setTerm(this.getLastLogTerm().get());
+
+                task.entry.setType(EnumOutter.EntryType.ENTRY_TYPE_DATA);
+                entries.add(task.entry);
+            }
+            this.logManager.appendEntries(entries, new FollowerStableClosure(entries));
+        } catch (Exception e) {
+            LOG.error("executeApplyingTasks failed {}",e.getMessage());
+        }finally {
+            getWriteLock().unlock();
+        }
+    }
+    /**
+     * Come from follower, leader invokes this method to handle follower stable event
+     * @param notifyFollowerStableRequest
+     * @return
+     */
+    public boolean handleFollowerStableEvent(RpcRequests.NotifyFollowerStableRequest notifyFollowerStableRequest) {
+
+        getBallotBoxConcurrentHashMap()
+                .get(notifyFollowerStableRequest.getFirstIndex())
+                .checkGranted(notifyFollowerStableRequest.getPeerId()
+                        ,notifyFollowerStableRequest.getFirstIndex()
+                        ,notifyFollowerStableRequest.getLastIndex()-notifyFollowerStableRequest.getFirstIndex());
+    return true;
+    }
+
+    /**
+     * Invoked by followers when received appendEntries from leader
+     * @param appendEntriesRequest
+     * @return
+     */
+    public boolean followerSetLogEvent
+    (RpcRequests.AppendEntriesRequest appendEntriesRequest) {
+       LogEntry logEntry = new LogEntry();
+       logEntry.setData(ByteBuffer.wrap(appendEntriesRequest.getData().toByteArray()));
+        final EventTranslator<LogEntryEvent> translator = (event, sequence) -> {
+            event.reset();
+            event.entry = logEntry;
+            //event.done = task.getDone();
+            event.expectedTerm = appendEntriesRequest.getTerm();
+        };
+        int retryTimes = 0;
+        while (true) {
+            if (this.followerQueue.tryPublishEvent(translator)) {
+                break;
+            } else {
+                retryTimes++;
+                if (retryTimes > MAX_APPLY_RETRY_TIMES) {
+                    LOG.warn("Node {} applyQueue is overload.", getNodeId());
+                    return false;
+                }
+                Thread.yield();
+            }
+    }
+        return true;
+    }
 
     class LeaderStableClosure extends LogManager.StableClosure {
 
@@ -339,6 +473,31 @@ public class NodeImpl implements Node {
                         this.firstLogIndex, this.nEntries);
                 ballotBox.grant(getLeaderId().getPeerId().getId());
                 getBallotBoxConcurrentHashMap().put(this.firstLogIndex,ballotBox);
+            } else {
+                LOG.error("Node {} append [{}, {}] failed, status={}.", getNodeId(), this.firstLogIndex,
+                        this.firstLogIndex + this.nEntries - 1, status);
+            }
+        }
+    }
+
+    class FollowerStableClosure extends LogManager.StableClosure {
+
+        public FollowerStableClosure(final List<LogEntry> entries) {
+            super(entries);
+        }
+
+        @Override
+        public void run(final Status status) {
+            if (status.isOk()) {
+            //Notify leader through RPC
+
+                RpcRequests.NotifyFollowerStableRequest.Builder builder
+                        = RpcRequests.NotifyFollowerStableRequest.newBuilder();
+                builder.setFirstIndex(status.getFirstIndex());
+                builder.setLastIndex(status.getLastIndex());
+                builder.setPeerId(getCurrentId());
+            getRpcServicesMap().get(getLeaderId().getPeerId().getEndpoint())
+                    .handleFollowerStableRequest(builder.build());
             } else {
                 LOG.error("Node {} append [{}, {}] failed, status={}.", getNodeId(), this.firstLogIndex,
                         this.firstLogIndex + this.nEntries - 1, status);
@@ -506,6 +665,14 @@ public class NodeImpl implements Node {
         return null;
     }
 
+    public Map<String, PeerId> getPeerIdConcurrentHashMap() {
+        return peerIdConcurrentHashMap;
+    }
+
+    public void setPeerIdConcurrentHashMap(Map<String, PeerId> peerIdConcurrentHashMap) {
+        this.peerIdConcurrentHashMap = peerIdConcurrentHashMap;
+    }
+
     public void setNodeState(NodeState nodeState) {
         this.nodeState = nodeState;
     }
@@ -536,5 +703,69 @@ public class NodeImpl implements Node {
 
     public void setStableLogIndex(AtomicLong stableLogIndex) {
         this.stableLogIndex = stableLogIndex;
+    }
+
+    public Disruptor<LogEntryEvent> getApplyDisruptor() {
+        return applyDisruptor;
+    }
+
+    public void setApplyDisruptor(Disruptor<LogEntryEvent> applyDisruptor) {
+        this.applyDisruptor = applyDisruptor;
+    }
+
+    public RingBuffer<LogEntryEvent> getApplyQueue() {
+        return applyQueue;
+    }
+
+    public void setApplyQueue(RingBuffer<LogEntryEvent> applyQueue) {
+        this.applyQueue = applyQueue;
+    }
+
+    public Disruptor<LogEntryEvent> getFollowerDisruptor() {
+        return followerDisruptor;
+    }
+
+    public void setFollowerDisruptor(Disruptor<LogEntryEvent> followerDisruptor) {
+        this.followerDisruptor = followerDisruptor;
+    }
+
+    public RingBuffer<LogEntryEvent> getFollowerQueue() {
+        return followerQueue;
+    }
+
+    public PeerId getCurrentLeaderId() {
+        return currentLeaderId;
+    }
+
+    public void setCurrentLeaderId(PeerId currentLeaderId) {
+        this.currentLeaderId = currentLeaderId;
+    }
+
+    public String getCurrentId() {
+        return currentId;
+    }
+
+    public void setCurrentId(String currentId) {
+        this.currentId = currentId;
+    }
+
+    public void setFollowerQueue(RingBuffer<LogEntryEvent> followerQueue) {
+        this.followerQueue = followerQueue;
+    }
+
+    public FSMCaller getFsmCaller() {
+        return fsmCaller;
+    }
+
+    public void setFsmCaller(FSMCaller fsmCaller) {
+        this.fsmCaller = fsmCaller;
+    }
+
+    public StateMachine getStateMachine() {
+        return stateMachine;
+    }
+
+    public void setStateMachine(StateMachine stateMachine) {
+        this.stateMachine = stateMachine;
     }
 }

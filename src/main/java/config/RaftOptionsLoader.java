@@ -9,6 +9,7 @@ import utils.BootYaml;
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -32,6 +33,7 @@ public class RaftOptionsLoader {
         NodeOptions.getNodeOptions().setSerialization(currentNodeOptions.getSerialization());
         NodeOptions.getNodeOptions().setPort(currentNodeOptions.getPort());
         NodeOptions.getNodeOptions().setTaskPort(currentNodeOptions.getTaskPort());
+        NodeOptions.getNodeOptions().setPeerId(currentNodeOptions.getPeerId());
         Endpoint endpoint = new Endpoint(currentNodeOptions.getAddress(),currentNodeOptions.getPort());
         PeerId peerId = new PeerId();
         peerId.setPeerName(currentNodeOptions.getName());
@@ -39,15 +41,17 @@ public class RaftOptionsLoader {
         peerId.setEndpoint(endpoint);
         NodeId nodeId = new NodeId(currentNodeOptions.getGroupId(),peerId);
         List<PeerId> listOtherNode = new CopyOnWriteArrayList<>();
-
+        Map<String,PeerId> peerIdMap = new ConcurrentHashMap<>();
         for (OtherNodes o:otherNodes
         ) {
 
             PeerId peerId1 = new PeerId(o.getPeerId(),o.getName()
                     ,o.getAddress(),o.getPort(),o.getTaskPort());
             listOtherNode.add(peerId1);
+            peerIdMap.put(o.getPeerId(),peerId1);
         }
-
+        NodeImpl.getNodeImple().setPeerIdList(listOtherNode);
+        NodeImpl.getNodeImple().setPeerIdConcurrentHashMap(peerIdMap);
         NodeImpl.getNodeImple().setNodeId(nodeId);
     }
 

@@ -22,4 +22,8 @@ public interface RpcServices {
 
     public RpcRequests.AppendEntriesResponses handleApendEntriesRequests(
             RpcRequests.AppendEntriesRequests appendEntriesRequests);
+
+    public RpcRequests.NotifyFollowerStableResponse handleFollowerStableRequest(
+            RpcRequests.NotifyFollowerStableRequest notifyFollowerStableRequest
+    );
 }
