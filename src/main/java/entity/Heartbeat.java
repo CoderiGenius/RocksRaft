@@ -45,6 +45,7 @@ public class Heartbeat {
     public void setChecker(TimeOutChecker checker) {
         lock.lock();
         try {
+            NodeImpl.getNodeImple().setLastReceiveHeartbeatTime(checker.getEnterQueueTime());
             this.checker = checker;
             this.getThreadPoolExecutor().execute(checker);
         } catch (Exception e) {

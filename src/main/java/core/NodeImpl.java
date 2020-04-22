@@ -72,6 +72,7 @@ public class NodeImpl implements Node {
     private AtomicLong lastLogIndex = new AtomicLong(0);
     private AtomicLong stableLogIndex = new AtomicLong(0);
     private PeerId currentLeaderId;
+    private Endpoint currentEndPoint;
     private String currentId;
     private Options options;
     private FSMCaller fsmCaller;
@@ -209,7 +210,9 @@ public class NodeImpl implements Node {
         fsmCallerOptions.setNode(NodeImpl.getNodeImple());
         fsmCallerOptions.setBootstrapId(new LogId(0, 0));
         getFsmCaller().init(fsmCallerOptions);
-
+        currentEndPoint = new Endpoint(
+                getNodeId().getPeerId().getEndpoint().getIp(),
+                getNodeId().getPeerId().getEndpoint().getPort());
         LOG.info("Node init finished successfully");
         return true;
     }
@@ -562,6 +565,14 @@ public class NodeImpl implements Node {
         }
     }
 
+    public Endpoint getCurrentEndPoint() {
+        return currentEndPoint;
+    }
+
+    public void setCurrentEndPoint(Endpoint currentEndPoint) {
+        this.currentEndPoint = currentEndPoint;
+    }
+
     public Ballot getPreVoteBallot() {
         return preVoteBallot;
     }
@@ -596,9 +607,9 @@ public class NodeImpl implements Node {
         return lastReceiveHeartbeatTime;
     }
 
-    public void setLastReceiveHeartbeatTime(AtomicLong lastReceiveHeartbeatTime) {
+    public void setLastReceiveHeartbeatTime(long lastReceiveHeartbeatTime) {
 
-        this.lastReceiveHeartbeatTime = lastReceiveHeartbeatTime;
+        getLastReceiveHeartbeatTime().set(lastReceiveHeartbeatTime);
     }
 
     public static NodeImpl getNodeImple() {

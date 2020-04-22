@@ -76,14 +76,14 @@ public class BallotBox {
     public void checkBallotBoxToApply(){
         if (BallotBoxState.Applied.equals(getBallotBoxState())) {
             //already granted by most of the followers, apply to state machine now
-
+            NodeImpl.getNodeImple().getFsmCaller().onCommitted(currentIndex+length);
         }
         if (isGranted() &&
                 this.currentIndex == (NodeImpl.getNodeImple().getStableLogIndex().get()-length + 1)) {
             //check if it is sequential
             //on state machine apply
-
             setBallotBoxState(BallotBoxState.Applied);
+            NodeImpl.getNodeImple().getFsmCaller().onCommitted(currentIndex+length);
             NodeImpl.getNodeImple().getBallotBoxConcurrentHashMap()
                     .get(this.currentIndex + length).checkBallotBoxToApply();
         }

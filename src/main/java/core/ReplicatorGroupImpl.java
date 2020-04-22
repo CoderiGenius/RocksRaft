@@ -66,7 +66,7 @@ public class ReplicatorGroupImpl implements ReplicatorGroup {
         this.commonOptions.setElectionTimeoutMs(this.electionTimeoutMs);
         //this.commonOptions.setRaftRpcService(opts.getRaftRpcClientService());
         this.commonOptions.setLogManager(opts.getLogManager());
-        this.commonOptions.setBallotBox(opts.getBallotBox());
+        //this.commonOptions.setBallotBox(opts.getBallotBox());
         this.commonOptions.setNode(opts.getNode());
         this.commonOptions.setTerm(0);
         this.commonOptions.setGroupId(nodeId.getGroupId());
@@ -200,6 +200,17 @@ public class ReplicatorGroupImpl implements ReplicatorGroup {
         return null;
     }
 
+    @Override
+    public boolean sendInflight(String address,int port,long currentIndexOfFollower){
+        for (Replicator r :
+                replicatorList) {
+            if (r.getEndpoint().getIp().equals(address) && r.getEndpoint().getPort() == port) {
+                r.handleProbeOrFollowerDisOrderResponse(currentIndexOfFollower);
+                return true;
+            }
+        }
+        return false;
+    }
 
     public ThreadPoolExecutor getReplicatorGroupThreadPool() {
         return replicatorGroupThreadPool;

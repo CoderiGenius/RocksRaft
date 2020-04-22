@@ -9706,6 +9706,31 @@ public final class RpcRequests {
      * <code>int64 last_log_index = 3;</code>
      */
     long getLastLogIndex();
+
+    /**
+     * <code>string address = 4;</code>
+     */
+    java.lang.String getAddress();
+    /**
+     * <code>string address = 4;</code>
+     */
+    com.google.protobuf.ByteString
+    getAddressBytes();
+
+    /**
+     * <code>int32 port = 5;</code>
+     */
+    int getPort();
+
+    /**
+     * <code>string peerId = 6;</code>
+     */
+    java.lang.String getPeerId();
+    /**
+     * <code>string peerId = 6;</code>
+     */
+    com.google.protobuf.ByteString
+    getPeerIdBytes();
   }
   /**
    * Protobuf type {@code protobuf.AppendEntriesResponse}
@@ -9723,6 +9748,9 @@ public final class RpcRequests {
       term_ = 0L;
       success_ = false;
       lastLogIndex_ = 0L;
+      address_ = "";
+      port_ = 0;
+      peerId_ = "";
     }
 
     @java.lang.Override
@@ -9762,6 +9790,23 @@ public final class RpcRequests {
             case 24: {
 
               lastLogIndex_ = input.readInt64();
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              address_ = s;
+              break;
+            }
+            case 40: {
+
+              port_ = input.readInt32();
+              break;
+            }
+            case 50: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              peerId_ = s;
               break;
             }
             default: {
@@ -9823,6 +9868,83 @@ public final class RpcRequests {
       return lastLogIndex_;
     }
 
+    public static final int ADDRESS_FIELD_NUMBER = 4;
+    private volatile java.lang.Object address_;
+    /**
+     * <code>string address = 4;</code>
+     */
+    public java.lang.String getAddress() {
+      java.lang.Object ref = address_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        address_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string address = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+    getAddressBytes() {
+      java.lang.Object ref = address_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
+        address_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PORT_FIELD_NUMBER = 5;
+    private int port_;
+    /**
+     * <code>int32 port = 5;</code>
+     */
+    public int getPort() {
+      return port_;
+    }
+
+    public static final int PEERID_FIELD_NUMBER = 6;
+    private volatile java.lang.Object peerId_;
+    /**
+     * <code>string peerId = 6;</code>
+     */
+    public java.lang.String getPeerId() {
+      java.lang.Object ref = peerId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        peerId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string peerId = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+    getPeerIdBytes() {
+      java.lang.Object ref = peerId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
+        peerId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -9846,6 +9968,15 @@ public final class RpcRequests {
       if (lastLogIndex_ != 0L) {
         output.writeInt64(3, lastLogIndex_);
       }
+      if (!getAddressBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, address_);
+      }
+      if (port_ != 0) {
+        output.writeInt32(5, port_);
+      }
+      if (!getPeerIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, peerId_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -9866,6 +9997,16 @@ public final class RpcRequests {
       if (lastLogIndex_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
                 .computeInt64Size(3, lastLogIndex_);
+      }
+      if (!getAddressBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, address_);
+      }
+      if (port_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeInt32Size(5, port_);
+      }
+      if (!getPeerIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, peerId_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -9889,6 +10030,12 @@ public final class RpcRequests {
               == other.getSuccess());
       result = result && (getLastLogIndex()
               == other.getLastLogIndex());
+      result = result && getAddress()
+              .equals(other.getAddress());
+      result = result && (getPort()
+              == other.getPort());
+      result = result && getPeerId()
+              .equals(other.getPeerId());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -9909,6 +10056,12 @@ public final class RpcRequests {
       hash = (37 * hash) + LAST_LOG_INDEX_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
               getLastLogIndex());
+      hash = (37 * hash) + ADDRESS_FIELD_NUMBER;
+      hash = (53 * hash) + getAddress().hashCode();
+      hash = (37 * hash) + PORT_FIELD_NUMBER;
+      hash = (53 * hash) + getPort();
+      hash = (37 * hash) + PEERID_FIELD_NUMBER;
+      hash = (53 * hash) + getPeerId().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -10048,6 +10201,12 @@ public final class RpcRequests {
 
         lastLogIndex_ = 0L;
 
+        address_ = "";
+
+        port_ = 0;
+
+        peerId_ = "";
+
         return this;
       }
 
@@ -10077,6 +10236,9 @@ public final class RpcRequests {
         result.term_ = term_;
         result.success_ = success_;
         result.lastLogIndex_ = lastLogIndex_;
+        result.address_ = address_;
+        result.port_ = port_;
+        result.peerId_ = peerId_;
         onBuilt();
         return result;
       }
@@ -10133,6 +10295,17 @@ public final class RpcRequests {
         }
         if (other.getLastLogIndex() != 0L) {
           setLastLogIndex(other.getLastLogIndex());
+        }
+        if (!other.getAddress().isEmpty()) {
+          address_ = other.address_;
+          onChanged();
+        }
+        if (other.getPort() != 0) {
+          setPort(other.getPort());
+        }
+        if (!other.getPeerId().isEmpty()) {
+          peerId_ = other.peerId_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -10237,6 +10410,170 @@ public final class RpcRequests {
       public Builder clearLastLogIndex() {
 
         lastLogIndex_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object address_ = "";
+      /**
+       * <code>string address = 4;</code>
+       */
+      public java.lang.String getAddress() {
+        java.lang.Object ref = address_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          address_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string address = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+      getAddressBytes() {
+        java.lang.Object ref = address_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
+          address_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string address = 4;</code>
+       */
+      public Builder setAddress(
+              java.lang.String value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+
+        address_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string address = 4;</code>
+       */
+      public Builder clearAddress() {
+
+        address_ = getDefaultInstance().getAddress();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string address = 4;</code>
+       */
+      public Builder setAddressBytes(
+              com.google.protobuf.ByteString value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
+        address_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int port_ ;
+      /**
+       * <code>int32 port = 5;</code>
+       */
+      public int getPort() {
+        return port_;
+      }
+      /**
+       * <code>int32 port = 5;</code>
+       */
+      public Builder setPort(int value) {
+
+        port_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 port = 5;</code>
+       */
+      public Builder clearPort() {
+
+        port_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object peerId_ = "";
+      /**
+       * <code>string peerId = 6;</code>
+       */
+      public java.lang.String getPeerId() {
+        java.lang.Object ref = peerId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          peerId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string peerId = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+      getPeerIdBytes() {
+        java.lang.Object ref = peerId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
+          peerId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string peerId = 6;</code>
+       */
+      public Builder setPeerId(
+              java.lang.String value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+
+        peerId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string peerId = 6;</code>
+       */
+      public Builder clearPeerId() {
+
+        peerId_ = getDefaultInstance().getPeerId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string peerId = 6;</code>
+       */
+      public Builder setPeerIdBytes(
+              com.google.protobuf.ByteString value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
+        peerId_ = value;
         onChanged();
         return this;
       }
@@ -13259,20 +13596,21 @@ public final class RpcRequests {
                     "dex\030\006 \001(\003\022$\n\007entries\030\007 \001(\0132\023.protobuf.En" +
                     "tryMeta\022\027\n\017committed_index\030\010 \001(\003\022\014\n\004data" +
                     "\030\t \001(\014\022\017\n\007address\030\n \001(\t\022\014\n\004port\030\013 \001(\005\022\020\n" +
-                    "\010taskPort\030\014 \001(\005\"N\n\025AppendEntriesResponse" +
+                    "\010taskPort\030\014 \001(\005\"}\n\025AppendEntriesResponse" +
                     "\022\014\n\004term\030\001 \001(\003\022\017\n\007success\030\002 \001(\010\022\026\n\016last_" +
-                    "log_index\030\003 \001(\003\"Y\n\020ReadIndexRequest\022\020\n\010g" +
-                    "roup_id\030\001 \001(\t\022\021\n\tserver_id\030\002 \001(\t\022\017\n\007entr" +
-                    "ies\030\003 \001(\014\022\017\n\007peer_id\030\004 \001(\t\"3\n\021ReadIndexR" +
-                    "esponse\022\r\n\005index\030\001 \001(\003\022\017\n\007success\030\002 \001(\010\"" +
-                    "e\n\033NotifyFollowerStableRequest\022\021\n\tlastIn" +
-                    "dex\030\001 \001(\003\022\022\n\nfirstIndex\030\002 \001(\003\022\016\n\006peerId\030" +
-                    "\003 \001(\t\022\017\n\007success\030\004 \001(\010\"d\n\034NotifyFollower" +
-                    "StableResponse\022\021\n\tlastIndex\030\001 \001(\003\022\022\n\nfir" +
-                    "stIndex\030\002 \001(\003\022\014\n\004term\030\003 \001(\003\022\017\n\007success\030\004" +
-                    " \001(\010*/\n\023AppendEntriesStatus\022\014\n\010APPROVED\020" +
-                    "\000\022\n\n\006FAILED\020\001B\022\n\003rpcB\013RpcRequestsb\006proto" +
-                    "3"
+                    "log_index\030\003 \001(\003\022\017\n\007address\030\004 \001(\t\022\014\n\004port" +
+                    "\030\005 \001(\005\022\016\n\006peerId\030\006 \001(\t\"Y\n\020ReadIndexReque" +
+                    "st\022\020\n\010group_id\030\001 \001(\t\022\021\n\tserver_id\030\002 \001(\t\022" +
+                    "\017\n\007entries\030\003 \001(\014\022\017\n\007peer_id\030\004 \001(\t\"3\n\021Rea" +
+                    "dIndexResponse\022\r\n\005index\030\001 \001(\003\022\017\n\007success" +
+                    "\030\002 \001(\010\"e\n\033NotifyFollowerStableRequest\022\021\n" +
+                    "\tlastIndex\030\001 \001(\003\022\022\n\nfirstIndex\030\002 \001(\003\022\016\n\006" +
+                    "peerId\030\003 \001(\t\022\017\n\007success\030\004 \001(\010\"d\n\034NotifyF" +
+                    "ollowerStableResponse\022\021\n\tlastIndex\030\001 \001(\003" +
+                    "\022\022\n\nfirstIndex\030\002 \001(\003\022\014\n\004term\030\003 \001(\003\022\017\n\007su" +
+                    "ccess\030\004 \001(\010*/\n\023AppendEntriesStatus\022\014\n\010AP" +
+                    "PROVED\020\000\022\n\n\006FAILED\020\001B\022\n\003rpcB\013RpcRequests" +
+                    "b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
             new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -13364,7 +13702,7 @@ public final class RpcRequests {
     internal_static_protobuf_AppendEntriesResponse_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_AppendEntriesResponse_descriptor,
-            new java.lang.String[] { "Term", "Success", "LastLogIndex", });
+            new java.lang.String[] { "Term", "Success", "LastLogIndex", "Address", "Port", "PeerId", });
     internal_static_protobuf_ReadIndexRequest_descriptor =
             getDescriptor().getMessageTypes().get(13);
     internal_static_protobuf_ReadIndexRequest_fieldAccessorTable = new

@@ -171,7 +171,7 @@ public class RaftGroupService {
                 , new HeartbeatThreadFactory(), new ThreadPoolExecutor.DiscardPolicy());
 
         heartbeat.setChecker(
-                new TimeOutChecker(NodeOptions.getNodeOptions().getMaxHeartBeatTime(), Utils.monotonicMs(), new ElectionTimeOutClosure()));
+                new TimeOutChecker( Utils.monotonicMs(), new ElectionTimeOutClosure()));
 
 
         return node;

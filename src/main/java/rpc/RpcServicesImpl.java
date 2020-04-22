@@ -150,6 +150,9 @@ public class RpcServicesImpl implements RpcServices {
         builder.setSuccess(result);
         builder.setLastLogIndex(NodeImpl.getNodeImple().getLastLogIndex().get());
         builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
+        builder.setAddress(NodeImpl.getNodeImple().getCurrentEndPoint().getIp());
+        builder.setPort(NodeImpl.getNodeImple().getCurrentEndPoint().getPort());
+        builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
         return builder;
     }
 

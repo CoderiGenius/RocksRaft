@@ -145,9 +145,64 @@ public class LogManagerImpl implements LogManager {
 
     @Override
     public LogEntry getEntry(long index) {
-        return null;
+
+        this.readLock.lock();
+        try {
+            if (index > this.lastLogIndex || index < this.firstLogIndex) {
+                return null;
+            }
+            final LogEntry entry = getEntryFromMemory(index);
+            if (entry != null) {
+                return entry;
+            }
+        } finally {
+            this.readLock.unlock();
+        }
+        final LogEntry entry = this.logStorage.getEntry(index);
+        if (entry == null) {
+            reportError(RaftError.EIO.getNumber(), "Corrupted entry at index=%d, not found", index);
+        }
+        // Validate checksum
+//        if (entry != null && this.raftOptions.isEnableLogEntryChecksum() && entry.isCorrupted()) {
+//            String msg = String.format("Corrupted entry at index=%d, term=%d, expectedChecksum=%d, realChecksum=%d",
+//                    index, entry.getId().getTerm(), entry.getChecksum(), entry.checksum());
+//            // Report error to node and throw exception.
+//            reportError(RaftError.EIO.getNumber(), msg);
+//            throw new LogEntryCorruptedException(msg);
+//        }
+        return entry;
+    }
+    protected LogEntry getEntryFromMemory(final long index) {
+        LogEntry entry = null;
+        if (!this.logsInMemory.isEmpty()) {
+            final long firstIndex = this.logsInMemory.peekFirst().getId().getIndex();
+            final long lastIndex = this.logsInMemory.peekLast().getId().getIndex();
+            if (lastIndex - firstIndex + 1 != this.logsInMemory.size()) {
+                throw new IllegalStateException(String.format("lastIndex=%d,firstIndex=%d,logsInMemory=[%s]",
+                        lastIndex, firstIndex, descLogsInMemory()));
+            }
+            if (index >= firstIndex && index <= lastIndex) {
+                entry = this.logsInMemory.get((int) (index - firstIndex));
+            }
+        }
+        return entry;
     }
 
+    private String descLogsInMemory() {
+        final StringBuilder sb = new StringBuilder();
+        boolean wasFirst = true;
+        for (int i = 0; i < this.logsInMemory.size(); i++) {
+            LogEntry logEntry = this.logsInMemory.get(i);
+            if (!wasFirst) {
+                sb.append(",");
+            } else {
+                wasFirst = false;
+            }
+            sb.append("<id:(").append(logEntry.getId().getTerm()).append(",").append(logEntry.getId().getIndex())
+                    .append("),type:").append(logEntry.getType()).append(">");
+        }
+        return sb.toString();
+    }
     @Override
     public long getTerm(long index) {
         return 0;

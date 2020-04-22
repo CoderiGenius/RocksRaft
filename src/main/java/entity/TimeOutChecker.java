@@ -21,7 +21,7 @@ public class TimeOutChecker implements Runnable{
     /**
      * 超时时间
      */
-    private long timeOut;
+    private long timeOut = NodeImpl.getNodeImple().getOptions().getCurrentNodeOptions().getElectionTimeOut();
 
     /**
      * 进入线程池的时间
@@ -33,10 +33,10 @@ public class TimeOutChecker implements Runnable{
      */
     private TimeOutClosure timeOutClosure;
 
-    public TimeOutChecker(long timeOut,long enterQueueTime,TimeOutClosure timeOutClosure) {
+    public TimeOutChecker(long enterQueueTime,TimeOutClosure timeOutClosure) {
         this.timeOutClosure = timeOutClosure;
         this.enterQueueTime = enterQueueTime;
-        this.timeOut = timeOut;
+        //this.timeOut = timeOut;
     }
 
     @Override
@@ -79,6 +79,13 @@ public class TimeOutChecker implements Runnable{
 
     }
 
+    public long getEnterQueueTime() {
+        return enterQueueTime;
+    }
+
+    public void setEnterQueueTime(long enterQueueTime) {
+        this.enterQueueTime = enterQueueTime;
+    }
 //    private void checkNodeStatus()  {
 //
 //

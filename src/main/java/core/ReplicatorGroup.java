@@ -183,5 +183,7 @@ public interface ReplicatorGroup  {
      * Returns all replicators.
      */
     List<ThreadId> listReplicators();
+
+    boolean sendInflight(String address,int port,long currentIndexOfFollower);
 }
 
