@@ -21,7 +21,8 @@ public class TimeOutChecker implements Runnable{
     /**
      * 超时时间
      */
-    private long timeOut = NodeImpl.getNodeImple().getOptions().getCurrentNodeOptions().getElectionTimeOut();
+    private long timeOut = NodeImpl.getNodeImple().getOptions().getCurrentNodeOptions().getMaxHeartBeatTime();
+    //private long timeOut = 1000;
 
     /**
      * 进入线程池的时间
@@ -49,8 +50,7 @@ public class TimeOutChecker implements Runnable{
             try {
                 //检查开始运行的时间，是否已经超过timeout时间，如果超出则直接检查
                 long currentTimeDifferent = Utils.monotonicMs() - enterQueueTime;
-                LOG.debug("Utils.monotonicMs():"+Utils.monotonicMs());
-                LOG.debug("enterQueueTime:"+enterQueueTime);
+                LOG.debug("currentTimeDifferent:{}",currentTimeDifferent);
                 if (currentTimeDifferent > timeOut) {
                     //在队列里等待的时候就已经超时了，检查node是否超时
                     LOG.error("Timeout during waiting int queue");
@@ -64,6 +64,7 @@ public class TimeOutChecker implements Runnable{
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    LOG.debug("Thread wake up");
                     checkTimeOut();
 
                 }
@@ -71,7 +72,7 @@ public class TimeOutChecker implements Runnable{
                 LOG.error("Heartbeat timeout checker exception: " + e.getMessage());
                 e.printStackTrace();
             } finally {
-                //NodeImpl.getNodeImple().getHeartbeat().getLock().unlock();
+                NodeImpl.getNodeImple().getHeartbeat().getLock().unlock();
             }
 
 
@@ -92,13 +93,21 @@ public class TimeOutChecker implements Runnable{
 //    }
 
     private void checkTimeOut() {
+        LOG.debug("CkeckTimeout:{}",Utils.monotonicMs()
+                - NodeImpl.getNodeImple().getLastReceiveHeartbeatTime().longValue());
         if ((Utils.monotonicMs()
-                - timeOutClosure.getBaseTime()) >= timeOut) {
+                - NodeImpl.getNodeImple().getLastReceiveHeartbeatTime().longValue()) >= timeOut) {
             //超时，执行超时逻辑
             LOG.error("Node timeout, start to launch TimeOut actions");
-           timeOutClosure.run(null);
+           //timeOutClosure.run(null);
+            ElectionService.checkToStartPreVote();
         }else {
             //未超时
+            //set timeout
+            TimeOutChecker timeOutChecker =
+                    new TimeOutChecker(Utils.monotonicMs(), null);
+            NodeImpl.getNodeImple().getHeartbeat().setChecker(timeOutChecker);
+            NodeImpl.getNodeImple().setLastReceiveHeartbeatTime(Utils.monotonicMs());
         }
     }
 }

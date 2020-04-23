@@ -6,17 +6,17 @@ package rpc;
 public final class RaftOutter {
   private RaftOutter() {}
   public static void registerAllExtensions(
-      com.google.protobuf.ExtensionRegistryLite registry) {
+          com.google.protobuf.ExtensionRegistryLite registry) {
   }
 
   public static void registerAllExtensions(
-      com.google.protobuf.ExtensionRegistry registry) {
+          com.google.protobuf.ExtensionRegistry registry) {
     registerAllExtensions(
-        (com.google.protobuf.ExtensionRegistryLite) registry);
+            (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   public interface EntryMetaOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:protobuf.EntryMeta)
-      com.google.protobuf.MessageOrBuilder {
+          // @@protoc_insertion_point(interface_extends:protobuf.EntryMeta)
+          com.google.protobuf.MessageOrBuilder {
 
     /**
      * <code>int64 term = 1;</code>
@@ -40,7 +40,7 @@ public final class RaftOutter {
      * <code>string peers = 3;</code>
      */
     com.google.protobuf.ByteString
-        getPeersBytes();
+    getPeersBytes();
 
     /**
      * <code>int64 data_len = 4;</code>
@@ -55,7 +55,7 @@ public final class RaftOutter {
      * <code>string old_peers = 5;</code>
      */
     com.google.protobuf.ByteString
-        getOldPeersBytes();
+    getOldPeersBytes();
 
     /**
      * <code>int64 checksum = 6;</code>
@@ -70,7 +70,7 @@ public final class RaftOutter {
      * <code>string learners = 7;</code>
      */
     com.google.protobuf.ByteString
-        getLearnersBytes();
+    getLearnersBytes();
 
     /**
      * <code>string old_learners = 8;</code>
@@ -80,16 +80,16 @@ public final class RaftOutter {
      * <code>string old_learners = 8;</code>
      */
     com.google.protobuf.ByteString
-        getOldLearnersBytes();
+    getOldLearnersBytes();
   }
   /**
    * Protobuf type {@code protobuf.EntryMeta}
    */
   public  static final class EntryMeta extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:protobuf.EntryMeta)
-      EntryMetaOrBuilder {
-  private static final long serialVersionUID = 0L;
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:protobuf.EntryMeta)
+          EntryMetaOrBuilder {
+    private static final long serialVersionUID = 0L;
     // Use EntryMeta.newBuilder() to construct.
     private EntryMeta(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -111,16 +111,16 @@ public final class RaftOutter {
       return this.unknownFields;
     }
     private EntryMeta(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       this();
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
+              com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -176,7 +176,7 @@ public final class RaftOutter {
             }
             default: {
               if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
+                      input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -187,23 +187,23 @@ public final class RaftOutter {
         throw e.setUnfinishedMessage(this);
       } catch (java.io.IOException e) {
         throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
+                e).setUnfinishedMessage(this);
       } finally {
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return rpc.RaftOutter.internal_static_protobuf_EntryMeta_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return rpc.RaftOutter.internal_static_protobuf_EntryMeta_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              rpc.RaftOutter.EntryMeta.class, rpc.RaftOutter.EntryMeta.Builder.class);
+              .ensureFieldAccessorsInitialized(
+                      rpc.RaftOutter.EntryMeta.class, rpc.RaftOutter.EntryMeta.Builder.class);
     }
 
     public static final int TERM_FIELD_NUMBER = 1;
@@ -242,8 +242,8 @@ public final class RaftOutter {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         peers_ = s;
         return s;
@@ -253,12 +253,12 @@ public final class RaftOutter {
      * <code>string peers = 3;</code>
      */
     public com.google.protobuf.ByteString
-        getPeersBytes() {
+    getPeersBytes() {
       java.lang.Object ref = peers_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
         peers_ = b;
         return b;
       } else {
@@ -285,8 +285,8 @@ public final class RaftOutter {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         oldPeers_ = s;
         return s;
@@ -296,12 +296,12 @@ public final class RaftOutter {
      * <code>string old_peers = 5;</code>
      */
     public com.google.protobuf.ByteString
-        getOldPeersBytes() {
+    getOldPeersBytes() {
       java.lang.Object ref = oldPeers_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
         oldPeers_ = b;
         return b;
       } else {
@@ -328,8 +328,8 @@ public final class RaftOutter {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         learners_ = s;
         return s;
@@ -339,12 +339,12 @@ public final class RaftOutter {
      * <code>string learners = 7;</code>
      */
     public com.google.protobuf.ByteString
-        getLearnersBytes() {
+    getLearnersBytes() {
       java.lang.Object ref = learners_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
         learners_ = b;
         return b;
       } else {
@@ -362,8 +362,8 @@ public final class RaftOutter {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         oldLearners_ = s;
         return s;
@@ -373,12 +373,12 @@ public final class RaftOutter {
      * <code>string old_learners = 8;</code>
      */
     public com.google.protobuf.ByteString
-        getOldLearnersBytes() {
+    getOldLearnersBytes() {
       java.lang.Object ref = oldLearners_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
         oldLearners_ = b;
         return b;
       } else {
@@ -399,7 +399,7 @@ public final class RaftOutter {
 
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+            throws java.io.IOException {
       if (term_ != 0L) {
         output.writeInt64(1, term_);
       }
@@ -435,25 +435,25 @@ public final class RaftOutter {
       size = 0;
       if (term_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(1, term_);
+                .computeInt64Size(1, term_);
       }
       if (type_ != rpc.EnumOutter.EntryType.ENTRY_TYPE_UNKNOWN.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(2, type_);
+                .computeEnumSize(2, type_);
       }
       if (!getPeersBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, peers_);
       }
       if (dataLen_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(4, dataLen_);
+                .computeInt64Size(4, dataLen_);
       }
       if (!getOldPeersBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, oldPeers_);
       }
       if (checksum_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(6, checksum_);
+                .computeInt64Size(6, checksum_);
       }
       if (!getLearnersBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, learners_);
@@ -469,7 +469,7 @@ public final class RaftOutter {
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
-       return true;
+        return true;
       }
       if (!(obj instanceof rpc.RaftOutter.EntryMeta)) {
         return super.equals(obj);
@@ -478,20 +478,20 @@ public final class RaftOutter {
 
       boolean result = true;
       result = result && (getTerm()
-          == other.getTerm());
+              == other.getTerm());
       result = result && type_ == other.type_;
       result = result && getPeers()
-          .equals(other.getPeers());
+              .equals(other.getPeers());
       result = result && (getDataLen()
-          == other.getDataLen());
+              == other.getDataLen());
       result = result && getOldPeers()
-          .equals(other.getOldPeers());
+              .equals(other.getOldPeers());
       result = result && (getChecksum()
-          == other.getChecksum());
+              == other.getChecksum());
       result = result && getLearners()
-          .equals(other.getLearners());
+              .equals(other.getLearners());
       result = result && getOldLearners()
-          .equals(other.getOldLearners());
+              .equals(other.getOldLearners());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -505,19 +505,19 @@ public final class RaftOutter {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + TERM_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getTerm());
+              getTerm());
       hash = (37 * hash) + TYPE_FIELD_NUMBER;
       hash = (53 * hash) + type_;
       hash = (37 * hash) + PEERS_FIELD_NUMBER;
       hash = (53 * hash) + getPeers().hashCode();
       hash = (37 * hash) + DATA_LEN_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getDataLen());
+              getDataLen());
       hash = (37 * hash) + OLD_PEERS_FIELD_NUMBER;
       hash = (53 * hash) + getOldPeers().hashCode();
       hash = (37 * hash) + CHECKSUM_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getChecksum());
+              getChecksum());
       hash = (37 * hash) + LEARNERS_FIELD_NUMBER;
       hash = (53 * hash) + getLearners().hashCode();
       hash = (37 * hash) + OLD_LEARNERS_FIELD_NUMBER;
@@ -528,73 +528,73 @@ public final class RaftOutter {
     }
 
     public static rpc.RaftOutter.EntryMeta parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RaftOutter.EntryMeta parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RaftOutter.EntryMeta parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RaftOutter.EntryMeta parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RaftOutter.EntryMeta parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
     public static rpc.RaftOutter.EntryMeta parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
     public static rpc.RaftOutter.EntryMeta parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RaftOutter.EntryMeta parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RaftOutter.EntryMeta parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
+              .parseDelimitedWithIOException(PARSER, input);
     }
     public static rpc.RaftOutter.EntryMeta parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
     public static rpc.RaftOutter.EntryMeta parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
     public static rpc.RaftOutter.EntryMeta parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @java.lang.Override
@@ -608,12 +608,12 @@ public final class RaftOutter {
     @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
+              ? new Builder() : new Builder().mergeFrom(this);
     }
 
     @java.lang.Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -621,20 +621,20 @@ public final class RaftOutter {
      * Protobuf type {@code protobuf.EntryMeta}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:protobuf.EntryMeta)
-        rpc.RaftOutter.EntryMetaOrBuilder {
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:protobuf.EntryMeta)
+            rpc.RaftOutter.EntryMetaOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return rpc.RaftOutter.internal_static_protobuf_EntryMeta_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return rpc.RaftOutter.internal_static_protobuf_EntryMeta_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                rpc.RaftOutter.EntryMeta.class, rpc.RaftOutter.EntryMeta.Builder.class);
+                .ensureFieldAccessorsInitialized(
+                        rpc.RaftOutter.EntryMeta.class, rpc.RaftOutter.EntryMeta.Builder.class);
       }
 
       // Construct using rpc.RaftOutter.EntryMeta.newBuilder()
@@ -643,7 +643,7 @@ public final class RaftOutter {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
@@ -676,7 +676,7 @@ public final class RaftOutter {
 
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return rpc.RaftOutter.internal_static_protobuf_EntryMeta_descriptor;
       }
 
@@ -715,30 +715,30 @@ public final class RaftOutter {
       }
       @java.lang.Override
       public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       @java.lang.Override
       public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
+              com.google.protobuf.Descriptors.FieldDescriptor field) {
         return (Builder) super.clearField(field);
       }
       @java.lang.Override
       public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return (Builder) super.clearOneof(oneof);
       }
       @java.lang.Override
       public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       @java.lang.Override
       public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       @java.lang.Override
@@ -793,9 +793,9 @@ public final class RaftOutter {
 
       @java.lang.Override
       public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
         rpc.RaftOutter.EntryMeta parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
@@ -821,7 +821,7 @@ public final class RaftOutter {
        * <code>int64 term = 1;</code>
        */
       public Builder setTerm(long value) {
-        
+
         term_ = value;
         onChanged();
         return this;
@@ -830,7 +830,7 @@ public final class RaftOutter {
        * <code>int64 term = 1;</code>
        */
       public Builder clearTerm() {
-        
+
         term_ = 0L;
         onChanged();
         return this;
@@ -866,7 +866,7 @@ public final class RaftOutter {
         if (value == null) {
           throw new NullPointerException();
         }
-        
+
         type_ = value.getNumber();
         onChanged();
         return this;
@@ -875,7 +875,7 @@ public final class RaftOutter {
        * <code>.protobuf.EntryType type = 2;</code>
        */
       public Builder clearType() {
-        
+
         type_ = 0;
         onChanged();
         return this;
@@ -889,7 +889,7 @@ public final class RaftOutter {
         java.lang.Object ref = peers_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
+                  (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           peers_ = s;
           return s;
@@ -901,12 +901,12 @@ public final class RaftOutter {
        * <code>string peers = 3;</code>
        */
       public com.google.protobuf.ByteString
-          getPeersBytes() {
+      getPeersBytes() {
         java.lang.Object ref = peers_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
           peers_ = b;
           return b;
         } else {
@@ -917,11 +917,11 @@ public final class RaftOutter {
        * <code>string peers = 3;</code>
        */
       public Builder setPeers(
-          java.lang.String value) {
+              java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  
+          throw new NullPointerException();
+        }
+
         peers_ = value;
         onChanged();
         return this;
@@ -930,7 +930,7 @@ public final class RaftOutter {
        * <code>string peers = 3;</code>
        */
       public Builder clearPeers() {
-        
+
         peers_ = getDefaultInstance().getPeers();
         onChanged();
         return this;
@@ -939,12 +939,12 @@ public final class RaftOutter {
        * <code>string peers = 3;</code>
        */
       public Builder setPeersBytes(
-          com.google.protobuf.ByteString value) {
+              com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
         peers_ = value;
         onChanged();
         return this;
@@ -961,7 +961,7 @@ public final class RaftOutter {
        * <code>int64 data_len = 4;</code>
        */
       public Builder setDataLen(long value) {
-        
+
         dataLen_ = value;
         onChanged();
         return this;
@@ -970,7 +970,7 @@ public final class RaftOutter {
        * <code>int64 data_len = 4;</code>
        */
       public Builder clearDataLen() {
-        
+
         dataLen_ = 0L;
         onChanged();
         return this;
@@ -984,7 +984,7 @@ public final class RaftOutter {
         java.lang.Object ref = oldPeers_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
+                  (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           oldPeers_ = s;
           return s;
@@ -996,12 +996,12 @@ public final class RaftOutter {
        * <code>string old_peers = 5;</code>
        */
       public com.google.protobuf.ByteString
-          getOldPeersBytes() {
+      getOldPeersBytes() {
         java.lang.Object ref = oldPeers_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
           oldPeers_ = b;
           return b;
         } else {
@@ -1012,11 +1012,11 @@ public final class RaftOutter {
        * <code>string old_peers = 5;</code>
        */
       public Builder setOldPeers(
-          java.lang.String value) {
+              java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  
+          throw new NullPointerException();
+        }
+
         oldPeers_ = value;
         onChanged();
         return this;
@@ -1025,7 +1025,7 @@ public final class RaftOutter {
        * <code>string old_peers = 5;</code>
        */
       public Builder clearOldPeers() {
-        
+
         oldPeers_ = getDefaultInstance().getOldPeers();
         onChanged();
         return this;
@@ -1034,12 +1034,12 @@ public final class RaftOutter {
        * <code>string old_peers = 5;</code>
        */
       public Builder setOldPeersBytes(
-          com.google.protobuf.ByteString value) {
+              com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
         oldPeers_ = value;
         onChanged();
         return this;
@@ -1056,7 +1056,7 @@ public final class RaftOutter {
        * <code>int64 checksum = 6;</code>
        */
       public Builder setChecksum(long value) {
-        
+
         checksum_ = value;
         onChanged();
         return this;
@@ -1065,7 +1065,7 @@ public final class RaftOutter {
        * <code>int64 checksum = 6;</code>
        */
       public Builder clearChecksum() {
-        
+
         checksum_ = 0L;
         onChanged();
         return this;
@@ -1079,7 +1079,7 @@ public final class RaftOutter {
         java.lang.Object ref = learners_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
+                  (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           learners_ = s;
           return s;
@@ -1091,12 +1091,12 @@ public final class RaftOutter {
        * <code>string learners = 7;</code>
        */
       public com.google.protobuf.ByteString
-          getLearnersBytes() {
+      getLearnersBytes() {
         java.lang.Object ref = learners_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
           learners_ = b;
           return b;
         } else {
@@ -1107,11 +1107,11 @@ public final class RaftOutter {
        * <code>string learners = 7;</code>
        */
       public Builder setLearners(
-          java.lang.String value) {
+              java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  
+          throw new NullPointerException();
+        }
+
         learners_ = value;
         onChanged();
         return this;
@@ -1120,7 +1120,7 @@ public final class RaftOutter {
        * <code>string learners = 7;</code>
        */
       public Builder clearLearners() {
-        
+
         learners_ = getDefaultInstance().getLearners();
         onChanged();
         return this;
@@ -1129,12 +1129,12 @@ public final class RaftOutter {
        * <code>string learners = 7;</code>
        */
       public Builder setLearnersBytes(
-          com.google.protobuf.ByteString value) {
+              com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
         learners_ = value;
         onChanged();
         return this;
@@ -1148,7 +1148,7 @@ public final class RaftOutter {
         java.lang.Object ref = oldLearners_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
+                  (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           oldLearners_ = s;
           return s;
@@ -1160,12 +1160,12 @@ public final class RaftOutter {
        * <code>string old_learners = 8;</code>
        */
       public com.google.protobuf.ByteString
-          getOldLearnersBytes() {
+      getOldLearnersBytes() {
         java.lang.Object ref = oldLearners_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
           oldLearners_ = b;
           return b;
         } else {
@@ -1176,11 +1176,11 @@ public final class RaftOutter {
        * <code>string old_learners = 8;</code>
        */
       public Builder setOldLearners(
-          java.lang.String value) {
+              java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  
+          throw new NullPointerException();
+        }
+
         oldLearners_ = value;
         onChanged();
         return this;
@@ -1189,7 +1189,7 @@ public final class RaftOutter {
        * <code>string old_learners = 8;</code>
        */
       public Builder clearOldLearners() {
-        
+
         oldLearners_ = getDefaultInstance().getOldLearners();
         onChanged();
         return this;
@@ -1198,25 +1198,25 @@ public final class RaftOutter {
        * <code>string old_learners = 8;</code>
        */
       public Builder setOldLearnersBytes(
-          com.google.protobuf.ByteString value) {
+              com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
         oldLearners_ = value;
         onChanged();
         return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
       }
 
       @java.lang.Override
       public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
       }
 
@@ -1235,12 +1235,12 @@ public final class RaftOutter {
     }
 
     private static final com.google.protobuf.Parser<EntryMeta>
-        PARSER = new com.google.protobuf.AbstractParser<EntryMeta>() {
+            PARSER = new com.google.protobuf.AbstractParser<EntryMeta>() {
       @java.lang.Override
       public EntryMeta parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
         return new EntryMeta(input, extensionRegistry);
       }
     };
@@ -1262,45 +1262,45 @@ public final class RaftOutter {
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_protobuf_EntryMeta_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_protobuf_EntryMeta_fieldAccessorTable;
+          internal_static_protobuf_EntryMeta_descriptor;
+  private static final
+  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internal_static_protobuf_EntryMeta_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
-      getDescriptor() {
+  getDescriptor() {
     return descriptor;
   }
   private static  com.google.protobuf.Descriptors.FileDescriptor
-      descriptor;
+          descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\nraft.proto\022\010protobuf\032\nenum.proto\"\252\001\n\tE" +
-      "ntryMeta\022\014\n\004term\030\001 \001(\003\022!\n\004type\030\002 \001(\0162\023.p" +
-      "rotobuf.EntryType\022\r\n\005peers\030\003 \001(\t\022\020\n\010data" +
-      "_len\030\004 \001(\003\022\021\n\told_peers\030\005 \001(\t\022\020\n\010checksu" +
-      "m\030\006 \001(\003\022\020\n\010learners\030\007 \001(\t\022\024\n\014old_learner" +
-      "s\030\010 \001(\tB\021\n\003rpcB\nRaftOutterb\006proto3"
+            "\n\nraft.proto\022\010protobuf\032\nenum.proto\"\252\001\n\tE" +
+                    "ntryMeta\022\014\n\004term\030\001 \001(\003\022!\n\004type\030\002 \001(\0162\023.p" +
+                    "rotobuf.EntryType\022\r\n\005peers\030\003 \001(\t\022\020\n\010data" +
+                    "_len\030\004 \001(\003\022\021\n\told_peers\030\005 \001(\t\022\020\n\010checksu" +
+                    "m\030\006 \001(\003\022\020\n\010learners\030\007 \001(\t\022\024\n\014old_learner" +
+                    "s\030\010 \001(\tB\021\n\003rpcB\nRaftOutterb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
+            new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+              public com.google.protobuf.ExtensionRegistry assignDescriptors(
+                      com.google.protobuf.Descriptors.FileDescriptor root) {
+                descriptor = root;
+                return null;
+              }
+            };
     com.google.protobuf.Descriptors.FileDescriptor
-      .internalBuildGeneratedFileFrom(descriptorData,
-        new com.google.protobuf.Descriptors.FileDescriptor[] {
-          rpc.EnumOutter.getDescriptor(),
-        }, assigner);
+            .internalBuildGeneratedFileFrom(descriptorData,
+                    new com.google.protobuf.Descriptors.FileDescriptor[] {
+                            rpc.EnumOutter.getDescriptor(),
+                    }, assigner);
     internal_static_protobuf_EntryMeta_descriptor =
-      getDescriptor().getMessageTypes().get(0);
+            getDescriptor().getMessageTypes().get(0);
     internal_static_protobuf_EntryMeta_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_protobuf_EntryMeta_descriptor,
-        new java.lang.String[] { "Term", "Type", "Peers", "DataLen", "OldPeers", "Checksum", "Learners", "OldLearners", });
+            com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+            internal_static_protobuf_EntryMeta_descriptor,
+            new java.lang.String[] { "Term", "Type", "Peers", "DataLen", "OldPeers", "Checksum", "Learners", "OldLearners", });
     rpc.EnumOutter.getDescriptor();
   }
 

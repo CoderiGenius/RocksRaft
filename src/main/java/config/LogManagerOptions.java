@@ -14,6 +14,11 @@ public class LogManagerOptions {
     private Options options;
     private int                  disruptorBufferSize  = 1024;
 
+    public LogManagerOptions(LogStorage logStorage, Options options) {
+        this.logStorage = logStorage;
+        this.options = options;
+
+    }
 
     public int getDisruptorBufferSize() {
         return disruptorBufferSize;

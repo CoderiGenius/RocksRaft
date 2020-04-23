@@ -1,8 +1,10 @@
 package rpc;
 
 import core.NodeImpl;
+import entity.TimeOutChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import utils.Utils;
 
 /**
  * Created by 周思成 on  2020/3/24 13:10
@@ -22,46 +24,58 @@ public class RpcServicesImpl implements RpcServices {
     public RpcRequests.RequestPreVoteResponse handlePreVoteRequest(
             RpcRequests.RequestPreVoteRequest requestPreVoteRequest) {
 
-        LOG.info("Recevice preVoteRequest from {}", requestPreVoteRequest.getPeerId());
-        long candidateTerm = requestPreVoteRequest.getLastLogTerm();
-        long selfTerm = NodeImpl.getNodeImple().getLastLogTerm().get();
-        long candidateLogIndex = requestPreVoteRequest.getLastLogIndex();
-        long selfLogIndex = NodeImpl.getNodeImple().getLastLogIndex().longValue();
-        RpcRequests.RequestPreVoteResponse.Builder builder = RpcRequests.RequestPreVoteResponse.newBuilder();
-        builder.setTerm(selfTerm);
-        builder.setPeerName(NodeImpl.getNodeImple().getNodeId().getPeerId().getPeerName());
+          LOG.info("Receive preVoteRequest from {} ", requestPreVoteRequest.getPeerId()
+            );
+            long candidateTerm = requestPreVoteRequest.getLastLogTerm();
+            long selfTerm = NodeImpl.getNodeImple().getLastLogTerm().get();
+            long candidateLogIndex = requestPreVoteRequest.getLastLogIndex();
+            long selfLogIndex = NodeImpl.getNodeImple().getLastLogIndex().longValue();
+            RpcRequests.RequestPreVoteResponse.Builder builder = RpcRequests.RequestPreVoteResponse.newBuilder();
+            builder.setTerm(selfTerm);
+            builder.setPeerName(NodeImpl.getNodeImple().getNodeId().getPeerId().getPeerName());
 
-        //check current node status
-        if (!NodeImpl.getNodeImple().checkIfCurrentNodeCanVoteOthers()) {
-            builder.setGranted(false);
-            LOG.info("Current peer ignored the preVote request " +
-                    "as the current node status is not for voting. status:{}", NodeImpl.getNodeImple().getNodeState());
-            return builder.build();
-        }
+            //check current node status
+            if (!NodeImpl.getNodeImple().checkIfCurrentNodeCanVoteOthers()) {
+                builder.setGranted(false);
+                LOG.info("Current peer ignored the preVote request " +
+                        "as the current node status is not for voting. status:{}", NodeImpl.getNodeImple().getNodeState());
+                return builder.build();
+            }
 
-        //check if the term is valid and current leader is valid
-        if (candidateTerm < selfTerm) {
-            builder.setGranted(false);
-            LOG.info("Current peer ignored the preVote request " +
-                    "as the candidate's term {} is not as newer as the current {}", candidateTerm, selfTerm);
-            return builder.build();
-        } else if (NodeImpl.getNodeImple().isCurrentLeaderValid()) {
-            builder.setGranted(false);
-            LOG.info("Current peer ignored the preVote request " +
-                    "as the current peer leader is still valid");
+            //check if the term is valid and current leader is valid
+            if (candidateTerm < selfTerm) {
+                builder.setGranted(false);
+                LOG.info("Current peer ignored the preVote request " +
+                        "as the candidate's term {} is not as newer as the current {}", candidateTerm, selfTerm);
+                return builder.build();
+            } else if (NodeImpl.getNodeImple().isCurrentLeaderValid()) {
+                builder.setGranted(false);
+                LOG.info("Current peer ignored the preVote request " +
+                        "as the current peer leader is still valid");
 
-            return builder.build();
-        }
+                return builder.build();
+            }
 
-        //check log entries
-        if (candidateLogIndex < selfLogIndex) {
-            builder.setGranted(false);
-            LOG.info("Current peer ignored the preVote request " +
-                    "as the candidate's LogIndex {} is not as newer as the current {}", candidateLogIndex, selfLogIndex);
-            return builder.build();
-        }
+            //check log entries
+            if (candidateLogIndex < selfLogIndex) {
+                builder.setGranted(false);
+                LOG.info("Current peer ignored the preVote request " +
+                        "as the candidate's LogIndex {} is not as newer as the current {}", candidateLogIndex, selfLogIndex);
+                return builder.build();
+            }
+        //Every term can vote just once
+//        if (NodeImpl.getNodeImple().getLastPreVoteTerm() == requestPreVoteRequest.getLastLogTerm()) {
+//            builder.setGranted(false);
+//            LOG.info("Current peer ignored the Prevote request " +
+//                    "as the current node already Prevote others at term {}", requestPreVoteRequest.getLastLogTerm());
+//            return builder.build();
+//        }
+            LOG.info("PreVote request from {} granted", requestPreVoteRequest.getPeerId());
+
+        NodeImpl.getNodeImple().setLastPreVoteTerm(requestPreVoteRequest.getLastLogTerm());
         builder.setGranted(true);
-        return builder.build();
+            return builder.build();
+
     }
 
     @Override
@@ -73,13 +87,15 @@ public class RpcServicesImpl implements RpcServices {
         long selfLogIndex = NodeImpl.getNodeImple().getLastLogIndex().longValue();
         RpcRequests.RequestVoteResponse.Builder builder = RpcRequests.RequestVoteResponse.newBuilder();
         builder.setTerm(selfTerm);
+        builder.setPeerName(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
 
 
         //check current node status
         if (!NodeImpl.getNodeImple().checkIfCurrentNodeCanVoteOthers()) {
             builder.setGranted(false);
-            LOG.info("Current peer ignored the vote request " +
-                    "as the current node status is not for voting. status:{}", NodeImpl.getNodeImple().getNodeState());
+            LOG.info("Current peer ignored the vote request from {}" +
+                    "as the current node status is not for voting. status:{}",requestVoteRequest.getPeerId(),
+                    NodeImpl.getNodeImple().getNodeState());
             return builder.build();
         }
 
@@ -104,6 +120,15 @@ public class RpcServicesImpl implements RpcServices {
                     "as the candidate's LogIndex {} is not as newer as the current {}", candidateLogIndex, selfLogIndex);
             return builder.build();
         }
+
+        //Every term can vote just once
+        if (NodeImpl.getNodeImple().getLastVoteTerm() == requestVoteRequest.getTerm()) {
+            builder.setGranted(false);
+            LOG.info("Current peer ignored the vote request " +
+                    "as the current node already vote others at term {}", requestVoteRequest.getTerm());
+            return builder.build();
+        }
+        NodeImpl.getNodeImple().setLastVoteTerm(requestVoteRequest.getTerm());
         builder.setGranted(true);
         return builder.build();
     }
@@ -112,37 +137,50 @@ public class RpcServicesImpl implements RpcServices {
     public RpcRequests.AppendEntriesResponse handleApendEntriesRequest(RpcRequests.AppendEntriesRequest appendEntriesRequest) {
         RpcRequests.AppendEntriesResponse.Builder builder = RpcRequests.AppendEntriesResponse.newBuilder();
 
-        //find out if it is null request and check if it is new leader request
-        if (appendEntriesRequest.getEntries() == null &&
-                !NodeImpl.getNodeImple().getLeaderId().getPeerId().getId().equals(appendEntriesRequest.getPeerId())) {
-            //if add new leader failed
-            if (!NodeImpl.getNodeImple().transformLeader(appendEntriesRequest)) {
-              return appendEntriesBuilder(builder,false).build();
-            }
-        }else {
-            //normal appendEntry request
+        try {
 
-            //check term
-            if (appendEntriesRequest.getTerm() != NodeImpl.getNodeImple().getLastLogTerm().get()) {
-                return appendEntriesBuilder(builder,false).build();
-            }
-            //check index
-            if (appendEntriesRequest.getCommittedIndex() <= NodeImpl.getNodeImple().getLastLogIndex().get()) {
-                return appendEntriesBuilder(builder,false).build();
-            }
+
+            //set timeout
+            TimeOutChecker timeOutChecker =
+                    new TimeOutChecker(Utils.monotonicMs(), null);
+            NodeImpl.getNodeImple().getHeartbeat().setChecker(timeOutChecker);
+            NodeImpl.getNodeImple().setLastReceiveHeartbeatTime(Utils.monotonicMs());
+
+            //find out if it is null request and check if it is new leader request
+            if (appendEntriesRequest.getData().isEmpty() &&
+                    NodeImpl.getNodeImple().checkIfLeaderChanged(appendEntriesRequest.getPeerId())
+            ) {
+                //if add new leader failed
+                if (!NodeImpl.getNodeImple().transformLeader(appendEntriesRequest)) {
+                    LOG.error("add new Leader failed leaderID:{}",appendEntriesRequest.getPeerId());
+                    return appendEntriesBuilder(builder, false).build();
+                }
+            } else {
+                //normal appendEntry request
+
+                //check term
+                if (appendEntriesRequest.getTerm() != NodeImpl.getNodeImple().getLastLogTerm().get()) {
+                    return appendEntriesBuilder(builder, false).build();
+                }
+                //check index
+                if (appendEntriesRequest.getCommittedIndex() <= NodeImpl.getNodeImple().getLastLogIndex().get()) {
+                    return appendEntriesBuilder(builder, false).build();
+                }
                 //check leader illegal
 
                 //storage to log
 
-                if(NodeImpl.getNodeImple().followerSetLogEvent(appendEntriesRequest)) {
+                if (NodeImpl.getNodeImple().followerSetLogEvent(appendEntriesRequest)) {
                     return appendEntriesBuilder(builder, true).build();
                 }
+            }
+
+            return appendEntriesBuilder(builder, false).build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        return appendEntriesBuilder(builder,false).build();
-
-
-
+return null;
     }
 
     private RpcRequests.AppendEntriesResponse.Builder appendEntriesBuilder(

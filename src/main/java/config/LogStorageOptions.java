@@ -19,6 +19,11 @@ public class LogStorageOptions {
         private String logStoragePath;
         private String logStorageName;
 
+    public LogStorageOptions(String logStoragePath, String logStorageName) {
+        this.logStoragePath = logStoragePath;
+        this.logStorageName = logStorageName;
+    }
+
     public String getLogStoragePath() {
         return logStoragePath;
     }

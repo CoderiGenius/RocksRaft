@@ -4,6 +4,7 @@ package entity;
  * Created by 周思成 on  2020/3/11 14:30
  */
 
+import core.StateMachine;
 import service.RaftServiceFactory;
 import utils.Utils;
 
@@ -60,7 +61,7 @@ public class NodeOptions extends RpcOptions {
 
     // The specific StateMachine implemented your business logic, which must be
     // a valid instance.
-    private StateMachine                    fsm;
+    private StateMachine fsm;
 
     // Describe a specific LogStorage in format ${type}://${parameters}
     private String                          logUri;

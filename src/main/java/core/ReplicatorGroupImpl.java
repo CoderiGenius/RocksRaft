@@ -31,8 +31,8 @@ public class ReplicatorGroupImpl implements ReplicatorGroup {
     private final List<Replicator> replicatorList      = new CopyOnWriteArrayList<>();
     /** common replicator options */
     private ReplicatorOptions commonOptions;
-    private int                                   dynamicTimeoutMs   = -1;
-    private int                                   electionTimeoutMs  = -1;
+    private long                                   dynamicTimeoutMs   = -1;
+    private long                                   electionTimeoutMs  = -1;
 
     private final Map<PeerId, ReplicatorType> failureReplicators = new ConcurrentHashMap<>();
 
@@ -62,8 +62,8 @@ public class ReplicatorGroupImpl implements ReplicatorGroup {
         this.electionTimeoutMs = opts.getElectionTimeoutMs();
 
         this.commonOptions = new ReplicatorOptions();
-        this.commonOptions.setDynamicHeartBeatTimeoutMs(this.dynamicTimeoutMs);
-        this.commonOptions.setElectionTimeoutMs(this.electionTimeoutMs);
+        this.commonOptions.setDynamicHeartBeatTimeoutMs(opts.getHeartbeatTimeoutMs());
+        this.commonOptions.setElectionTimeoutMs(opts.getElectionTimeoutMs());
         //this.commonOptions.setRaftRpcService(opts.getRaftRpcClientService());
         this.commonOptions.setLogManager(opts.getLogManager());
         //this.commonOptions.setBallotBox(opts.getBallotBox());
@@ -232,19 +232,19 @@ public class ReplicatorGroupImpl implements ReplicatorGroup {
         this.commonOptions = commonOptions;
     }
 
-    public int getDynamicTimeoutMs() {
+    public long getDynamicTimeoutMs() {
         return dynamicTimeoutMs;
     }
 
-    public void setDynamicTimeoutMs(int dynamicTimeoutMs) {
+    public void setDynamicTimeoutMs(long dynamicTimeoutMs) {
         this.dynamicTimeoutMs = dynamicTimeoutMs;
     }
 
-    public int getElectionTimeoutMs() {
+    public long getElectionTimeoutMs() {
         return electionTimeoutMs;
     }
 
-    public void setElectionTimeoutMs(int electionTimeoutMs) {
+    public void setElectionTimeoutMs(long electionTimeoutMs) {
         this.electionTimeoutMs = electionTimeoutMs;
     }
 

@@ -6,19 +6,19 @@ package rpc;
 public final class EnumOutter {
   private EnumOutter() {}
   public static void registerAllExtensions(
-      com.google.protobuf.ExtensionRegistryLite registry) {
+          com.google.protobuf.ExtensionRegistryLite registry) {
   }
 
   public static void registerAllExtensions(
-      com.google.protobuf.ExtensionRegistry registry) {
+          com.google.protobuf.ExtensionRegistry registry) {
     registerAllExtensions(
-        (com.google.protobuf.ExtensionRegistryLite) registry);
+            (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   /**
-   * Protobuf enum {@code jraft.EntryType}
+   * Protobuf enum {@code protobuf.EntryType}
    */
   public enum EntryType
-      implements com.google.protobuf.ProtocolMessageEnum {
+          implements com.google.protobuf.ProtocolMessageEnum {
     /**
      * <code>ENTRY_TYPE_UNKNOWN = 0;</code>
      */
@@ -59,7 +59,7 @@ public final class EnumOutter {
     public final int getNumber() {
       if (this == UNRECOGNIZED) {
         throw new java.lang.IllegalArgumentException(
-            "Can't get the number of an unknown enum value.");
+                "Can't get the number of an unknown enum value.");
       }
       return value;
     }
@@ -83,37 +83,37 @@ public final class EnumOutter {
     }
 
     public static com.google.protobuf.Internal.EnumLiteMap<EntryType>
-        internalGetValueMap() {
+    internalGetValueMap() {
       return internalValueMap;
     }
     private static final com.google.protobuf.Internal.EnumLiteMap<
-        EntryType> internalValueMap =
-          new com.google.protobuf.Internal.EnumLiteMap<EntryType>() {
-            public EntryType findValueByNumber(int number) {
-              return EntryType.forNumber(number);
-            }
-          };
+            EntryType> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<EntryType>() {
+              public EntryType findValueByNumber(int number) {
+                return EntryType.forNumber(number);
+              }
+            };
 
     public final com.google.protobuf.Descriptors.EnumValueDescriptor
-        getValueDescriptor() {
+    getValueDescriptor() {
       return getDescriptor().getValues().get(ordinal());
     }
     public final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptorForType() {
+    getDescriptorForType() {
       return getDescriptor();
     }
     public static final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptor() {
+    getDescriptor() {
       return rpc.EnumOutter.getDescriptor().getEnumTypes().get(0);
     }
 
     private static final EntryType[] VALUES = values();
 
     public static EntryType valueOf(
-        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+            com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
       if (desc.getType() != getDescriptor()) {
         throw new java.lang.IllegalArgumentException(
-          "EnumValueDescriptor is not for this type.");
+                "EnumValueDescriptor is not for this type.");
       }
       if (desc.getIndex() == -1) {
         return UNRECOGNIZED;
@@ -127,14 +127,14 @@ public final class EnumOutter {
       this.value = value;
     }
 
-    // @@protoc_insertion_point(enum_scope:jraft.EntryType)
+    // @@protoc_insertion_point(enum_scope:protobuf.EntryType)
   }
 
   /**
-   * Protobuf enum {@code jraft.ErrorType}
+   * Protobuf enum {@code protobuf.ErrorType}
    */
   public enum ErrorType
-      implements com.google.protobuf.ProtocolMessageEnum {
+          implements com.google.protobuf.ProtocolMessageEnum {
     /**
      * <code>ERROR_TYPE_NONE = 0;</code>
      */
@@ -191,7 +191,7 @@ public final class EnumOutter {
     public final int getNumber() {
       if (this == UNRECOGNIZED) {
         throw new java.lang.IllegalArgumentException(
-            "Can't get the number of an unknown enum value.");
+                "Can't get the number of an unknown enum value.");
       }
       return value;
     }
@@ -217,37 +217,37 @@ public final class EnumOutter {
     }
 
     public static com.google.protobuf.Internal.EnumLiteMap<ErrorType>
-        internalGetValueMap() {
+    internalGetValueMap() {
       return internalValueMap;
     }
     private static final com.google.protobuf.Internal.EnumLiteMap<
-        ErrorType> internalValueMap =
-          new com.google.protobuf.Internal.EnumLiteMap<ErrorType>() {
-            public ErrorType findValueByNumber(int number) {
-              return ErrorType.forNumber(number);
-            }
-          };
+            ErrorType> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<ErrorType>() {
+              public ErrorType findValueByNumber(int number) {
+                return ErrorType.forNumber(number);
+              }
+            };
 
     public final com.google.protobuf.Descriptors.EnumValueDescriptor
-        getValueDescriptor() {
+    getValueDescriptor() {
       return getDescriptor().getValues().get(ordinal());
     }
     public final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptorForType() {
+    getDescriptorForType() {
       return getDescriptor();
     }
     public static final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptor() {
+    getDescriptor() {
       return rpc.EnumOutter.getDescriptor().getEnumTypes().get(1);
     }
 
     private static final ErrorType[] VALUES = values();
 
     public static ErrorType valueOf(
-        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+            com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
       if (desc.getType() != getDescriptor()) {
         throw new java.lang.IllegalArgumentException(
-          "EnumValueDescriptor is not for this type.");
+                "EnumValueDescriptor is not for this type.");
       }
       if (desc.getIndex() == -1) {
         return UNRECOGNIZED;
@@ -261,39 +261,39 @@ public final class EnumOutter {
       this.value = value;
     }
 
-    // @@protoc_insertion_point(enum_scope:jraft.ErrorType)
+    // @@protoc_insertion_point(enum_scope:protobuf.ErrorType)
   }
 
 
   public static com.google.protobuf.Descriptors.FileDescriptor
-      getDescriptor() {
+  getDescriptor() {
     return descriptor;
   }
   private static  com.google.protobuf.Descriptors.FileDescriptor
-      descriptor;
+          descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\nenum.proto\022\005jraft*l\n\tEntryType\022\026\n\022ENTR" +
-      "Y_TYPE_UNKNOWN\020\000\022\024\n\020ENTRY_TYPE_NO_OP\020\001\022\023" +
-      "\n\017ENTRY_TYPE_DATA\020\002\022\034\n\030ENTRY_TYPE_CONFIG" +
-      "URATION\020\003*\227\001\n\tErrorType\022\023\n\017ERROR_TYPE_NO" +
-      "NE\020\000\022\022\n\016ERROR_TYPE_LOG\020\001\022\025\n\021ERROR_TYPE_S" +
-      "TABLE\020\002\022\027\n\023ERROR_TYPE_SNAPSHOT\020\003\022\034\n\030ERRO" +
-      "R_TYPE_STATE_MACHINE\020\004\022\023\n\017ERROR_TYPE_MET" +
-      "A\020\005B\021\n\003rpcB\nEnumOutterb\006proto3"
+            "\n\nenum.proto\022\010protobuf*l\n\tEntryType\022\026\n\022E" +
+                    "NTRY_TYPE_UNKNOWN\020\000\022\024\n\020ENTRY_TYPE_NO_OP\020" +
+                    "\001\022\023\n\017ENTRY_TYPE_DATA\020\002\022\034\n\030ENTRY_TYPE_CON" +
+                    "FIGURATION\020\003*\227\001\n\tErrorType\022\023\n\017ERROR_TYPE" +
+                    "_NONE\020\000\022\022\n\016ERROR_TYPE_LOG\020\001\022\025\n\021ERROR_TYP" +
+                    "E_STABLE\020\002\022\027\n\023ERROR_TYPE_SNAPSHOT\020\003\022\034\n\030E" +
+                    "RROR_TYPE_STATE_MACHINE\020\004\022\023\n\017ERROR_TYPE_" +
+                    "META\020\005B\021\n\003rpcB\nEnumOutterb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
+            new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+              public com.google.protobuf.ExtensionRegistry assignDescriptors(
+                      com.google.protobuf.Descriptors.FileDescriptor root) {
+                descriptor = root;
+                return null;
+              }
+            };
     com.google.protobuf.Descriptors.FileDescriptor
-      .internalBuildGeneratedFileFrom(descriptorData,
-        new com.google.protobuf.Descriptors.FileDescriptor[] {
-        }, assigner);
+            .internalBuildGeneratedFileFrom(descriptorData,
+                    new com.google.protobuf.Descriptors.FileDescriptor[] {
+                    }, assigner);
   }
 
   // @@protoc_insertion_point(outer_class_scope)

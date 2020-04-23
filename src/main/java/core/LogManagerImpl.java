@@ -233,11 +233,6 @@ public class LogManagerImpl implements LogManager {
             }
             this.options = opts.getOptions();
             this.logStorage = opts.getLogStorage();
-
-            LogStorageOptions logStorageOptions = new LogStorageOptions();
-            logStorageOptions.setLogStorageName(opts.getOptions().getCurrentNodeOptions().getLogStorageName());
-            logStorageOptions.setLogStoragePath(opts.getOptions().getCurrentNodeOptions().getLogStoragePath());
-            LogStorage logStorage = new LogStorageImpl(logStorageOptions);
             if (!logStorage.init()) {
 
                 throw new LogStorageException();

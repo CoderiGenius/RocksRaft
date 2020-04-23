@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -125,6 +127,7 @@ public class Replicator {
     private RpcServices rpcServices;
     private ReplicatorState state;
     private State followerState;
+
     private AtomicLong currentSuccessTerm;
     private AtomicLong currentSuccessIndex;
     private List<RpcRequests.AppendEntriesRequest> appendEntriesRequestList;
@@ -151,6 +154,8 @@ public class Replicator {
                 .build();
         disruptor.handleEventsWith( new ReplicatorHandler());
         disruptor.setDefaultExceptionHandler(new LogExceptionHandler<Object>(getClass().getSimpleName()));
+        this.timerManager = new TimerManager();
+        timerManager.init(10);
     }
 
     private  class ReplicatorHandler implements EventHandler<LogEntry> {
@@ -241,32 +246,46 @@ public class Replicator {
 
 
     public void sendEmptyEntries(final boolean isHeartBeat) {
-        RpcRequests.AppendEntriesRequest.Builder builder = RpcRequests.AppendEntriesRequest.newBuilder();
-        if(isHeartBeat){
-            builder.setCommittedIndex(NodeImpl.getNodeImple().getLastLogIndex().longValue());
-            builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().incrementAndGet());
-            builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
-            builder.setGroupId(NodeImpl.getNodeImple().getNodeId().getGroupId());
-            builder.setPrevLogIndex(getCurrentSuccessIndex().get());
-            builder.setPrevLogTerm(getCurrentSuccessTerm().get());
+        LOG.debug("Start to send enpty entries heartbeat:{}",isHeartBeat);
+        try {
+
+
+            RpcRequests.AppendEntriesRequest.Builder builder = RpcRequests.AppendEntriesRequest.newBuilder();
+            if (isHeartBeat) {
+                builder.setCommittedIndex(NodeImpl.getNodeImple().getLastLogIndex().longValue());
+                builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
+                builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
+                builder.setGroupId(NodeImpl.getNodeImple().getNodeId().getGroupId());
+                builder.setPrevLogIndex(NodeImpl.getNodeImple().getLastLogIndex().get());
+                builder.setPrevLogTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
+            } else {
+                // Sending a probe request.
+                builder.setCommittedIndex(NodeImpl.getNodeImple().getLastLogIndex().longValue());
+                builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
+                builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
+                builder.setGroupId(NodeImpl.getNodeImple().getNodeId().getGroupId());
+
+            }
+            RpcRequests.AppendEntriesRequest request = builder.build();
+            getRpcServices().handleApendEntriesRequest(request);
+
+            LOG.debug("Send emptyAppendEntries request to {} at index {} on term {}"
+                    , getOptions().getPeerId().getPeerName()
+                    , NodeImpl.getNodeImple().getLastLogIndex(),
+                    NodeImpl.getNodeImple().getLastLogTerm());
+
+            Runnable runnable = () -> sendEmptyEntries(true);
+            //Runnable runnable = () -> System.out.println(123123123);
+
+            ScheduledFuture scheduledFuture = getTimerManager().schedule(runnable,
+                    getOptions().getDynamicHeartBeatTimeoutMs(), TimeUnit.MILLISECONDS);
+
+            LOG.debug("Set future task for heartbeat delay time:{} isdone:{}",
+                    getOptions().getDynamicHeartBeatTimeoutMs(),
+                    scheduledFuture.isDone());
+        } catch (Exception e) {
+            LOG.error("Replicator error {}",e.getMessage());
         }
-        else {
-            // Sending a probe request.
-            builder.setCommittedIndex(NodeImpl.getNodeImple().getLastLogIndex().longValue());
-            builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().incrementAndGet());
-            builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
-            builder.setGroupId(NodeImpl.getNodeImple().getNodeId().getGroupId());
-
-        }
-        RpcRequests.AppendEntriesRequest request = builder.build();
-        getRpcServices().handleApendEntriesRequest(request);
-
-        LOG.info("Send emptyAppendEntries request to {} at CommittedIndex {} on PrevLogTerm {}, index {} term {}"
-                , getOptions().getPeerId().getPeerName()
-                , request.getCommittedIndex(), request.getPrevLogTerm()
-                ,request.getCommittedIndex(),request.getTerm());
-
-
     }
 
     void handleProbeOrFollowerDisOrderResponse(long currentIndexOfFollower){
@@ -297,9 +316,9 @@ public class Replicator {
     public void start() {
 
 
-        LOG.info("Send emptyAppendEntries request to {} at {} on term {}"
+        LOG.info("Send emptyAppendEntries request to {} at index {} on term {}"
                 , getOptions().getPeerId().getPeerName()
-                , getOptions().getNode().getLastLogTerm(), NodeImpl.getNodeImple().getLastLogTerm());
+                , NodeImpl.getNodeImple().getLastLogIndex(), NodeImpl.getNodeImple().getLastLogTerm());
 
         sendEmptyEntries(false);
 

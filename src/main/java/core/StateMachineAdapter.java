@@ -2,7 +2,7 @@ package core;
 
 import entity.Iterator;
 import entity.LeaderChangeContext;
-import entity.StateMachine;
+
 import entity.Status;
 import exceptions.RaftException;
 import org.slf4j.Logger;

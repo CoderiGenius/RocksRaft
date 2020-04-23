@@ -55,10 +55,11 @@ message RequestVoteResponse {
 message RequestPreVoteRequest {
      string server_id = 1;
      string peer_id = 2;
-     int64 term = 3;
+     int64 pre_term = 3;
      int64 last_log_term = 4;
      int64 last_log_index = 5;
      bool pre_vote = 6;
+     string peer_name = 7;
 };
 message RequestPreVoteResponse {
      int64 term = 1;
@@ -113,6 +114,7 @@ message NotifyFollowerStableRequest{
      int64 firstIndex = 2;
      string peerId = 3;
      bool success = 4;
+
 }
 message NotifyFollowerStableResponse{
      int64 lastIndex = 1;

@@ -31,30 +31,12 @@ public class RpcResponseClosure<T>  implements SofaResponseCallback<T> {
     @Override
     public void onAppResponse(Object o, String s, RequestBase requestBase) {
 
-        LOG.info("Recviev response:requestBase: {} requestString: {}",requestBase.toString(),s);
+        LOG.debug("Recvieve response:requestBase: {} requestString: {}",requestBase.toString(),s);
         switch (requestBase.getMethodName()) {
             case "handleApendEntriesRequest":
-                //set timeout
-                TimeOutChecker timeOutChecker =
-                        new TimeOutChecker(Utils.monotonicMs(),null);
-                NodeImpl.getNodeImple().getHeartbeat().setChecker(timeOutChecker);
-
                 RpcRequests.AppendEntriesResponse appendEntriesResponse =
                         (RpcRequests.AppendEntriesResponse)o;
-                if (!appendEntriesResponse.getSuccess()) {
-                    //log rePlay at the given position
-                    NodeImpl.getNodeImple()
-                            .getReplicatorGroup().sendInflight(
-                                    appendEntriesResponse.getAddress(),
-                                    appendEntriesResponse.getPort(),
-                                    appendEntriesResponse.getLastLogIndex());
-                }else {
-                    NodeImpl.getNodeImple()
-                            .getBallotBoxConcurrentHashMap()
-                            .get(appendEntriesResponse.getLastLogIndex())
-                            .grant(appendEntriesResponse.getPeerId());
-                }
-                return;
+                NodeImpl.getNodeImple().handleAppendEntriesResponse(appendEntriesResponse);
             case "handlePreVoteRequest":
                 RpcRequests.RequestPreVoteResponse requestPreVoteResponse =
                         (RpcRequests.RequestPreVoteResponse)o;

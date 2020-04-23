@@ -26,8 +26,8 @@ public class Heartbeat {
     public Heartbeat(int corePoolSize, int maximumPoolSize
             , int keepAliveTime, TimeUnit timeUnit, BlockingQueue<Runnable> queue
             , ThreadFactory threadFactory, RejectedExecutionHandler rejectedExecutionHandler){
-        LOG.info("start to create heartbeat module with parameters:corePoolSize:${}" +
-                ",maximumPoolSize:${},keepAliveTime:${},timeUnit:${}",corePoolSize
+        LOG.info("start to create heartbeat module with parameters:corePoolSize:{}" +
+                ",maximumPoolSize:{},keepAliveTime:{},timeUnit:{}",corePoolSize
                 ,maximumPoolSize,keepAliveTime,timeUnit);
         //线程池 负责复用计时器，来判断是否超时启动leader选举
         this.threadPoolExecutor = new ThreadPoolExecutor(corePoolSize
@@ -45,10 +45,12 @@ public class Heartbeat {
     public void setChecker(TimeOutChecker checker) {
         lock.lock();
         try {
+            LOG.debug("Set checker");
             NodeImpl.getNodeImple().setLastReceiveHeartbeatTime(checker.getEnterQueueTime());
             this.checker = checker;
             this.getThreadPoolExecutor().execute(checker);
         } catch (Exception e) {
+            e.printStackTrace();
             LOG.error("set Heartbeat checker error:"+e.getMessage());
         }finally {
             lock.unlock();

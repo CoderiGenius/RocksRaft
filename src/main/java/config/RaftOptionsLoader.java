@@ -56,7 +56,7 @@ public class RaftOptionsLoader {
     }
 
 
-    Map map;
+
 //    public void RaftOptionsLoader0(String name) throws FileNotFoundException {
 //      //this.map=  BootYaml.getYaml(name);
 //      LOG.info("load raftOptions from "+name+" options:"+map);

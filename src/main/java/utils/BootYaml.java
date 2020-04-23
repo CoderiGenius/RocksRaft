@@ -28,8 +28,8 @@ public class BootYaml {
         //加载流,获取yaml文件中的配置数据，然后转换为Map，
 //        Map obj = (Map) yaml.load(resourceAsStream);
 //        return obj;
-        Options obj = (Options) yaml.load(resourceAsStream);
-        return obj;
+        //Options obj = (Options) yaml.load(resourceAsStream);
+        return yaml.loadAs(resourceAsStream,Options.class);
 
     }
 

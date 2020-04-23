@@ -53,7 +53,8 @@ public class IteratorWrapper implements Iterator {
 
     @Override
     public Closure done() {
-        return this.impl.done();
+        //return this.impl.done();
+        return null;
     }
 
     @Override

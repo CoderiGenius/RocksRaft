@@ -91,7 +91,7 @@ public class RaftGroupService {
     }
 
 
-    public Node start() {
+    public Node start() throws InterruptedException {
         if (this.started) {
             return this.node;
         }
@@ -104,6 +104,7 @@ public class RaftGroupService {
         }
 
         NodeImpl node = NodeImpl.getNodeImple();
+        node.init();
 
         //start rpc service
         ServerConfig serverConfig = new ServerConfig()
@@ -126,7 +127,7 @@ public class RaftGroupService {
                 .setDaemon(nodeOptions.isDaemon());
 
         ProviderConfig<TaskServicesImpl> providerConfigForTasks = new ProviderConfig<TaskServicesImpl>()
-                .setInterfaceId(TaskServicesImpl.class.getName())
+                .setInterfaceId(TaskRpcServices.class.getName())
                 .setRef(new TaskServicesImpl())
                 .setServer(serverConfigForTasks);
         providerConfigForTasks.export();
@@ -141,7 +142,8 @@ public class RaftGroupService {
                     .setProtocol(nodeOptions.getRpcProtocol())
                     .setDirectUrl(nodeOptions.getRpcProtocol()
                             + "://" + p.getEndpoint().getIp() + ":" + p.getEndpoint().getPort())
-                    .setInterfaceId(RpcServices.class.getName());
+                    .setInterfaceId(RpcServices.class.getName())
+                    .setSerialization(nodeOptions.getSerialization());
             node.getRpcServicesMap().put(p.getEndpoint(), consumerConfig.refer());
 
 
@@ -153,26 +155,28 @@ public class RaftGroupService {
                         .setProtocol(nodeOptions.getRpcProtocol())
                         .setDirectUrl(nodeOptions.getRpcProtocol()
                                 + "://" + p.getEndpoint().getIp() + ":" + p.getTaskPort())
-                        .setInterfaceId(RpcServices.class.getName());
+                        .setInterfaceId(TaskRpcServices.class.getName());
             } else {
                 consumerConfigForTasks = new ConsumerConfig<TaskServicesImpl>()
                         .setProtocol(nodeOptions.getRpcProtocol())
                         .setDirectUrl(nodeOptions.getRpcProtocol()
                                 + "://" + p.getEndpoint().getIp() + ":" + p.getTaskPort())
-                        .setInterfaceId(RpcServices.class.getName());
+                        .setInterfaceId(TaskRpcServices.class.getName());
             }
             node.getTaskRpcServices().put(p.getEndpoint(), consumerConfigForTasks.refer());
         }
 
 
         //heartbeat
-        Heartbeat heartbeat = new Heartbeat(1, 2
+        Heartbeat heartbeat = new Heartbeat(1, 20
                 , 0, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>()
                 , new HeartbeatThreadFactory(), new ThreadPoolExecutor.DiscardPolicy());
 
+
+        Thread.sleep(5000);
         heartbeat.setChecker(
                 new TimeOutChecker( Utils.monotonicMs(), new ElectionTimeOutClosure()));
-
+        LOG.info("Add initial Heartbeat");
 
         return node;
     }

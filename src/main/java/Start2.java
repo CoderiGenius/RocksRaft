@@ -1,9 +1,6 @@
-import core.NodeImpl;
 import core.RaftGroupService;
-import entity.Endpoint;
 import entity.Node;
 import entity.NodeOptions;
-import entity.PeerId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,8 +8,8 @@ import org.slf4j.LoggerFactory;
  * Created by 周思成 on  2020/3/13 23:32
  */
 
-public class Start {
-    private static final Logger LOG     = LoggerFactory.getLogger(Start.class);
+public class Start2 {
+    private static final Logger LOG     = LoggerFactory.getLogger(Start2.class);
     public static void main(String[] args) throws InterruptedException {
 
 
@@ -56,9 +53,9 @@ public class Start {
         };
         Thread thread3 = new Thread(runnable3);
 
-        thread.start();
-//        thread2.start();
-//        thread3.start();
+        //thread.start();
+        thread2.start();
+        //thread3.start();
 
         Thread.currentThread().join();
 

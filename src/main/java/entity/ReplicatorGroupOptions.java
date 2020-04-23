@@ -9,12 +9,22 @@ import utils.TimerManager;
 
 public class ReplicatorGroupOptions {
 
-    private int               heartbeatTimeoutMs;
-    private int               electionTimeoutMs;
+    private long               heartbeatTimeoutMs;
+    private long               electionTimeoutMs;
     private LogManager        logManager;
-    private BallotBox         ballotBox;
+    //private BallotBox         ballotBox;
     private NodeImpl node;
 
+    public ReplicatorGroupOptions(long heartbeatTimeoutMs,
+                                  long electionTimeoutMs,
+                                  LogManager logManager
+                                  ) {
+        this.heartbeatTimeoutMs = heartbeatTimeoutMs;
+        this.electionTimeoutMs = electionTimeoutMs;
+        this.logManager = logManager;
+
+
+    }
 
     private TimerManager timerManager;
 
@@ -28,17 +38,11 @@ public class ReplicatorGroupOptions {
 
 
 
-    public int getHeartbeatTimeoutMs() {
-        return this.heartbeatTimeoutMs;
-    }
 
     public void setHeartbeatTimeoutMs(int heartbeatTimeoutMs) {
         this.heartbeatTimeoutMs = heartbeatTimeoutMs;
     }
 
-    public int getElectionTimeoutMs() {
-        return this.electionTimeoutMs;
-    }
 
     public void setElectionTimeoutMs(int electionTimeoutMs) {
         this.electionTimeoutMs = electionTimeoutMs;
@@ -52,12 +56,12 @@ public class ReplicatorGroupOptions {
         this.logManager = logManager;
     }
 
-    public BallotBox getBallotBox() {
-        return this.ballotBox;
+    public long getHeartbeatTimeoutMs() {
+        return heartbeatTimeoutMs;
     }
 
-    public void setBallotBox(BallotBox ballotBox) {
-        this.ballotBox = ballotBox;
+    public long getElectionTimeoutMs() {
+        return electionTimeoutMs;
     }
 
     public NodeImpl getNode() {
@@ -69,15 +73,22 @@ public class ReplicatorGroupOptions {
     }
 
 
+    public void setHeartbeatTimeoutMs(long heartbeatTimeoutMs) {
+        this.heartbeatTimeoutMs = heartbeatTimeoutMs;
+    }
+
     @Override
     public String toString() {
         return "ReplicatorGroupOptions{" +
                 "heartbeatTimeoutMs=" + heartbeatTimeoutMs +
                 ", electionTimeoutMs=" + electionTimeoutMs +
                 ", logManager=" + logManager +
-                ", ballotBox=" + ballotBox +
                 ", node=" + node +
                 ", timerManager=" + timerManager +
                 '}';
+    }
+
+    public void setElectionTimeoutMs(long electionTimeoutMs) {
+        this.electionTimeoutMs = electionTimeoutMs;
     }
 }

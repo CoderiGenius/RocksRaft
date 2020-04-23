@@ -86,9 +86,11 @@ public class LogStorageImpl implements LogStorage {
         ArrayList<RocksBatch> rocksBatches = new ArrayList<>(entriesCount);
         for (LogEntry l :
                 entries) {
-            rocksBatches.add(new RocksBatch())
+           // rocksBatches.add(new RocksBatch())
+            LOG.info(l+"");
         }
-        if(rocksDBStorage.putBatch())
+//        if(rocksDBStorage.putBatch())
+        return 0;
     }
 
     @Override

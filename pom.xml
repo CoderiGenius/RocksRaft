@@ -53,20 +53,44 @@
             <artifactId>sofa-rpc-all</artifactId>
             <version>5.6.5</version>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>1.7.25</version>
-            <scope>compile</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.slf4j</groupId>-->
+<!--            <artifactId>slf4j-simple</artifactId>-->
+<!--            <version>1.7.25</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
 
     <!--log-->
     <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-    <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-core</artifactId>
-        <version>2.13.1</version>
-    </dependency>
+<!--    <dependency>-->
+<!--        <groupId>org.apache.logging.log4j</groupId>-->
+<!--        <artifactId>log4j-core</artifactId>-->
+<!--        <version>2.13.1</version>-->
+<!--    </dependency>-->
+        <!--日志 start-->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.25</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.25</version>
+<!--            <scope>test</scope>-->
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.slf4j</groupId>-->
+<!--            <artifactId>slf4j-simple</artifactId>-->
+<!--            <version>1.7.25</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
+        <!--日志end-->
         <!--time-->
         <dependency>
             <groupId>joda-time</groupId>
@@ -79,6 +103,13 @@
             <version>3.4.0</version>
         </dependency>
 
+        <!-- junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.7</version>
+            <scope>test</scope>
+        </dependency>
 
         <!-- bolt -->
         <dependency>

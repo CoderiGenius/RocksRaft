@@ -4,15 +4,19 @@ import com.alipay.remoting.NamedThreadFactory;
 import com.lmax.disruptor.*;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
+import config.LogManagerOptions;
+import config.LogStorageOptions;
 import config.ReplicatorOptions;
 import entity.*;
 import exceptions.LogExceptionHandler;
+import exceptions.LogStorageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rpc.EnumOutter;
 import rpc.RpcRequests;
 import rpc.RpcServices;
 import rpc.TaskRpcServices;
+import storage.LogStorage;
 import utils.DisruptorBuilder;
 import utils.Requires;
 import utils.TimerManager;
@@ -44,7 +48,7 @@ public class NodeImpl implements Node {
      * candidate 正式选举
      * preCandidate 预选举
      */
-    public enum NodeState {leader, follwoer, candidate, preCandidate, NODE_STATE}
+    public enum NodeState {leader, follower, candidate, preCandidate, NODE_STATE}
 
     private static final NodeImpl NODE_IMPLE = new NodeImpl();
 
@@ -72,10 +76,13 @@ public class NodeImpl implements Node {
     private AtomicLong lastLogIndex = new AtomicLong(0);
     private AtomicLong stableLogIndex = new AtomicLong(0);
     private PeerId currentLeaderId;
+    private volatile long lastVoteTerm;
+    private volatile long lastPreVoteTerm;
     private Endpoint currentEndPoint;
     private String currentId;
     private Options options;
     private FSMCaller fsmCaller;
+    private LogStorage logStorage;
 
     // Max retry times when applying tasks.
     private static final int                                               MAX_APPLY_RETRY_TIMES    = 3;
@@ -107,7 +114,7 @@ public class NodeImpl implements Node {
     /**
      * 上一次收到心跳包的时间
      */
-    private AtomicLong lastReceiveHeartbeatTime;
+    private AtomicLong lastReceiveHeartbeatTime = new AtomicLong(0);
 
 
     public void setLeaderId(NodeId leaderId) {
@@ -154,17 +161,18 @@ public class NodeImpl implements Node {
                 ReplicatorOptions replicatorOptions = new ReplicatorOptions(
                         getOptions().getCurrentNodeOptions().getMaxHeartBeatTime(),
                         getOptions().getCurrentNodeOptions().getElectionTimeOut()
-                        , getNodeId().getGroupId(), getNodeId().getPeerId(), getLogManager()
+                        , getNodeId().getGroupId(), peerId, getLogManager()
                        , getNodeImple(), getLastLogTerm().longValue()
                         , new TimerManager(), ReplicatorType.Follower);
                 Replicator replicator = new Replicator(replicatorOptions, rpcServicesMap.get(peerId.getEndpoint()));
 
                 replicatorMap.put(peerId.getEndpoint(), replicator);
-
+                getReplicatorGroup().addReplicator(peerId,replicator);
             }
+            LOG.info("Start to work as leader at term: {}",getLastLogTerm());
 
         } catch (Exception e) {
-
+            LOG.error("startToPerformAsLeader error {}",e.getMessage());
         } finally {
             NodeImpl.getNodeImple().getWriteLock().unlock();
         }
@@ -175,6 +183,8 @@ public class NodeImpl implements Node {
     public boolean init() {
         Requires.requireNonNull(getOptions(), "Null node options");
 
+        //set node state
+        setNodeState(NodeState.follower);
         this.applyDisruptor = DisruptorBuilder.<LogEntryEvent>newInstance()
                 .setRingBufferSize(NodeOptions.getNodeOptions().getDisruptorBufferSize())
                 .setEventFactory(new LogEntryEventFactory())
@@ -187,7 +197,12 @@ public class NodeImpl implements Node {
                 new LogExceptionHandler<Object>(getClass().getSimpleName()));
         this.applyQueue = this.applyDisruptor.start();
         this.replicatorGroup = new ReplicatorGroupImpl();
-
+        ReplicatorGroupOptions replicatorGroupOptions =
+                new ReplicatorGroupOptions(
+                        getOptions().getCurrentNodeOptions().getMaxHeartBeatTime(),
+                        getOptions().getCurrentNodeOptions().getElectionTimeOut(),
+                        getLogManager());
+        this.replicatorGroup.init(getNodeId(),replicatorGroupOptions);
 
         this.followerDisruptor = DisruptorBuilder.<LogEntryEvent>newInstance()
                 .setRingBufferSize(NodeOptions.getNodeOptions().getDisruptorBufferSize())
@@ -214,7 +229,37 @@ public class NodeImpl implements Node {
                 getNodeId().getPeerId().getEndpoint().getIp(),
                 getNodeId().getPeerId().getEndpoint().getPort());
         LOG.info("Node init finished successfully");
+
+        //LogStorage
+        LogStorageOptions logStorageOptions =
+                new LogStorageOptions(getOptions().getCurrentNodeOptions().getLogStoragePath(),
+                        getOptions().getCurrentNodeOptions().getLogStorageName());
+        this.logStorage = new LogStorageImpl(logStorageOptions);
+        //logStorage.init();
+
+        //Logmanager
+        LogManagerOptions logManagerOptions = new LogManagerOptions(logStorage,getOptions());
+        this.logManager = new LogManagerImpl();
+        try {
+            logManager.init(logManagerOptions);
+        } catch (LogStorageException e) {
+            e.printStackTrace();
+            LOG.error("Raft logManager error {}",e.getErrMsg());
+        }
+
         return true;
+    }
+
+    public boolean checkIfLeaderChanged(String peeId) {
+        if (getLeaderId() == null) {
+            return true;
+        }
+
+        if(getLeaderId().getPeerId().getId().equals(peeId)) {
+            return false;
+        }else {
+            return true;
+        }
     }
 
     @Override
@@ -229,37 +274,36 @@ public class NodeImpl implements Node {
      */
     @Override
     public boolean transformLeader(RpcRequests.AppendEntriesRequest request) {
-        LOG.info("Start to transform Leader from {} to {}"
-                , getLeaderId().getPeerId().getPeerName(), request.getPeerId());
-        getWriteLock().lock();
         try {
-            //check if leader is valid
-            if (!checkNodeAheadOfCurrent(request.getTerm(), request.getCommittedIndex())) {
-                LOG.error("leader is invalid with term {} index {} while current term {} index {}"
-                        , request.getTerm(), request.getCommittedIndex()
-                        , getLastLogTerm(), getLastLogIndex());
-                return false;
-            }
 
-            setNodeState(NodeState.follwoer);
-            PeerId peerId = new PeerId(request.getPeerId(), request.getPeerId()
-                    , request.getAddress(), request.getPort(), request.getTaskPort());
-            NodeId nodeId = new NodeId(request.getGroupId(), peerId);
-            setLeaderId(nodeId);
-//            ReplicatorGroupOptions replicatorGroupOptions = new ReplicatorGroupOptions();
-//            //there is no need to set properties for replicatorGroupOptions as we get options directly
-//            this.replicatorGroup.init(getNodeId(),replicatorGroupOptions);
-//            for (PeerId p:peerIdList
-//                 ) {
-//                ReplicatorOptions replicatorOptions =new ReplicatorOptions(p);
-//                Replicator replicator = new Replicator(replicatorOptions,getRpcServicesMap().get(p.getEndpoint()));
-//                getReplicatorGroup().addReplicator(p,replicator);
-//            }
-            return true;
+
+            LOG.info("Start to transform Leader from {} to {}"
+                    , getLeaderId(), request.getPeerId());
+            getWriteLock().lock();
+            try {
+                //check if leader is valid
+                if (!checkNodeAheadOfCurrent(request.getTerm(), request.getCommittedIndex())) {
+                    LOG.error("leader is invalid with term {} index {} while current term {} index {}"
+                            , request.getTerm(), request.getCommittedIndex()
+                            , getLastLogTerm(), getLastLogIndex());
+                    return false;
+                }
+
+                setNodeState(NodeState.follower);
+                PeerId peerId = new PeerId(request.getPeerId(), request.getPeerId()
+                        , request.getAddress(), request.getPort(), request.getTaskPort());
+                NodeId nodeId = new NodeId(request.getGroupId(), peerId);
+                setLeaderId(nodeId);
+                LOG.debug("current state:{}",getNodeState());
+                return true;
+            } catch (Exception e) {
+                LOG.error("Transform leader error:{}", e.getMessage());
+            } finally {
+                getWriteLock().unlock();
+            }
+            return false;
         } catch (Exception e) {
-            LOG.error("Transform leader error:{}", e.getMessage());
-        } finally {
-            getWriteLock().unlock();
+            e.printStackTrace();
         }
         return false;
     }
@@ -269,7 +313,7 @@ public class NodeImpl implements Node {
         Requires.requireNonNull(task, "Null task");
         LOG.info("Applying task");
 
-        if (NodeState.follwoer.equals(getNodeState())) {
+        if (NodeState.follower.equals(getNodeState())) {
             LOG.info("Current node is in follower state, leader is {} forwarding request……"
                     , getLeaderId().getPeerId().getPeerName());
             getTaskRpcServices().get(getLeaderId().getPeerId().getEndpoint()).apply(task);
@@ -483,6 +527,30 @@ public class NodeImpl implements Node {
         }
     }
 
+   public void handleAppendEntriesResponse(final RpcRequests.AppendEntriesResponse appendEntriesResponse) {
+       //set timeout
+       TimeOutChecker timeOutChecker =
+               new TimeOutChecker(Utils.monotonicMs(),null);
+       NodeImpl.getNodeImple().getHeartbeat().setChecker(timeOutChecker);
+       NodeImpl.getNodeImple().setLastReceiveHeartbeatTime(Utils.monotonicMs());
+
+
+       if (!appendEntriesResponse.getSuccess()) {
+           //log rePlay at the given position
+           NodeImpl.getNodeImple()
+                   .getReplicatorGroup().sendInflight(
+                   appendEntriesResponse.getAddress(),
+                   appendEntriesResponse.getPort(),
+                   appendEntriesResponse.getLastLogIndex());
+       }else {
+           NodeImpl.getNodeImple()
+                   .getBallotBoxConcurrentHashMap()
+                   .get(appendEntriesResponse.getLastLogIndex())
+                   .grant(appendEntriesResponse.getPeerId());
+       }
+       return;
+    }
+
     class FollowerStableClosure extends LogManager.StableClosure {
 
         public FollowerStableClosure(final List<LogEntry> entries) {
@@ -508,10 +576,26 @@ public class NodeImpl implements Node {
         }
     }
 
+    public long getLastVoteTerm() {
+        return lastVoteTerm;
+    }
+
+    public void setLastVoteTerm(long lastVoteTerm) {
+        this.lastVoteTerm = lastVoteTerm;
+    }
+
+    public long getLastPreVoteTerm() {
+        return lastPreVoteTerm;
+    }
+
+    public void setLastPreVoteTerm(long lastPreVoteTerm) {
+        this.lastPreVoteTerm = lastPreVoteTerm;
+    }
+
     public boolean checkIfCurrentNodeCanVoteOthers() {
         //only leader, follower, preCandidate, NODE_STATE can vote others
         if (NodeState.preCandidate.equals(getNodeState())
-                || NodeState.follwoer.equals(getNodeState())
+                || NodeState.follower.equals(getNodeState())
                 || NodeState.leader.equals(getNodeState())
                 || NodeState.NODE_STATE.equals(getNodeState())) {
             return true;
@@ -521,7 +605,7 @@ public class NodeImpl implements Node {
     }
 
     private boolean checkNodeAheadOfCurrent(long term, long index) {
-        return term > getLastLogTerm().longValue() && index > getLastLogIndex().longValue();
+        return term >= getLastLogTerm().longValue() && index >= getLastLogIndex().longValue();
     }
 
     public Lock getWriteLock() {
@@ -531,7 +615,7 @@ public class NodeImpl implements Node {
     public boolean checkIfCurrentNodeCanStartPreVote() {
         //only  follower,None_state  can start PreVote
         if (NodeState.NODE_STATE.equals(getNodeState())
-                || NodeState.follwoer.equals(getNodeState())
+                || NodeState.follower.equals(getNodeState())
         ) {
             return true;
         } else {

@@ -1,29 +1,29 @@
 currentNodeOptions:
-  electionTimeOut: 1000
+  electionTimeOut: 3000
   maxHeartBeatTime: 1000
   rpcProtocol: bolt
   serialization: protobuf
-  port: 12200
-  taskPort: 12201
+  port: 12230
+  taskPort: 12231
   taskExecuteMethod: callback
   daemon: false
   groupId: raft
   address: localhost
-  name: raft-1
-  peerId: raft-1
+  name: raft-3
+  peerId: raft-3
   logStoragePath: E:\Rocksdb
-  logStorageName: log
+  logStorageName: log3
 otherNodes:
   - {peerId: raft-2,
        name: raft-2,
        address: localhost,
        taskPort: 12221,
        port: 12220}
-  - {peerId: raft-3,
-       name: raft-3,
+  - {peerId: raft-1,
+       name: raft-1,
        address: localhost,
-     taskPort: 12231,
-       port: 12230}
+     taskPort: 12201,
+       port: 12200}
 #  - {peerId: raft-4,
 #       name: raft-4,
 #       address: 192.168.1.10,

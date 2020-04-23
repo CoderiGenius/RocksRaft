@@ -16,7 +16,7 @@ public interface ElectionService {
      * 检查是否启动election
      */
     public static void checkToStartPreVote(){
-
+        System.out.println("checkToStartPreVote:"+NodeImpl.getNodeImple().checkNodeStatePreCandidate());
         if ( ! NodeImpl.getNodeImple().checkNodeStatePreCandidate()) {
             ElectionService electionService = new ElectionServiceImpl();
             electionService.startPrevote();

@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import rpc.RpcRequests;
 import rpc.RpcServices;
 import rpc.RpcServicesImpl;
-import rpc.closure.PreVoteClosure;
+
 import utils.Utils;
 
 import java.util.Map;
@@ -30,21 +30,26 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
     @Override
     public void startPrevote() {
 
-        //Change the current node status to prevote
-        NodeImpl.getNodeImple().setNodeState(NodeImpl.NodeState.candidate);
 
         if ( ! NodeImpl.getNodeImple().checkIfCurrentNodeCanStartPreVote()) {
             LOG.info("Can not start preVote " +
                     "as the current state {} is invalid",NodeImpl.getNodeImple().getNodeState());
             return;
         }
+
         NodeImpl.getNodeImple().getWriteLock().lock();
+
         try {
+
             NodeImpl.getNodeImple().setNodeState(NodeImpl.NodeState.preCandidate);
-            NodeImpl.getNodeImple().setPreVoteBallot(new Ballot(NodeImpl.getNodeImple().getPeerIdList()));
+            NodeImpl.getNodeImple().setPreVoteBallot(
+                    new Ballot(NodeImpl.getNodeImple().getPeerIdList()));
+            //elect self
+            NodeImpl.getNodeImple().getPreVoteBallot().grant(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
             RpcRequests.RequestPreVoteRequest.Builder builder = RpcRequests.RequestPreVoteRequest.newBuilder();
             builder.setLastLogTerm(NodeImpl.getNodeImple().getLastLogTerm().longValue());
             builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
+            builder.setPeerName(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
             builder.setLastLogTerm(NodeImpl.getNodeImple().getLastLogTerm().longValue());
             builder.setLastLogIndex(NodeImpl.getNodeImple().getLastLogIndex().longValue());
             RpcRequests.RequestPreVoteRequest requestPreVoteRequest = builder.build();
@@ -55,8 +60,10 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
             ) {
                 long t = Utils.monotonicMs();
 
-                LOG.info("Send preVote request to {} at {} on term {}", p, t, NodeImpl.getNodeImple().getLastLogTerm());
                 map.get(p.getEndpoint()).handlePreVoteRequest(requestPreVoteRequest);
+                LOG.info("Send preVote request from {} to {} at {} on term {}"
+                        ,requestPreVoteRequest.getPeerId(), p, t, NodeImpl.getNodeImple().getLastLogTerm());
+                //LOG.info("Send preVote request check {}",requestPreVoteRequest.getSerializedSize());
             }
         } catch (Exception e) {
             LOG.info("PreVote erro {}",e.getMessage());
@@ -72,6 +79,7 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
         NodeImpl.getNodeImple().getWriteLock().lock();
         try {
             NodeImpl.getNodeImple().setNodeState(NodeImpl.NodeState.candidate);
+            NodeImpl.getNodeImple().setElectionBallot(new Ballot(NodeImpl.getNodeImple().getPeerIdList()));
 
             //do increment to term
 
@@ -81,6 +89,10 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
             builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().incrementAndGet());
             builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getPeerName());
             builder.setServerId(NodeImpl.getNodeImple().getNodeId().getGroupId());
+            //elect self
+            NodeImpl.getNodeImple().getElectionBallot().grant(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
+            NodeImpl.getNodeImple().setLastVoteTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
+
             //send vote request to all peers in the list
             Map<Endpoint, RpcServices> map = NodeImpl.getNodeImple().getRpcServicesMap();
             RpcRequests.RequestVoteRequest requestVoteRequest = builder.build();
@@ -112,6 +124,7 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
 
         } catch (Exception e) {
             LOG.error("Handle preVote response error: {}",e.getMessage());
+            //e.printStackTrace();
         }finally {
             NodeImpl.getNodeImple().getWriteLock().unlock();
         }
@@ -124,10 +137,12 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
         NodeImpl.getNodeImple().getWriteLock().lock();
         try {
             if (requestVoteResponse.getGranted()) {
-                NodeImpl.getNodeImple().getPreVoteBallot().grant(requestVoteResponse.getPeerName());
+                NodeImpl.getNodeImple().getElectionBallot().grant(requestVoteResponse.getPeerName());
             }
-            if (NodeImpl.getNodeImple().getPreVoteBallot().isGranted()) {
-                LOG.info("Current node start to perform as leader");
+            if (NodeImpl.getNodeImple().getElectionBallot().isGranted()) {
+                LOG.info("Current node start to perform as leader,grant peer list {}"
+                        ,NodeImpl.getNodeImple().getElectionBallot().getGranted()
+                );
                 NodeImpl.getNodeImple().startToPerformAsLeader();
             }
 
