@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.Utils;
 
+import java.util.UUID;
+
 /**
  * Created by 周思成 on  2020/3/24 13:10
  */
@@ -80,8 +82,8 @@ public class RpcServicesImpl implements RpcServices {
 
     @Override
     public RpcRequests.RequestVoteResponse handleVoteRequest(RpcRequests.RequestVoteRequest requestVoteRequest) {
-        LOG.info("Recevice VoteRequest from {}", requestVoteRequest.getPeerId());
-        long candidateTerm = requestVoteRequest.getLastLogTerm();
+        LOG.info("Receive VoteRequest from {}", requestVoteRequest.getPeerId());
+        long candidateTerm = requestVoteRequest.getTerm();
         long selfTerm = NodeImpl.getNodeImple().getLastLogTerm().get();
         long candidateLogIndex = requestVoteRequest.getLastLogIndex();
         long selfLogIndex = NodeImpl.getNodeImple().getLastLogIndex().longValue();
@@ -138,13 +140,9 @@ public class RpcServicesImpl implements RpcServices {
         RpcRequests.AppendEntriesResponse.Builder builder = RpcRequests.AppendEntriesResponse.newBuilder();
 
         try {
+            NodeImpl.getNodeImple().getScheduledFuture().cancel(false);
+            NodeImpl.getNodeImple().setChecker();
 
-
-            //set timeout
-            TimeOutChecker timeOutChecker =
-                    new TimeOutChecker(Utils.monotonicMs(), null);
-            NodeImpl.getNodeImple().getHeartbeat().setChecker(timeOutChecker);
-            NodeImpl.getNodeImple().setLastReceiveHeartbeatTime(Utils.monotonicMs());
 
             //find out if it is null request and check if it is new leader request
             if (appendEntriesRequest.getData().isEmpty() &&

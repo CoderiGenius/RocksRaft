@@ -104,7 +104,7 @@ public class RaftGroupService {
         }
 
         NodeImpl node = NodeImpl.getNodeImple();
-        node.init();
+
 
         //start rpc service
         ServerConfig serverConfig = new ServerConfig()
@@ -168,16 +168,16 @@ public class RaftGroupService {
 
 
         //heartbeat
-        Heartbeat heartbeat = new Heartbeat(1, 20
-                , 0, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>()
-                , new HeartbeatThreadFactory(), new ThreadPoolExecutor.DiscardPolicy());
-
-
-        Thread.sleep(5000);
-        heartbeat.setChecker(
-                new TimeOutChecker( Utils.monotonicMs(), new ElectionTimeOutClosure()));
-        LOG.info("Add initial Heartbeat");
-
+//        Heartbeat heartbeat = new Heartbeat(1, 20
+//                , 0, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>()
+//                , new HeartbeatThreadFactory(), new ThreadPoolExecutor.DiscardPolicy());
+//
+//
+//        Thread.sleep(5000);
+//        heartbeat.setChecker(
+//                new TimeOutChecker( Utils.monotonicMs(), new ElectionTimeOutClosure(),""));
+//        LOG.info("Add initial Heartbeat");
+        node.init();
         return node;
     }
 

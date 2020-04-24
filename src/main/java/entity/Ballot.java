@@ -1,5 +1,6 @@
 package entity;
 
+import core.NodeImpl;
 import service.ElectionService;
 
 import java.util.ArrayList;
@@ -34,6 +35,9 @@ public class Ballot {
         for (PeerId p:
              peerList) {
             if(p.getId().equals(peerId)){
+                grantedPeerList.add(peerId);
+                return true;
+            } else if (NodeImpl.getNodeImple().getNodeId().getPeerId().getId().equals(peerId)) {
                 grantedPeerList.add(peerId);
                 return true;
             }

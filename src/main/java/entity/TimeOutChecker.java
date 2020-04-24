@@ -33,10 +33,12 @@ public class TimeOutChecker implements Runnable{
      * time out closure
      */
     private TimeOutClosure timeOutClosure;
+    private String uuid;
 
-    public TimeOutChecker(long enterQueueTime,TimeOutClosure timeOutClosure) {
+    public TimeOutChecker(long enterQueueTime,TimeOutClosure timeOutClosure,String uuid) {
         this.timeOutClosure = timeOutClosure;
         this.enterQueueTime = enterQueueTime;
+        this.uuid = uuid;
         //this.timeOut = timeOut;
     }
 
@@ -50,7 +52,7 @@ public class TimeOutChecker implements Runnable{
             try {
                 //检查开始运行的时间，是否已经超过timeout时间，如果超出则直接检查
                 long currentTimeDifferent = Utils.monotonicMs() - enterQueueTime;
-                LOG.debug("currentTimeDifferent:{}",currentTimeDifferent);
+                LOG.debug("currentTimeDifferent:{} uuid {}",currentTimeDifferent,uuid);
                 if (currentTimeDifferent > timeOut) {
                     //在队列里等待的时候就已经超时了，检查node是否超时
                     LOG.error("Timeout during waiting int queue");
@@ -59,8 +61,10 @@ public class TimeOutChecker implements Runnable{
                     //还未超时，等待检测超时
                     try {
                         LOG.debug("thread wait:"+(currentTimeDifferent));
-                        NodeImpl.getNodeImple().getHeartbeat().getChecker().wait(timeOut - currentTimeDifferent);
-
+                        long u = Utils.monotonicMs();
+                        NodeImpl.getNodeImple().getHeartbeat()
+                                .getChecker().wait(timeOut - currentTimeDifferent);
+                        System.out.println("wait:"+(Utils.monotonicMs()-u));
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -69,7 +73,7 @@ public class TimeOutChecker implements Runnable{
 
                 }
             } catch (Exception e) {
-                LOG.error("Heartbeat timeout checker exception: " + e.getMessage());
+                LOG.error("Heartbeat timeout checker exception: " + e.getMessage() + "uuid:"+uuid);
                 e.printStackTrace();
             } finally {
                 NodeImpl.getNodeImple().getHeartbeat().getLock().unlock();
@@ -94,7 +98,9 @@ public class TimeOutChecker implements Runnable{
 
     private void checkTimeOut() {
         LOG.debug("CkeckTimeout:{}",Utils.monotonicMs()
-                - NodeImpl.getNodeImple().getLastReceiveHeartbeatTime().longValue());
+                - NodeImpl.getNodeImple().getLastReceiveHeartbeatTime().longValue()+ "uuid:"+uuid);
+        LOG.debug("enterQueueTime:{}",enterQueueTime
+                - Utils.monotonicMs()+ "uuid:"+uuid);
         if ((Utils.monotonicMs()
                 - NodeImpl.getNodeImple().getLastReceiveHeartbeatTime().longValue()) >= timeOut) {
             //超时，执行超时逻辑
@@ -103,11 +109,8 @@ public class TimeOutChecker implements Runnable{
             ElectionService.checkToStartPreVote();
         }else {
             //未超时
-            //set timeout
-            TimeOutChecker timeOutChecker =
-                    new TimeOutChecker(Utils.monotonicMs(), null);
-            NodeImpl.getNodeImple().getHeartbeat().setChecker(timeOutChecker);
-            NodeImpl.getNodeImple().setLastReceiveHeartbeatTime(Utils.monotonicMs());
+
+
         }
     }
 }

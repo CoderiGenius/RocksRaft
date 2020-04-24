@@ -46,9 +46,10 @@ public class Heartbeat {
         lock.lock();
         try {
             LOG.debug("Set checker");
-            NodeImpl.getNodeImple().setLastReceiveHeartbeatTime(checker.getEnterQueueTime());
+
             this.checker = checker;
             this.getThreadPoolExecutor().execute(checker);
+            LOG.debug("heartbeat thread pool {}",threadPoolExecutor.getActiveCount());
         } catch (Exception e) {
             e.printStackTrace();
             LOG.error("set Heartbeat checker error:"+e.getMessage());

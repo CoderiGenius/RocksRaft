@@ -12,10 +12,8 @@ import exceptions.LogExceptionHandler;
 import exceptions.LogStorageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rpc.EnumOutter;
-import rpc.RpcRequests;
-import rpc.RpcServices;
-import rpc.TaskRpcServices;
+import rpc.*;
+import service.ElectionService;
 import storage.LogStorage;
 import utils.DisruptorBuilder;
 import utils.Requires;
@@ -28,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -83,6 +83,8 @@ public class NodeImpl implements Node {
     private Options options;
     private FSMCaller fsmCaller;
     private LogStorage logStorage;
+    private TimerManager followerTimerManager;
+    private EnClosureRpcRequest enClosureRpcRequest;
 
     // Max retry times when applying tasks.
     private static final int                                               MAX_APPLY_RETRY_TIMES    = 3;
@@ -109,6 +111,8 @@ public class NodeImpl implements Node {
     private Heartbeat heartbeat;
     private LogManager logManager;
     private StateMachine stateMachine;
+    private ScheduledFuture scheduledFuture;
+    private Runnable runnable;
 
 
     /**
@@ -157,17 +161,20 @@ public class NodeImpl implements Node {
             NodeImpl.getNodeImple().setNodeState(NodeState.leader);
             //generate replicator for all followers
             for (PeerId peerId : getPeerIdList()) {
+                if ( ! peerId.equals(getNodeId().getPeerId())) {
 
-                ReplicatorOptions replicatorOptions = new ReplicatorOptions(
-                        getOptions().getCurrentNodeOptions().getMaxHeartBeatTime(),
-                        getOptions().getCurrentNodeOptions().getElectionTimeOut()
-                        , getNodeId().getGroupId(), peerId, getLogManager()
-                       , getNodeImple(), getLastLogTerm().longValue()
-                        , new TimerManager(), ReplicatorType.Follower);
-                Replicator replicator = new Replicator(replicatorOptions, rpcServicesMap.get(peerId.getEndpoint()));
+                    ReplicatorOptions replicatorOptions = new ReplicatorOptions(
+                            getOptions().getCurrentNodeOptions().getMaxHeartBeatTime(),
+                            getOptions().getCurrentNodeOptions().getElectionTimeOut()
+                            , getNodeId().getGroupId(), peerId, getLogManager()
+                            , getNodeImple(), getLastLogTerm().longValue()
+                            , new TimerManager(), ReplicatorType.Follower);
+                    Replicator replicator = new Replicator(replicatorOptions,
+                            rpcServicesMap.get(peerId.getEndpoint()));
 
-                replicatorMap.put(peerId.getEndpoint(), replicator);
-                getReplicatorGroup().addReplicator(peerId,replicator);
+                    replicatorMap.put(peerId.getEndpoint(), replicator);
+                    getReplicatorGroup().addReplicator(peerId, replicator);
+                }
             }
             LOG.info("Start to work as leader at term: {}",getLastLogTerm());
 
@@ -246,7 +253,21 @@ public class NodeImpl implements Node {
             e.printStackTrace();
             LOG.error("Raft logManager error {}",e.getErrMsg());
         }
+        setFollowerTimerManager(new TimerManager());
+        getFollowerTimerManager().init(100);
+        this.runnable = () -> {
+            if ((Utils.monotonicMs()
+                    - NodeImpl.getNodeImple().getLastReceiveHeartbeatTime().longValue())
+                    >= getOptions().getCurrentNodeOptions().getMaxHeartBeatTime()) {
+                //超时，执行超时逻辑
+                LOG.error("Node timeout, start to launch TimeOut actions");
+                //timeOutClosure.run(null);
+                ElectionService.checkToStartPreVote();
+            }
+        };
+        setChecker();
 
+        setEnClosureRpcRequest(new EnClosureRpcRequest(getRpcServicesMap()));
         return true;
     }
 
@@ -260,6 +281,14 @@ public class NodeImpl implements Node {
         }else {
             return true;
         }
+    }
+
+    public boolean setChecker() {
+        LOG.debug("SetChecker");
+        setScheduledFuture(getFollowerTimerManager().schedule(getRunnable(),
+                getOptions().getCurrentNodeOptions().getMaxHeartBeatTime(),
+                TimeUnit.MILLISECONDS));
+        return true;
     }
 
     @Override
@@ -294,7 +323,8 @@ public class NodeImpl implements Node {
                         , request.getAddress(), request.getPort(), request.getTaskPort());
                 NodeId nodeId = new NodeId(request.getGroupId(), peerId);
                 setLeaderId(nodeId);
-                LOG.debug("current state:{}",getNodeState());
+                getLastLogTerm().set(request.getTerm());
+                LOG.debug("transform success current state:{} current term {}",getNodeState(),getLastLogTerm());
                 return true;
             } catch (Exception e) {
                 LOG.error("Transform leader error:{}", e.getMessage());
@@ -527,13 +557,12 @@ public class NodeImpl implements Node {
         }
     }
 
-   public void handleAppendEntriesResponse(final RpcRequests.AppendEntriesResponse appendEntriesResponse) {
-       //set timeout
-       TimeOutChecker timeOutChecker =
-               new TimeOutChecker(Utils.monotonicMs(),null);
-       NodeImpl.getNodeImple().getHeartbeat().setChecker(timeOutChecker);
-       NodeImpl.getNodeImple().setLastReceiveHeartbeatTime(Utils.monotonicMs());
 
+
+    public void handleAppendEntriesResponse(final RpcRequests.AppendEntriesResponse appendEntriesResponse) {
+
+        LOG.debug("handleAppendEntriesResponse from {} at term {}",
+                appendEntriesResponse.getPeerId(),appendEntriesResponse.getTerm());
 
        if (!appendEntriesResponse.getSuccess()) {
            //log rePlay at the given position
@@ -567,8 +596,11 @@ public class NodeImpl implements Node {
                 builder.setFirstIndex(status.getFirstIndex());
                 builder.setLastIndex(status.getLastIndex());
                 builder.setPeerId(getCurrentId());
-            getRpcServicesMap().get(getLeaderId().getPeerId().getEndpoint())
-                    .handleFollowerStableRequest(builder.build());
+//            getRpcServicesMap().get(getLeaderId().getPeerId().getEndpoint())
+//                    .handleFollowerStableRequest(builder.build());
+                NodeImpl.getNodeImple().getEnClosureRpcRequest()
+                        .handleFollowerStableRequest(builder.build(),
+                                getLeaderId().getPeerId().getEndpoint(),true);
             } else {
                 LOG.error("Node {} append [{}, {}] failed, status={}.", getNodeId(), this.firstLogIndex,
                         this.firstLogIndex + this.nEntries - 1, status);
@@ -635,6 +667,14 @@ public class NodeImpl implements Node {
         return logManager;
     }
 
+    public ScheduledFuture getScheduledFuture() {
+        return scheduledFuture;
+    }
+
+    public void setScheduledFuture(ScheduledFuture scheduledFuture) {
+        this.scheduledFuture = scheduledFuture;
+    }
+
     public void setLogManager(LogManager logManager) {
         this.logManager = logManager;
     }
@@ -652,7 +692,13 @@ public class NodeImpl implements Node {
     public Endpoint getCurrentEndPoint() {
         return currentEndPoint;
     }
+    public TimerManager getFollowerTimerManager() {
+        return followerTimerManager;
+    }
 
+    public void setFollowerTimerManager(TimerManager followerTimerManager) {
+        this.followerTimerManager = followerTimerManager;
+    }
     public void setCurrentEndPoint(Endpoint currentEndPoint) {
         this.currentEndPoint = currentEndPoint;
     }
@@ -840,6 +886,14 @@ public class NodeImpl implements Node {
         return currentId;
     }
 
+    public Runnable getRunnable() {
+        return runnable;
+    }
+
+    public void setRunnable(Runnable runnable) {
+        this.runnable = runnable;
+    }
+
     public void setCurrentId(String currentId) {
         this.currentId = currentId;
     }
@@ -862,5 +916,13 @@ public class NodeImpl implements Node {
 
     public void setStateMachine(StateMachine stateMachine) {
         this.stateMachine = stateMachine;
+    }
+
+    public EnClosureRpcRequest getEnClosureRpcRequest() {
+        return enClosureRpcRequest;
+    }
+
+    public void setEnClosureRpcRequest(EnClosureRpcRequest enClosureRpcRequest) {
+        this.enClosureRpcRequest = enClosureRpcRequest;
     }
 }

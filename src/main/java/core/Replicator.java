@@ -168,8 +168,9 @@ public class Replicator {
                        = RpcRequests.AppendEntriesRequests.newBuilder();
                 builder.addAllArgs(getAppendEntriesRequestList());
                 RpcRequests.AppendEntriesRequests appendEntriesRequests = builder.build();
-                rpcServices.handleApendEntriesRequests(appendEntriesRequests);
-
+                //rpcServices.handleApendEntriesRequests(appendEntriesRequests);
+                NodeImpl.getNodeImple().getEnClosureRpcRequest()
+                        .handleApendEntriesRequests(appendEntriesRequests,rpcServices,true);
                 Inflight inflight = new Inflight(
                         getAppendEntriesRequestList().get(0).getCommittedIndex(),
                         getAppendEntriesRequestList().size(),
@@ -267,8 +268,9 @@ public class Replicator {
 
             }
             RpcRequests.AppendEntriesRequest request = builder.build();
-            getRpcServices().handleApendEntriesRequest(request);
-
+//            getRpcServices().handleApendEntriesRequest(request);
+            NodeImpl.getNodeImple().getEnClosureRpcRequest()
+                    .handleApendEntriesRequest(request,getRpcServices(),true);
             LOG.debug("Send emptyAppendEntries request to {} at index {} on term {}"
                     , getOptions().getPeerId().getPeerName()
                     , NodeImpl.getNodeImple().getLastLogIndex(),
@@ -278,7 +280,7 @@ public class Replicator {
             //Runnable runnable = () -> System.out.println(123123123);
 
             ScheduledFuture scheduledFuture = getTimerManager().schedule(runnable,
-                    getOptions().getDynamicHeartBeatTimeoutMs(), TimeUnit.MILLISECONDS);
+                    getOptions().getDynamicHeartBeatTimeoutMs()/2, TimeUnit.MILLISECONDS);
 
             LOG.debug("Set future task for heartbeat delay time:{} isdone:{}",
                     getOptions().getDynamicHeartBeatTimeoutMs(),

@@ -45,6 +45,7 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
             NodeImpl.getNodeImple().setPreVoteBallot(
                     new Ballot(NodeImpl.getNodeImple().getPeerIdList()));
             //elect self
+            //LOG.debug("Elect self {}",NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
             NodeImpl.getNodeImple().getPreVoteBallot().grant(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
             RpcRequests.RequestPreVoteRequest.Builder builder = RpcRequests.RequestPreVoteRequest.newBuilder();
             builder.setLastLogTerm(NodeImpl.getNodeImple().getLastLogTerm().longValue());
@@ -60,7 +61,9 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
             ) {
                 long t = Utils.monotonicMs();
 
-                map.get(p.getEndpoint()).handlePreVoteRequest(requestPreVoteRequest);
+                //map.get(p.getEndpoint()).handlePreVoteRequest(requestPreVoteRequest);
+                NodeImpl.getNodeImple().getEnClosureRpcRequest()
+                        .handlePreVoteRequest(requestPreVoteRequest,p.getEndpoint(),true);
                 LOG.info("Send preVote request from {} to {} at {} on term {}"
                         ,requestPreVoteRequest.getPeerId(), p, t, NodeImpl.getNodeImple().getLastLogTerm());
                 //LOG.info("Send preVote request check {}",requestPreVoteRequest.getSerializedSize());
@@ -100,7 +103,9 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
             ) {
                 long t = Utils.monotonicMs();
                 LOG.info("Send vote request to {} at {} on newTerm {}", p, t, NodeImpl.getNodeImple().getLastLogTerm());
-                map.get(p.getEndpoint()).handleVoteRequest(requestVoteRequest);
+                //map.get(p.getEndpoint()).handleVoteRequest(requestVoteRequest);
+                NodeImpl.getNodeImple().getEnClosureRpcRequest()
+                        .handleVoteRequest(requestVoteRequest,p.getEndpoint(),true);
             }
         } catch (Exception e) {
             LOG.error("Election failed {}",e.getMessage());
@@ -118,6 +123,7 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
             if (requestPreVoteResponse.getGranted()) {
                 NodeImpl.getNodeImple().getPreVoteBallot().grant(requestPreVoteResponse.getPeerName());
             }
+            LOG.debug("Prevote grant list {}",NodeImpl.getNodeImple().getPreVoteBallot().getGranted());
             if (NodeImpl.getNodeImple().getPreVoteBallot().isGranted()) {
                 ElectionService.checkToStartElection();
             }

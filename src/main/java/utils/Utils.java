@@ -114,6 +114,10 @@ public class Utils {
         return CLOSURE_EXECUTOR.submit(runnable);
     }
 
+    public static Future<?> runInThreadPool(final Runnable runnable) {
+        return CLOSURE_EXECUTOR.submit(runnable);
+    }
+
     public static Future<?> runClosureInThread(final Closure done, final Status status) {
         if (done == null) {
             return null;
