@@ -104,6 +104,7 @@ public class ReplicatorGroupImpl implements ReplicatorGroup {
                 replicatorList) {
             sendHeartbeat(r);
         }
+
     }
 
     @Override
@@ -147,7 +148,17 @@ public class ReplicatorGroupImpl implements ReplicatorGroup {
 
     @Override
     public boolean stopAll() {
-        return false;
+
+        for (Replicator r :
+                replicatorList) {
+            r.stop();
+        }
+        replicatorList.clear();
+        replicatorMap.clear();
+        LOG.info("replicatorGroup cleared");
+
+        return true;
+
     }
 
     @Override

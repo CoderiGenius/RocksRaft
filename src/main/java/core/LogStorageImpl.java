@@ -90,7 +90,7 @@ public class LogStorageImpl implements LogStorage {
             LOG.info(l+"");
         }
 //        if(rocksDBStorage.putBatch())
-        return 0;
+        return 1;
     }
 
     @Override

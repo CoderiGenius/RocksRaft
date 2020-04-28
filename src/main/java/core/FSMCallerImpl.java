@@ -74,7 +74,11 @@ public class FSMCallerImpl implements FSMCaller {
 
         @Override
         public void onEvent(final ApplyTask event, final long sequence, final boolean endOfBatch) throws Exception {
-            this.maxCommittedIndex = runApplyTask(event, this.maxCommittedIndex, endOfBatch);
+            try {
+                this.maxCommittedIndex = runApplyTask(event, this.maxCommittedIndex, endOfBatch);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -104,25 +108,31 @@ public class FSMCallerImpl implements FSMCaller {
 
     private long runApplyTask(ApplyTask task, long maxCommittedIndex, boolean endOfBatch) {
 
-        if (task.type == TaskType.COMMITTED) {
-            if (task.committedIndex > maxCommittedIndex) {
-                maxCommittedIndex = task.committedIndex;
+        try {
+
+
+            if (task.type == TaskType.COMMITTED) {
+                if (task.committedIndex > maxCommittedIndex) {
+                    maxCommittedIndex = task.committedIndex;
+                }
+            } else {
+                if (maxCommittedIndex >= 0) {
+                    this.currTask = TaskType.COMMITTED;
+                    doCommitted(maxCommittedIndex);
+                    maxCommittedIndex = -1L; // reset maxCommittedIndex
+                }
             }
-        }else {
-            if (maxCommittedIndex >= 0) {
+
+
+            if (endOfBatch && maxCommittedIndex >= 0) {
                 this.currTask = TaskType.COMMITTED;
                 doCommitted(maxCommittedIndex);
                 maxCommittedIndex = -1L; // reset maxCommittedIndex
             }
+            this.currTask = TaskType.IDLE;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-
-        if (endOfBatch && maxCommittedIndex >= 0) {
-            this.currTask = TaskType.COMMITTED;
-            doCommitted(maxCommittedIndex);
-            maxCommittedIndex = -1L; // reset maxCommittedIndex
-        }
-        this.currTask = TaskType.IDLE;
         return maxCommittedIndex;
     }
 

@@ -247,7 +247,7 @@ public class Replicator {
 
 
     public void sendEmptyEntries(final boolean isHeartBeat) {
-        LOG.debug("Start to send enpty entries heartbeat:{}",isHeartBeat);
+        LOG.debug("Start to send empty entries heartbeat:{}",isHeartBeat);
         try {
 
 
@@ -265,10 +265,12 @@ public class Replicator {
                 builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
                 builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
                 builder.setGroupId(NodeImpl.getNodeImple().getNodeId().getGroupId());
-
+                builder.setPort(NodeImpl.getNodeImple().getOptions().getCurrentNodeOptions().getPort());
+                builder.setAddress(NodeImpl.getNodeImple().getOptions().getCurrentNodeOptions().getAddress());
+                builder.setTaskPort(NodeImpl.getNodeImple().getOptions().getCurrentNodeOptions().getTaskPort());
             }
             RpcRequests.AppendEntriesRequest request = builder.build();
-//            getRpcServices().handleApendEntriesRequest(request);
+
             NodeImpl.getNodeImple().getEnClosureRpcRequest()
                     .handleApendEntriesRequest(request,getRpcServices(),true);
             LOG.debug("Send emptyAppendEntries request to {} at index {} on term {}"
@@ -324,6 +326,10 @@ public class Replicator {
 
         sendEmptyEntries(false);
 
+    }
+
+    public void stop() {
+        getTimerManager().shutdown();
     }
 
 

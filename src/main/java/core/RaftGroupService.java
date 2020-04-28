@@ -12,7 +12,11 @@ import org.slf4j.LoggerFactory;
 import rpc.*;
 import utils.Utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.nio.ByteBuffer;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -135,8 +139,8 @@ public class RaftGroupService {
         //save the proxy class in to list
         for (PeerId p : node.getPeerIdList()
         ) {
-            ConsumerConfig<RpcServicesImpl> consumerConfig;
-            consumerConfig = new ConsumerConfig<RpcServicesImpl>()
+            ConsumerConfig<RpcServices> consumerConfig;
+            consumerConfig = new ConsumerConfig<RpcServices>()
                     .setInvokeType("callback")
                     .setOnReturn(new RpcResponseClosure())
                     .setProtocol(nodeOptions.getRpcProtocol())
@@ -147,9 +151,9 @@ public class RaftGroupService {
             node.getRpcServicesMap().put(p.getEndpoint(), consumerConfig.refer());
 
 
-            ConsumerConfig<TaskServicesImpl> consumerConfigForTasks;
+            ConsumerConfig<TaskRpcServices> consumerConfigForTasks;
             if ("callback".equals(nodeOptions.getTaskExecuteMethod())) {
-                consumerConfigForTasks = new ConsumerConfig<TaskServicesImpl>()
+                consumerConfigForTasks = new ConsumerConfig<TaskRpcServices>()
                         .setInvokeType(nodeOptions.getTaskExecuteMethod())
                         .setOnReturn(new TaskRpcResponseClosure())
                         .setProtocol(nodeOptions.getRpcProtocol())
@@ -157,13 +161,36 @@ public class RaftGroupService {
                                 + "://" + p.getEndpoint().getIp() + ":" + p.getTaskPort())
                         .setInterfaceId(TaskRpcServices.class.getName());
             } else {
-                consumerConfigForTasks = new ConsumerConfig<TaskServicesImpl>()
+                consumerConfigForTasks = new ConsumerConfig<TaskRpcServices>()
                         .setProtocol(nodeOptions.getRpcProtocol())
                         .setDirectUrl(nodeOptions.getRpcProtocol()
                                 + "://" + p.getEndpoint().getIp() + ":" + p.getTaskPort())
                         .setInterfaceId(TaskRpcServices.class.getName());
             }
-            node.getTaskRpcServices().put(p.getEndpoint(), consumerConfigForTasks.refer());
+            TaskRpcServices taskRpcServices = consumerConfigForTasks.refer();
+            node.getTaskRpcServices().put(p.getEndpoint(), taskRpcServices);
+
+            LOG.debug("Add task rpc service {},{}",p.getEndpoint(),node.getTaskRpcServices().get(p.getEndpoint()));
+            LOG.debug("Add task rpc service {}",consumerConfigForTasks.getDirectUrl());
+
+//            Runnable runnable = () -> {
+//                Task task = new Task();
+//                KVEntity kvEntity = new KVEntity("1","123");
+//
+//
+//                try {
+//
+//                    Thread.sleep(2000);
+//                    ByteBuffer byteBuffer = ByteBuffer.wrap("123".getBytes());
+//
+//                    task.setData(byteBuffer);
+//                    taskRpcServices.apply(task);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            };
+//            Thread thread = new Thread(runnable);
+//            thread.start();
         }
 
 

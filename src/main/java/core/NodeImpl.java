@@ -79,7 +79,7 @@ public class NodeImpl implements Node {
     private volatile long lastVoteTerm;
     private volatile long lastPreVoteTerm;
     private Endpoint currentEndPoint;
-    private String currentId;
+
     private Options options;
     private FSMCaller fsmCaller;
     private LogStorage logStorage;
@@ -159,6 +159,7 @@ public class NodeImpl implements Node {
         NodeImpl.getNodeImple().getWriteLock().lock();
         try {
             NodeImpl.getNodeImple().setNodeState(NodeState.leader);
+            setLeaderId(getNodeId());
             //generate replicator for all followers
             for (PeerId peerId : getPeerIdList()) {
                 if ( ! peerId.equals(getNodeId().getPeerId())) {
@@ -223,20 +224,6 @@ public class NodeImpl implements Node {
                 new LogExceptionHandler<Object>(getClass().getSimpleName()));
         this.followerQueue = this.followerDisruptor.start();
 
-        //init FSMCaller
-        this.fsmCaller = new FSMCallerImpl();
-        final FSMCallerOptions fsmCallerOptions = new FSMCallerOptions();
-        //fsmCallerOptions.setAfterShutdown(status -> afterShutdown());
-        fsmCallerOptions.setLogManager(this.logManager);
-        fsmCallerOptions.setFsm(getStateMachine());
-        fsmCallerOptions.setNode(NodeImpl.getNodeImple());
-        fsmCallerOptions.setBootstrapId(new LogId(0, 0));
-        getFsmCaller().init(fsmCallerOptions);
-        currentEndPoint = new Endpoint(
-                getNodeId().getPeerId().getEndpoint().getIp(),
-                getNodeId().getPeerId().getEndpoint().getPort());
-        LOG.info("Node init finished successfully");
-
         //LogStorage
         LogStorageOptions logStorageOptions =
                 new LogStorageOptions(getOptions().getCurrentNodeOptions().getLogStoragePath(),
@@ -265,6 +252,22 @@ public class NodeImpl implements Node {
                 ElectionService.checkToStartPreVote();
             }
         };
+
+        //init FSMCaller
+        this.fsmCaller = new FSMCallerImpl();
+        final FSMCallerOptions fsmCallerOptions = new FSMCallerOptions();
+        //fsmCallerOptions.setAfterShutdown(status -> afterShutdown());
+        fsmCallerOptions.setLogManager(this.logManager);
+        fsmCallerOptions.setFsm(getStateMachine());
+        fsmCallerOptions.setNode(NodeImpl.getNodeImple());
+        fsmCallerOptions.setBootstrapId(new LogId(0, 0));
+        getFsmCaller().init(fsmCallerOptions);
+        currentEndPoint = new Endpoint(
+                getNodeId().getPeerId().getEndpoint().getIp(),
+                getNodeId().getPeerId().getEndpoint().getPort());
+        LOG.info("Node init finished successfully");
+
+
         setChecker();
 
         setEnClosureRpcRequest(new EnClosureRpcRequest(getRpcServicesMap()));
@@ -318,13 +321,17 @@ public class NodeImpl implements Node {
                     return false;
                 }
 
+                if (NodeState.leader.equals(getNodeState())) {
+                    getReplicatorGroup().stopAll();
+                }
                 setNodeState(NodeState.follower);
                 PeerId peerId = new PeerId(request.getPeerId(), request.getPeerId()
                         , request.getAddress(), request.getPort(), request.getTaskPort());
                 NodeId nodeId = new NodeId(request.getGroupId(), peerId);
                 setLeaderId(nodeId);
                 getLastLogTerm().set(request.getTerm());
-                LOG.debug("transform success current state:{} current term {}",getNodeState(),getLastLogTerm());
+                LOG.debug("transform success current state:{} current term:{} leader: {}",
+                        getNodeState(),getLastLogTerm(),nodeId.toString());
                 return true;
             } catch (Exception e) {
                 LOG.error("Transform leader error:{}", e.getMessage());
@@ -344,44 +351,48 @@ public class NodeImpl implements Node {
         LOG.info("Applying task");
 
         if (NodeState.follower.equals(getNodeState())) {
-            LOG.info("Current node is in follower state, leader is {} forwarding request……"
+            LOG.info("Current node is in follower state, leader is {}, forwarding request……"
                     , getLeaderId().getPeerId().getPeerName());
+            LOG.debug("Leader endpoint:{}",getLeaderId().getPeerId().getEndpoint());
             getTaskRpcServices().get(getLeaderId().getPeerId().getEndpoint()).apply(task);
+            return;
         } else if (!NodeState.leader.equals(getNodeState())) {
             LOG.info("Current node is not in valid state {}", getNodeState());
             Utils.runClosureInThread(task.getDone()
                     , new Status(RaftError.ENODESHUTDOWN, "Current node is not in valid state {}", getNodeState()));
+            return;
+        }
+        try {
+        LogEntry logEntry = new LogEntry();
+        logEntry.setData(task.getData());
+        logEntry.setLeaderId(getLeaderId().getPeerId());
+        int retryTimes = 0;
 
-            LogEntry logEntry = new LogEntry();
-            logEntry.setData(task.getData());
-            logEntry.setLeaderId(getLeaderId().getPeerId());
-            int retryTimes = 0;
-            try {
-                final EventTranslator<LogEntryEvent> translator = (event, sequence) -> {
-                    event.reset();
-                    event.entry = logEntry;
-                    event.done = task.getDone();
-                    event.expectedTerm = task.getExpectedTerm();
-                };
+            final EventTranslator<LogEntryEvent> translator = (event, sequence) -> {
+                event.reset();
+                event.entry = logEntry;
+                event.done = task.getDone();
+                event.expectedTerm = task.getExpectedTerm();
+            };
 
-                while (true) {
-                    if (this.applyQueue.tryPublishEvent(translator)) {
-                        break;
-                    } else {
-                        retryTimes++;
-                        if (retryTimes > MAX_APPLY_RETRY_TIMES) {
-                            Utils.runClosureInThread(task.getDone(),
-                                    new Status(RaftError.EBUSY, "Node is busy, has too many tasks."));
-                            LOG.warn("Node {} applyQueue is overload.", getNodeId());
-                            return;
-                        }
-                        Thread.yield();
+            while (true) {
+                if (this.applyQueue.tryPublishEvent(translator)) {
+                    break;
+                } else {
+                    retryTimes++;
+                    if (retryTimes > MAX_APPLY_RETRY_TIMES) {
+                        Utils.runClosureInThread(task.getDone(),
+                                new Status(RaftError.EBUSY, "Node is busy, has too many tasks."));
+                        LOG.warn("Node {} applyQueue is overload.", getNodeId());
+                        return;
                     }
+                    Thread.yield();
                 }
-            } catch (Exception e) {
-                Utils.runClosureInThread(task.getDone(), new Status(RaftError.EPERM, "Node is down."));
-                LOG.info("New Translator error {}", e.getMessage());
             }
+        } catch (Exception e) {
+            Utils.runClosureInThread(task.getDone(), new Status(RaftError.EPERM, "Node is down."));
+          e.printStackTrace();
+            LOG.info("New Translator error {}", e.getMessage());
         }
     }
 
@@ -393,6 +404,7 @@ public class NodeImpl implements Node {
 
         @Override
         public void onEvent(LogEntryEvent logEntryEvent, long l, boolean endOfBatch) throws Exception {
+            LOG.debug("Receive logEvent");
             this.tasks.add(logEntryEvent);
             if (this.tasks.size() >= NodeOptions.getNodeOptions().getApplyBatch() || endOfBatch) {
                 executeApplyingTasks(this.tasks);
@@ -420,7 +432,7 @@ public class NodeImpl implements Node {
         this.writeLock.lock();
         try {
             final int size = tasks.size();
-            if (getNodeState().equals(NodeState.leader)) {
+            if (!getNodeState().equals(NodeState.leader)) {
                 final Status st = new Status();
                 st.setError(RaftError.EPERM, "Is not leader.");
                 LOG.warn("Not in leader state while executeApplyingTasks");
@@ -545,6 +557,7 @@ public class NodeImpl implements Node {
 
         @Override
         public void run(final Status status) {
+            LOG.debug("LeaderStableClosure:{}",status);
             if (status.isOk()) {
                 BallotBox ballotBox = new BallotBox(getPeerIdList(),
                         this.firstLogIndex, this.nEntries);
@@ -595,7 +608,7 @@ public class NodeImpl implements Node {
                         = RpcRequests.NotifyFollowerStableRequest.newBuilder();
                 builder.setFirstIndex(status.getFirstIndex());
                 builder.setLastIndex(status.getLastIndex());
-                builder.setPeerId(getCurrentId());
+                builder.setPeerId(getNodeId().getPeerId().getId());
 //            getRpcServicesMap().get(getLeaderId().getPeerId().getEndpoint())
 //                    .handleFollowerStableRequest(builder.build());
                 NodeImpl.getNodeImple().getEnClosureRpcRequest()
@@ -882,9 +895,7 @@ public class NodeImpl implements Node {
         this.currentLeaderId = currentLeaderId;
     }
 
-    public String getCurrentId() {
-        return currentId;
-    }
+
 
     public Runnable getRunnable() {
         return runnable;
@@ -894,9 +905,7 @@ public class NodeImpl implements Node {
         this.runnable = runnable;
     }
 
-    public void setCurrentId(String currentId) {
-        this.currentId = currentId;
-    }
+
 
     public void setFollowerQueue(RingBuffer<LogEntryEvent> followerQueue) {
         this.followerQueue = followerQueue;

@@ -26,4 +26,6 @@ public interface RpcServices {
     public RpcRequests.NotifyFollowerStableResponse handleFollowerStableRequest(
             RpcRequests.NotifyFollowerStableRequest notifyFollowerStableRequest
     );
+
+
 }

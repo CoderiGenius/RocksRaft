@@ -407,6 +407,7 @@ public class LogManagerImpl implements LogManager {
                 }
                 toAppend.clear();
             } catch (Exception e) {
+                e.printStackTrace();
                 LOG.error("appendToStorage error {}",e.getMessage());
             }
         }

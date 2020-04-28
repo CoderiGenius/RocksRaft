@@ -80,6 +80,7 @@ public class IteratorImpl {
                                 this.committedIndex);
                     }
                 } catch (final Exception e) {
+                    e.printStackTrace();
                     //getOrCreateError().setType(EnumOutter.ErrorType.ERROR_TYPE_LOG);
                     getOrCreateError().getStatus().setError(RaftError.EINVAL, e.getMessage());
                 }
