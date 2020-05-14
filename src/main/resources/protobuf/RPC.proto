@@ -87,6 +87,7 @@ message AppendEntriesRequest {
      string address = 10;
      int32 port = 11;
      int32 taskPort = 12;
+     int64 readIndex=13;
 };
 
 message AppendEntriesResponse {
@@ -96,6 +97,7 @@ message AppendEntriesResponse {
      string address = 4;
      int32 port = 5;
      string peerId = 6;
+     int64 readIndex = 7;
 };
 message ReadIndexRequest {
      string group_id = 1;
@@ -121,4 +123,20 @@ message NotifyFollowerStableResponse{
      int64 firstIndex = 2;
      int64 term = 3;
      bool success = 4;
+}
+
+
+message NotifyFollowerToApplyRequest{
+     int64 lastIndex = 1;
+     int64 firstIndex = 2;
+     string peerId = 3;
+     bool success = 4;
+
+}
+message NotifyFollowerToApplyResponse{
+     int64 lastIndex = 1;
+     int64 firstIndex = 2;
+     int64 term = 3;
+     string followerId = 4;
+     bool success = 5;
 }

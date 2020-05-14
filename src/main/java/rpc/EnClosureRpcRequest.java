@@ -103,19 +103,19 @@ public class EnClosureRpcRequest  {
     }
 
 
-    public Future<RpcResult>  handleApendEntriesRequest(RpcRequests.AppendEntriesRequest appendEntriesRequest,
+    public Future<RpcResult>  handleAppendEntriesRequest(RpcRequests.AppendEntriesRequest appendEntriesRequest,
                                                         RpcServices rpcServices,boolean retry) {
         Callable<RpcResult> callable = () -> {
             RpcResult rpcResult = RpcResult.newRpcResult();
             try {
-                rpcServices.handleApendEntriesRequest(appendEntriesRequest);
+                rpcServices.handleAppendEntriesRequest(appendEntriesRequest);
                 rpcResult.setSuccess(true);
                 return rpcResult;
             } catch (Exception e) {
                 rpcResult.setSuccess(false);
                 LOG.error("handleApendEntriesRequest EnClosure error {}",e.getMessage());
                 if (retry) {
-                    getTimerManager().schedule(()->handleApendEntriesRequest(appendEntriesRequest,
+                    getTimerManager().schedule(()->handleAppendEntriesRequest(appendEntriesRequest,
                             rpcServices,false),
                             retryDelay,TimeUnit.MILLISECONDS);
                 }
@@ -126,7 +126,7 @@ public class EnClosureRpcRequest  {
     }
 
 
-    public Future<RpcResult>  handleApendEntriesRequests(RpcRequests.AppendEntriesRequests appendEntriesRequests,
+    public Future<RpcResult>  handleAppendEntriesRequests(RpcRequests.AppendEntriesRequests appendEntriesRequests,
                                                          RpcServices rpcServices,boolean retry) {
         Callable<RpcResult> callable = () -> {
             RpcResult rpcResult = RpcResult.newRpcResult();
@@ -138,7 +138,7 @@ public class EnClosureRpcRequest  {
                 rpcResult.setSuccess(false);
                 LOG.error("handleApendEntriesRequests EnClosure error {}",e.getMessage());
                 if (retry) {
-                    getTimerManager().schedule(()->handleApendEntriesRequests(appendEntriesRequests,
+                    getTimerManager().schedule(()->handleAppendEntriesRequests(appendEntriesRequests,
                             rpcServices,false),
                             retryDelay,TimeUnit.MILLISECONDS);
                 }
@@ -150,7 +150,8 @@ public class EnClosureRpcRequest  {
 
 
     public Future<RpcResult>  handleFollowerStableRequest(
-            RpcRequests.NotifyFollowerStableRequest notifyFollowerStableRequest,Endpoint endpoint,boolean retry) {
+            RpcRequests.NotifyFollowerStableRequest notifyFollowerStableRequest
+            ,Endpoint endpoint,boolean retry) {
         Callable<RpcResult> callable = () -> {
             RpcResult rpcResult = RpcResult.newRpcResult();
             try {
@@ -171,6 +172,52 @@ public class EnClosureRpcRequest  {
         return getReplicatorGroupThreadPool().submit(callable);
     }
 
+    public Future<RpcResult> handleToApplyRequest(
+            RpcRequests.NotifyFollowerToApplyRequest request,
+     RpcServices rpcServices,boolean retry) {
+        Callable<RpcResult> callable = () -> {
+            RpcResult rpcResult = RpcResult.newRpcResult();
+            try {
+                rpcServices.handleToApplyRequest(request);
+                rpcResult.setSuccess(true);
+                return rpcResult;
+            } catch (Exception e) {
+                rpcResult.setSuccess(false);
+                LOG.error("handleToApplyRequest EnClosure error {}",e.getMessage());
+                if (retry) {
+                    getTimerManager().schedule(()->handleToApplyRequest(request,
+                            rpcServices,false),
+                            retryDelay,TimeUnit.MILLISECONDS);
+                }
+            }
+            return rpcResult;
+        };
+        return getReplicatorGroupThreadPool().submit(callable);
+    }
+
+
+    public Future<RpcResult> handleReadHeartbeatrequest(
+            RpcRequests.AppendEntriesRequest request,
+            RpcServices rpcServices,boolean retry) {
+        Callable<RpcResult> callable = () -> {
+            RpcResult rpcResult = RpcResult.newRpcResult();
+            try {
+                rpcServices.handleReadHeartbeatrequest(request);
+                rpcResult.setSuccess(true);
+                return rpcResult;
+            } catch (Exception e) {
+                rpcResult.setSuccess(false);
+                LOG.error("handleReadHeartbeatrequest EnClosure error {}",e.getMessage());
+                if (retry) {
+                    getTimerManager().schedule(()->handleReadHeartbeatrequest(request,
+                            rpcServices,false),
+                            retryDelay,TimeUnit.MILLISECONDS);
+                }
+            }
+            return rpcResult;
+        };
+        return getReplicatorGroupThreadPool().submit(callable);
+    }
 
     public Map<Endpoint, RpcServices> getRpcServicesMap() {
         return rpcServicesMap;

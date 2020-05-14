@@ -43,7 +43,24 @@ public class Client {
         ByteBuffer byteBuffer =  ByteBuffer.wrap("123".getBytes());
 
         task.setData(byteBuffer);
-       taskServices.apply(task);
+
+        int i = 100;
+        while (i>=100) {
+            taskServices.apply(task);
+            taskServices.apply(task);
+            taskServices.apply(task);
+            taskServices.apply(task);
+            taskServices.apply(task);
+            taskServices.apply(task);
+            taskServices.apply(task);
+            taskServices.apply(task);
+            taskServices.apply(task);
+            taskServices.apply(task);
+            taskServices.apply(task);
+            taskServices.apply(task);
+            i--;
+        }
+
        Thread.currentThread().join();
     }
 }

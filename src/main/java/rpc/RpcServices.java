@@ -1,6 +1,7 @@
 package rpc;
 
 
+import entity.RpcResult;
 
 /**
  * Created by 周思成 on  2020/3/24 12:47
@@ -17,7 +18,7 @@ public interface RpcServices {
     public RpcRequests.RequestVoteResponse handleVoteRequest(
             RpcRequests.RequestVoteRequest requestVoteRequest);
 
-    public RpcRequests.AppendEntriesResponse handleApendEntriesRequest(
+    public RpcRequests.AppendEntriesResponse handleAppendEntriesRequest(
             RpcRequests.AppendEntriesRequest appendEntriesRequest);
 
     public RpcRequests.AppendEntriesResponses handleApendEntriesRequests(
@@ -27,5 +28,12 @@ public interface RpcServices {
             RpcRequests.NotifyFollowerStableRequest notifyFollowerStableRequest
     );
 
+    public RpcRequests.NotifyFollowerToApplyResponse handleToApplyRequest(
+            RpcRequests.NotifyFollowerToApplyRequest request
+    );
+
+    public RpcRequests.AppendEntriesResponse handleReadHeartbeatrequest(
+            RpcRequests.AppendEntriesRequest appendEntriesRequest
+    );
 
 }

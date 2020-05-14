@@ -136,13 +136,23 @@ public class RpcServicesImpl implements RpcServices {
     }
 
     @Override
-    public RpcRequests.AppendEntriesResponse handleApendEntriesRequest(RpcRequests.AppendEntriesRequest appendEntriesRequest) {
+    public RpcRequests.AppendEntriesResponse handleAppendEntriesRequest(RpcRequests.AppendEntriesRequest appendEntriesRequest) {
         RpcRequests.AppendEntriesResponse.Builder builder = RpcRequests.AppendEntriesResponse.newBuilder();
 
+        //if it is a readIndex heartbeat the add the readIndex to the response for identify
+        builder.setReadIndex(appendEntriesRequest.getReadIndex());
         try {
             NodeImpl.getNodeImple().getScheduledFuture().cancel(false);
             NodeImpl.getNodeImple().setChecker();
 
+            //check term
+            if (appendEntriesRequest.getTerm() != NodeImpl.getNodeImple().getLastLogTerm().get()) {
+                return appendEntriesBuilder(builder, false).build();
+            }
+            //check index
+            if (appendEntriesRequest.getCommittedIndex() <= NodeImpl.getNodeImple().getLastLogIndex().get()) {
+                return appendEntriesBuilder(builder, false).build();
+            }
 
             //find out if it is null request and check if it is new leader request
             if (appendEntriesRequest.getData().isEmpty() &&
@@ -156,14 +166,7 @@ public class RpcServicesImpl implements RpcServices {
             } else {
                 //normal appendEntry request
 
-                //check term
-                if (appendEntriesRequest.getTerm() != NodeImpl.getNodeImple().getLastLogTerm().get()) {
-                    return appendEntriesBuilder(builder, false).build();
-                }
-                //check index
-                if (appendEntriesRequest.getCommittedIndex() <= NodeImpl.getNodeImple().getLastLogIndex().get()) {
-                    return appendEntriesBuilder(builder, false).build();
-                }
+
                 //check leader illegal
 
                 //storage to log
@@ -200,7 +203,7 @@ return null;
         boolean ret = true;
         for (int i = 0; i <appendEntriesRequests.getArgsCount() ; i++) {
             RpcRequests.AppendEntriesResponse appendEntriesResponse
-                    = handleApendEntriesRequest(appendEntriesRequests.getArgs(i));
+                    = handleAppendEntriesRequest(appendEntriesRequests.getArgs(i));
            builder.addArgs(appendEntriesResponse);
            if(!appendEntriesResponse.getSuccess()){
                ret = false;
@@ -238,6 +241,40 @@ return null;
             builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
             return builder.build();
         }
+    }
+
+
+    /**
+     * invoke by leader, towards the follower ,notify them to apply the given index into statemachine
+     * @param request
+     * @return
+     */
+    @Override
+    public RpcRequests.NotifyFollowerToApplyResponse handleToApplyRequest(RpcRequests.NotifyFollowerToApplyRequest request) {
+
+        RpcRequests.NotifyFollowerToApplyResponse.Builder builder
+                = RpcRequests.NotifyFollowerToApplyResponse.newBuilder();
+        if(NodeImpl.getNodeImple().getStableLogIndex().get()>request.getLastIndex()){
+            builder.setSuccess(true);
+        }else {
+            boolean b = NodeImpl.getNodeImple().getFsmCaller().onCommitted(request.getLastIndex());
+            if (b) {
+                builder.setSuccess(true);
+                builder.setLastIndex(request.getLastIndex());
+            }else {
+                builder.setSuccess(false);
+                builder.setLastIndex(request.getLastIndex());
+            }
+        }
+
+
+        builder.setFollowerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
+        return builder.build();
+    }
+
+    @Override
+    public RpcRequests.AppendEntriesResponse handleReadHeartbeatrequest(RpcRequests.AppendEntriesRequest appendEntriesRequest) {
+       return handleAppendEntriesRequest(appendEntriesRequest);
     }
 
 

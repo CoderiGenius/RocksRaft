@@ -165,6 +165,11 @@ public class FSMCallerImpl implements FSMCaller {
 
     @Override
     public boolean onCommitted(long committedIndex) {
+        NodeImpl.getNodeImple().setLastLogIndex(committedIndex);
+//        NodeImpl.getNodeImple().setStableLogIndex(committedIndex);
+        NodeImpl.getNodeImple().getReplicatorGroup().sendApplyNotifyToAll(committedIndex);
+        BallotBoxForApply ballotBoxForApply = new BallotBoxForApply(committedIndex);
+        NodeImpl.getNodeImple().getBallotBoxForApplyConcurrentHashMap().put(committedIndex,ballotBoxForApply);
         return enqueueTask((task, sequence) -> {
             task.type = TaskType.COMMITTED;
             task.committedIndex = committedIndex;

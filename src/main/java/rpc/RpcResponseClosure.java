@@ -47,6 +47,20 @@ public class RpcResponseClosure<T>  implements SofaResponseCallback<T> {
                         (RpcRequests.RequestVoteResponse)o;
                 electionService.handleElectionResponse(requestVoteResponse);
                 return;
+            case "handleToApplyRequest":
+                RpcRequests.NotifyFollowerToApplyResponse response =
+                        (RpcRequests.NotifyFollowerToApplyResponse)o;
+                if(!response.getSuccess()){
+                    LOG.error("***critical error*** FSM StateMachine apply failed follower{}"
+                            ,response.getFollowerId());
+                }else {
+                    NodeImpl.getNodeImple().handleToApplyResponse(response);
+                }
+            case "handleReadHeartbeatrequest":
+                RpcRequests.AppendEntriesResponse appendEntriesResponse1
+                        = (RpcRequests.AppendEntriesResponse)o;
+                NodeImpl.getNodeImple().handleReadHeartbeatRequestClosure(appendEntriesResponse1);
+
             default:
                 LOG.error("RPC Request closure mismatched, requestBase: {} requestString: {}"
                         ,requestBase.toString(),s);

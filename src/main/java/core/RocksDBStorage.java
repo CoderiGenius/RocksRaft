@@ -1,6 +1,9 @@
 package core;
 
 import entity.RocksBatch;
+import org.rocksdb.RocksDBException;
+import org.rocksdb.WriteBatch;
+import org.rocksdb.WriteOptions;
 
 import java.util.ArrayList;
 
@@ -15,4 +18,6 @@ public interface RocksDBStorage {
     boolean putBatch(ArrayList<RocksBatch> var);
 
     boolean init();
+
+    void write(WriteOptions var1, WriteBatch var2) throws RocksDBException;
 }

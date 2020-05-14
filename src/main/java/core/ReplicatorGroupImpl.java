@@ -108,6 +108,14 @@ public class ReplicatorGroupImpl implements ReplicatorGroup {
     }
 
     @Override
+    public void sendApplyNotifyToAll(long index) {
+        for (Replicator r :
+                replicatorList) {
+            r.notifyApply(index);
+        }
+    }
+
+    @Override
     public Replicator getReplicator(PeerId peer) {
         return replicatorMap.get(peer);
     }
@@ -222,6 +230,20 @@ public class ReplicatorGroupImpl implements ReplicatorGroup {
         }
         return false;
     }
+
+    /**
+     * check if current node is leader
+     * @return
+     */
+    @Override
+    public boolean heartbeatCheckIfCurrentNodeIsLeader(long index) {
+        for (Replicator r :
+                replicatorList) {
+            r.sendReadIndexRequest(index);
+        }
+        return true;
+    }
+
 
     public ThreadPoolExecutor getReplicatorGroupThreadPool() {
         return replicatorGroupThreadPool;

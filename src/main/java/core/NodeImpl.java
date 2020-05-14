@@ -70,6 +70,7 @@ public class NodeImpl implements Node {
     private Map<Endpoint, TaskRpcServices> taskRpcServices = new ConcurrentHashMap<>();
     private Map<Endpoint, Replicator> replicatorMap = new ConcurrentHashMap<>();
     private Map<Long, BallotBox> ballotBoxConcurrentHashMap = new ConcurrentHashMap<>();
+    private Map<Long, BallotBoxForApply> ballotBoxForApplyConcurrentHashMap = new ConcurrentHashMap<>();
     private ReplicatorGroup replicatorGroup;
     private NodeState nodeState;
     private AtomicLong lastLogTerm = new AtomicLong(0);
@@ -78,8 +79,9 @@ public class NodeImpl implements Node {
     private PeerId currentLeaderId;
     private volatile long lastVoteTerm;
     private volatile long lastPreVoteTerm;
+    private ClientRpcService clientRpcService;
     private Endpoint currentEndPoint;
-
+    private Map<Long,ReadTaskSchedule> readTaskScheduleMap = new ConcurrentHashMap<>();
     private Options options;
     private FSMCaller fsmCaller;
     private LogStorage logStorage;
@@ -101,6 +103,13 @@ public class NodeImpl implements Node {
     private RingBuffer<LogEntryEvent> followerQueue;
 
     /**
+     * Disruptor to run read event
+     */
+    private Disruptor<ReadEvent> readDisruptor;
+    private RingBuffer<ReadEvent> readQueue;
+
+
+    /**
      * Current node entity, including peedId inside
      */
     private NodeId nodeId;
@@ -113,6 +122,7 @@ public class NodeImpl implements Node {
     private StateMachine stateMachine;
     private ScheduledFuture scheduledFuture;
     private Runnable runnable;
+    private final CustomStateMachine customStateMachine = new CustomStateMachine();
 
 
     /**
@@ -138,6 +148,14 @@ public class NodeImpl implements Node {
         @Override
         public LogEntryEvent newInstance() {
             return new LogEntryEvent();
+        }
+    }
+
+    private static class ReadEventFactory implements EventFactory<ReadEvent> {
+
+        @Override
+        public ReadEvent newInstance() {
+            return new ReadEvent();
         }
     }
 
@@ -215,7 +233,7 @@ public class NodeImpl implements Node {
         this.followerDisruptor = DisruptorBuilder.<LogEntryEvent>newInstance()
                 .setRingBufferSize(NodeOptions.getNodeOptions().getDisruptorBufferSize())
                 .setEventFactory(new LogEntryEventFactory())
-                .setThreadFactory(new NamedThreadFactory("JRaft-NodeImpl-Disruptor-", true))
+                .setThreadFactory(new NamedThreadFactory("JRaft-NodeImpl-Disruptor-follower-", true))
                 .setProducerType(ProducerType.MULTI)
                 .setWaitStrategy(new BlockingWaitStrategy())
                 .build();
@@ -223,6 +241,20 @@ public class NodeImpl implements Node {
         this.followerDisruptor.setDefaultExceptionHandler(
                 new LogExceptionHandler<Object>(getClass().getSimpleName()));
         this.followerQueue = this.followerDisruptor.start();
+
+
+        //read disruptor queue
+        this.readDisruptor = DisruptorBuilder.<ReadEvent>newInstance()
+                .setRingBufferSize(NodeOptions.getNodeOptions().getDisruptorBufferSize())
+                .setEventFactory(new ReadEventFactory())
+                .setThreadFactory(new NamedThreadFactory("JRaft-NodeImpl-Disruptor-reader-", true))
+                .setProducerType(ProducerType.MULTI)
+                .setWaitStrategy(new BlockingWaitStrategy())
+                .build();
+        this.readDisruptor.handleEventsWith(new ReadEventHandler());
+        this.readDisruptor.setDefaultExceptionHandler(
+                new LogExceptionHandler<Object>(getClass().getSimpleName()));
+        this.readQueue = this.readDisruptor.start();
 
         //LogStorage
         LogStorageOptions logStorageOptions =
@@ -257,6 +289,8 @@ public class NodeImpl implements Node {
         this.fsmCaller = new FSMCallerImpl();
         final FSMCallerOptions fsmCallerOptions = new FSMCallerOptions();
         //fsmCallerOptions.setAfterShutdown(status -> afterShutdown());
+
+        setStateMachine(customStateMachine);
         fsmCallerOptions.setLogManager(this.logManager);
         fsmCallerOptions.setFsm(getStateMachine());
         fsmCallerOptions.setNode(NodeImpl.getNodeImple());
@@ -428,6 +462,28 @@ public class NodeImpl implements Node {
         }
     }
 
+    private static class ReadEventHandler implements EventHandler<ReadEvent> {
+        // task list for batch
+        private final List<ReadEvent> tasks =
+                new ArrayList<>(NodeOptions.getNodeOptions().getApplyBatch());
+
+        @Override
+        public void onEvent(ReadEvent readEvent, long l, boolean endOfBatch) throws Exception {
+            this.tasks.add(readEvent);
+            if (endOfBatch) {
+                getNodeImple().handleReadTask(tasks);
+            }
+        }
+    }
+
+   public void handleReadHeartbeatRequestClosure(RpcRequests.AppendEntriesResponse response) {
+
+        if(!response.getSuccess()){
+            LOG.info("Read failed! Heartbeat check failed!");
+        }
+
+    }
+
     private void executeApplyingTasks(final List<LogEntryEvent> tasks) {
         this.writeLock.lock();
         try {
@@ -549,6 +605,66 @@ public class NodeImpl implements Node {
         return true;
     }
 
+    /**
+     * add read task event to disruptor
+     * @param readTask
+     */
+    public ReadTaskResponse addReadTaskEvent(ReadTask readTask) {
+        ReadTaskResponse readTaskResponse = new ReadTaskResponse();
+       final EventTranslator<ReadEvent> translator = (event, sequence) -> {
+           event.reset();
+           event.entry = readTask.getTaskBytes();
+           //event.done = task.getDone();
+           event.expectedIndex = NodeImpl.getNodeImple().getLastLogIndex().get();
+       };
+       int tryTimes = 0;
+       while (tryTimes < 3) {
+           if (getReadQueue().tryPublishEvent(translator)) {
+               readTaskResponse.setMsg("success");
+               readTaskResponse.setResponse(true);
+               return readTaskResponse;
+
+           }
+           tryTimes++;
+       }
+        readTaskResponse.setMsg("node too busy");
+        readTaskResponse.setResponse(false);
+        return readTaskResponse;
+
+    }
+
+    /**
+     * invoke by task service, try to read from raft group, both leader and follower can read
+     * @param list
+     */
+    void handleReadTask(List<ReadEvent> list) {
+
+        ReadTaskSchedule readTaskSchedule = new ReadTaskSchedule();
+        readTaskSchedule.setReadEventList(list);
+        //if is leader
+        if (NodeState.leader.equals(getNodeState())) {
+            //send Heartbeat to confirm i am the leader
+            LOG.debug("Start to handle read task with leader mode");
+            long index = getLastLogIndex().get();
+            getReplicatorGroup().heartbeatCheckIfCurrentNodeIsLeader(index);
+            readTaskSchedule.setIndex(index);
+           getReadTaskScheduleMap().put(index,readTaskSchedule);
+        }
+        else if(NodeState.follower.equals(getNodeState())){
+            LOG.debug("Start to handle read task with leader mode");
+            //Right now we just handle the follower read request by redirecting to leader
+            List<ReadTask> readTaskList = new ArrayList<>(list.size());
+            for (ReadEvent e :
+                    list) {
+                ReadTask readTask = new ReadTask(e.entry);
+                readTaskList.add(readTask);
+            }
+            getTaskRpcServices()
+                    .get(getLeaderId().getPeerId().getEndpoint()).handleReadIndexRequests(readTaskList);
+        }
+        //if is follower
+    }
+
     class LeaderStableClosure extends LogManager.StableClosure {
 
         public LeaderStableClosure(final List<LogEntry> entries) {
@@ -561,6 +677,7 @@ public class NodeImpl implements Node {
             if (status.isOk()) {
                 BallotBox ballotBox = new BallotBox(getPeerIdList(),
                         this.firstLogIndex, this.nEntries);
+
                 ballotBox.grant(getLeaderId().getPeerId().getId());
                 getBallotBoxConcurrentHashMap().put(this.firstLogIndex,ballotBox);
             } else {
@@ -590,8 +707,19 @@ public class NodeImpl implements Node {
                    .get(appendEntriesResponse.getLastLogIndex())
                    .grant(appendEntriesResponse.getPeerId());
        }
-       return;
     }
+
+    /**
+     * invoke by leader set ballot For apply response to make sure the log has been apply to statemachine
+     * @param response
+     */
+    public void handleToApplyResponse(RpcRequests.NotifyFollowerToApplyResponse response) {
+
+
+        NodeImpl.getNodeImple().getBallotBoxForApplyConcurrentHashMap()
+                .get(response.getLastIndex()).grant(response.getFollowerId());
+    }
+
 
     class FollowerStableClosure extends LogManager.StableClosure {
 
@@ -647,6 +775,15 @@ public class NodeImpl implements Node {
         } else {
             return false;
         }
+    }
+
+
+    public Map<Long, BallotBoxForApply> getBallotBoxForApplyConcurrentHashMap() {
+        return ballotBoxForApplyConcurrentHashMap;
+    }
+
+    public void setBallotBoxForApplyConcurrentHashMap(Map<Long, BallotBoxForApply> ballotBoxForApplyConcurrentHashMap) {
+        this.ballotBoxForApplyConcurrentHashMap = ballotBoxForApplyConcurrentHashMap;
     }
 
     private boolean checkNodeAheadOfCurrent(long term, long index) {
@@ -741,6 +878,21 @@ public class NodeImpl implements Node {
         this.rpcServicesMap = rpcServicesMap;
     }
 
+    public Disruptor<ReadEvent> getReadDisruptor() {
+        return readDisruptor;
+    }
+
+    public void setReadDisruptor(Disruptor<ReadEvent> readDisruptor) {
+        this.readDisruptor = readDisruptor;
+    }
+
+    public RingBuffer<ReadEvent> getReadQueue() {
+        return readQueue;
+    }
+
+    public void setReadQueue(RingBuffer<ReadEvent> readQueue) {
+        this.readQueue = readQueue;
+    }
 
     public void setNodeId(NodeId nodeId) {
         this.nodeId = nodeId;
@@ -771,8 +923,14 @@ public class NodeImpl implements Node {
         return lastLogIndex;
     }
 
-    public void setLastLogIndex(AtomicLong lastLogIndex) {
-        this.lastLogIndex = lastLogIndex;
+    public void setLastLogIndex(long lastLogIndex) {
+        this.writeLock.lock();
+        try {
+            getLastLogIndex().set(lastLogIndex);
+        }finally {
+            this.writeLock.unlock();
+        }
+
     }
 
     public List<PeerId> getPeerIdList() {
@@ -828,7 +986,16 @@ public class NodeImpl implements Node {
     }
 
     public void setNodeState(NodeState nodeState) {
+        LOG.debug("Set node state from {} to {}",this.nodeState,nodeState);
         this.nodeState = nodeState;
+    }
+
+    public ClientRpcService getClientRpcService() {
+        return clientRpcService;
+    }
+
+    public void setClientRpcService(ClientRpcService clientRpcService) {
+        this.clientRpcService = clientRpcService;
     }
 
     public boolean checkNodeStateCandidate() {
@@ -855,8 +1022,15 @@ public class NodeImpl implements Node {
         return stableLogIndex;
     }
 
-    public void setStableLogIndex(AtomicLong stableLogIndex) {
-        this.stableLogIndex = stableLogIndex;
+    public void setStableLogIndex(long stableLogIndex) {
+        this.writeLock.lock();
+        try {
+            if (stableLogIndex > getStableLogIndex().get()) {
+                getStableLogIndex().set(stableLogIndex);
+            }
+        }finally {
+            this.writeLock.unlock();
+        }
     }
 
     public Disruptor<LogEntryEvent> getApplyDisruptor() {
@@ -913,6 +1087,14 @@ public class NodeImpl implements Node {
 
     public FSMCaller getFsmCaller() {
         return fsmCaller;
+    }
+
+    public Map<Long, ReadTaskSchedule> getReadTaskScheduleMap() {
+        return readTaskScheduleMap;
+    }
+
+    public void setReadTaskScheduleMap(Map<Long, ReadTaskSchedule> readTaskScheduleMap) {
+        this.readTaskScheduleMap = readTaskScheduleMap;
     }
 
     public void setFsmCaller(FSMCaller fsmCaller) {

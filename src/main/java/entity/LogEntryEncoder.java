@@ -1,5 +1,7 @@
 package entity;
 
+import exceptions.RaftException;
+
 /**
  * Created by 周思成 on  2020/3/13 16:54
  */
@@ -11,5 +13,5 @@ public interface LogEntryEncoder {
      * @param log log entry
      * @return encoded byte array
      */
-    byte[] encode(LogEntry log);
+    byte[] encode(LogEntry log) throws RaftException;
 }

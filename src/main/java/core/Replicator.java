@@ -170,7 +170,7 @@ public class Replicator {
                 RpcRequests.AppendEntriesRequests appendEntriesRequests = builder.build();
                 //rpcServices.handleApendEntriesRequests(appendEntriesRequests);
                 NodeImpl.getNodeImple().getEnClosureRpcRequest()
-                        .handleApendEntriesRequests(appendEntriesRequests,rpcServices,true);
+                        .handleAppendEntriesRequests(appendEntriesRequests,rpcServices,true);
                 Inflight inflight = new Inflight(
                         getAppendEntriesRequestList().get(0).getCommittedIndex(),
                         getAppendEntriesRequestList().size(),
@@ -245,6 +245,19 @@ public class Replicator {
         notifyReplicatorStatusListener(replicator, event, null);
     }
 
+    /**
+     * notify the follower to apply to state machine
+     * @param index
+     */
+    public void notifyApply(long index) {
+        RpcRequests.NotifyFollowerToApplyRequest.Builder builder
+                = RpcRequests.NotifyFollowerToApplyRequest.newBuilder();
+        builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
+        builder.setLastIndex(index);
+        NodeImpl.getNodeImple().getEnClosureRpcRequest()
+                .handleToApplyRequest(builder.build(),rpcServices,true);
+    }
+
 
     public void sendEmptyEntries(final boolean isHeartBeat) {
         LOG.debug("Start to send empty entries heartbeat:{}",isHeartBeat);
@@ -272,7 +285,7 @@ public class Replicator {
             RpcRequests.AppendEntriesRequest request = builder.build();
 
             NodeImpl.getNodeImple().getEnClosureRpcRequest()
-                    .handleApendEntriesRequest(request,getRpcServices(),true);
+                    .handleAppendEntriesRequest(request,getRpcServices(),true);
             LOG.debug("Send emptyAppendEntries request to {} at index {} on term {}"
                     , getOptions().getPeerId().getPeerName()
                     , NodeImpl.getNodeImple().getLastLogIndex(),
@@ -292,6 +305,19 @@ public class Replicator {
         }
     }
 
+    void sendReadIndexRequest(long index) {
+        RpcRequests.AppendEntriesRequest.Builder builder = RpcRequests.AppendEntriesRequest.newBuilder();
+        builder.setCommittedIndex(NodeImpl.getNodeImple().getLastLogIndex().longValue());
+        builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
+        builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
+        builder.setGroupId(NodeImpl.getNodeImple().getNodeId().getGroupId());
+        builder.setPrevLogIndex(NodeImpl.getNodeImple().getLastLogIndex().get());
+        builder.setPrevLogTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
+        builder.setReadIndex(index);
+        NodeImpl.getNodeImple().getEnClosureRpcRequest()
+                .handleReadHeartbeatrequest(builder.build(),getRpcServices(),true);
+    }
+
     void handleProbeOrFollowerDisOrderResponse(long currentIndexOfFollower){
 
         //getWriteLock().lock();
@@ -305,7 +331,7 @@ public class Replicator {
                 EventTranslator<LogEntry> entryEventTranslator = (event, sequence) ->
                 {
                     event = NodeImpl.getNodeImple().getLogManager().getEntry(currentIndexOfFollower);
-                    ;
+
                 };
                 getRingBuffer().publishEvent(entryEventTranslator);
             }

@@ -2,10 +2,7 @@ package core;
 
 import entity.RocksBatch;
 import org.apache.commons.io.FilenameUtils;
-import org.rocksdb.Options;
-import org.rocksdb.RocksDB;
-import org.rocksdb.RocksDBException;
-import org.rocksdb.TransactionDB;
+import org.rocksdb.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,6 +69,10 @@ public class RocksDBStorageImpl implements RocksDBStorage {
         }
     }
 
+    @Override
+    public void write(WriteOptions var1, WriteBatch var2) throws RocksDBException {
+        rocksDB.write(var1,var2);
+    }
 
 
     public static RocksDB getRocksDB() {

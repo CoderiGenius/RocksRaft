@@ -2,16 +2,22 @@ package core;
 
 import config.LogStorageOptions;
 import entity.LogEntry;
+import entity.LogEntryEncoder;
 import entity.RocksBatch;
-import org.rocksdb.Options;
-import org.rocksdb.RocksDB;
-import org.rocksdb.RocksDBException;
+import exceptions.RaftException;
+import org.rocksdb.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import rpc.LogEntryV2CodecFactory;
 import storage.LogStorage;
+import utils.Bits;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Created by 周思成 on  2020/4/8 0:26
@@ -20,11 +26,16 @@ import java.util.List;
 public class LogStorageImpl implements LogStorage {
 
     private final RocksDBStorage rocksDBStorage = new RocksDBStorageImpl();
+    private ColumnFamilyHandle defaultHandle;
+    private WriteOptions                    writeOptions;
+    private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    private final Lock readLock      = this.readWriteLock.readLock();
+    private final Lock                      writeLock     = this.readWriteLock.writeLock();
 
     LogStorageImpl(LogStorageOptions logStorageOptions){
         this.logStorageOptions = logStorageOptions;
     }
-
+    private LogEntryEncoder logEntryEncoder;
     static{
         RocksDB.loadLibrary();
     }
@@ -39,7 +50,10 @@ public class LogStorageImpl implements LogStorage {
     public boolean init()  {
         String path = getLogStorageOptions().getLogStoragePath()+getLogStorageOptions().getLogStorageName();
         Options options = new Options();
+        this.logEntryEncoder = LogEntryV2CodecFactory.getInstance().encoder();
         options.setCreateIfMissing(true);
+        this.writeOptions = new WriteOptions();
+        this.writeOptions.setSync(true);
         try {
             rocksDB = RocksDB.open(options, path);
         } catch (RocksDBException e) {
@@ -82,15 +96,20 @@ public class LogStorageImpl implements LogStorage {
         if (entries == null || entries.isEmpty()) {
             return 0;
         }
+
         final int entriesCount = entries.size();
-        ArrayList<RocksBatch> rocksBatches = new ArrayList<>(entriesCount);
-        for (LogEntry l :
-                entries) {
-           // rocksBatches.add(new RocksBatch())
-            LOG.info(l+"");
+        final boolean ret = executeBatch(batch -> {
+            for (int i = 0; i < entriesCount; i++) {
+                final LogEntry entry = entries.get(i);
+                    addDataBatch(entry, batch);
+            }
+        });
+        if (ret) {
+            return entriesCount;
+        } else {
+            return 0;
         }
-//        if(rocksDBStorage.putBatch())
-        return 1;
+
     }
 
     @Override
@@ -112,10 +131,55 @@ public class LogStorageImpl implements LogStorage {
         return logStorageOptions;
     }
 
+    private void addDataBatch(final LogEntry entry, final WriteBatch writeBatch) throws RaftException, RocksDBException {
+        final long logIndex = entry.getId().getIndex();
+        final byte[] content = this.logEntryEncoder.encode(entry);
+        writeBatch.put(this.defaultHandle, getKeyBytes(logIndex),content);
+    }
+
     public void setLogStorageOptions(LogStorageOptions logStorageOptions) {
         this.logStorageOptions = logStorageOptions;
     }
     public static RocksDB getRocksDB() {
         return rocksDB;
+    }
+
+    protected byte[] getKeyBytes(final long index) {
+        final byte[] ks = new byte[8];
+        Bits.putLong(ks, 0, index);
+        return ks;
+    }
+
+    /**
+     * Execute write batch template.
+     *
+     * @param template write batch template
+     */
+    private boolean executeBatch(final WriteBatchTemplate template) {
+        this.readLock.lock();
+        try (final WriteBatch batch = new WriteBatch()) {
+            template.execute(batch);
+            this.rocksDBStorage.write(this.writeOptions, batch);
+        } catch (final RocksDBException e) {
+            LOG.error("Execute batch failed with rocksdb exception.", e);
+            return false;
+        } catch (final IOException | RaftException e) {
+            LOG.error("Execute batch failed with io exception.", e);
+            return false;
+        } finally {
+            this.readLock.unlock();
+        }
+        return true;
+    }
+    /**
+     * Write batch template.
+     *
+     * @author boyan (boyan@alibaba-inc.com)
+     *
+     * 2017-Nov-08 11:19:22 AM
+     */
+    private interface WriteBatchTemplate {
+
+        void execute(WriteBatch batch) throws RocksDBException, IOException, RaftException;
     }
 }

@@ -1,0 +1,12 @@
+syntax = "proto3";
+package protobuf;
+
+option java_package = "rpc";
+option java_outer_classname = "LogOuter";
+
+message LogEntry{
+    int64 term=1;
+    int64 index=2;
+    bytes data=3;
+
+}

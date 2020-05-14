@@ -7,6 +7,7 @@ import utils.CatchUpClosure;
 import utils.ThreadId;
 
 import java.util.List;
+import java.util.concurrent.Future;
 
 /**
  * Created by 周思成 on  2020/4/14 15:30
@@ -50,6 +51,9 @@ public interface ReplicatorGroup  {
      */
     void sendHeartbeat(Replicator replicator);
     void sendHeartbeatToAll();
+
+
+    void sendApplyNotifyToAll(long index);
 
     /**
      * Get replicator id by peer, null if not found.
@@ -185,5 +189,8 @@ public interface ReplicatorGroup  {
     List<ThreadId> listReplicators();
 
     boolean sendInflight(String address,int port,long currentIndexOfFollower);
+
+    boolean heartbeatCheckIfCurrentNodeIsLeader(long index);
+
 }
 
