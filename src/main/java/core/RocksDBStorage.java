@@ -20,4 +20,6 @@ public interface RocksDBStorage {
     boolean init();
 
     void write(WriteOptions var1, WriteBatch var2) throws RocksDBException;
+
+    byte[] get(byte[] var) throws RocksDBException;
 }

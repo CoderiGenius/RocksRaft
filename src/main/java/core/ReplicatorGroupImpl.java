@@ -1,5 +1,6 @@
 package core;
 
+import com.google.protobuf.ZeroByteStringHelper;
 import com.lmax.disruptor.EventTranslator;
 import config.ReplicatorOptions;
 import entity.*;
@@ -109,6 +110,7 @@ public class ReplicatorGroupImpl implements ReplicatorGroup {
 
     @Override
     public void sendApplyNotifyToAll(long index) {
+        LOG.debug("Send to all replicator that the log index:{} can be applied",index);
         for (Replicator r :
                 replicatorList) {
             r.notifyApply(index);
@@ -127,9 +129,29 @@ public class ReplicatorGroupImpl implements ReplicatorGroup {
                 replicatorList) {
             for (LogEntry l :
                     logEntries) {
-            final EventTranslator<LogEntry> translator = (event, sequence) -> { event = l; };
-                r.getDisruptor().publishEvent(translator);
+                if (l == null) {
+                    LOG.warn("Empty log");
+                    continue;
+                }
+            final EventTranslator<LogEntryEvent> translator = (event, sequence) -> { event.entry = l; };
+            LOG.debug("Publish event to ringBuffer {} data:{}",r.getEndpoint(),new String(ZeroByteStringHelper.getByteArray(
+                    ZeroByteStringHelper.wrap(l.getData()))));;
+                r.getDisruptor().getRingBuffer().tryPublishEvent(translator);
             }
+
+        }
+    }
+
+    @Override
+    public void sendAppendEntryToAllReplicator(LogEntry logEntry) {
+        for (Replicator r :
+                replicatorList) {
+
+                final EventTranslator<LogEntryEvent> translator = (event, sequence) -> { event.entry = logEntry; };
+                LOG.debug("Publish event to ringBuffer {} data:{}",r.getEndpoint(),new String(ZeroByteStringHelper.getByteArray(
+                        ZeroByteStringHelper.wrap(logEntry.getData()))));;
+                r.getDisruptor().getRingBuffer().tryPublishEvent(translator);
+
 
         }
     }

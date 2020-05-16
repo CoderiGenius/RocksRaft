@@ -20,4 +20,5 @@ public interface TaskRpcServices {
 
     ReadTaskResponse handleReadIndexRequest(ReadTask readTask);
     List<ReadTaskResponse> handleReadIndexRequests(List<ReadTask> readTask);
+
 }

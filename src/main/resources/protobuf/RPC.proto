@@ -98,6 +98,7 @@ message AppendEntriesResponse {
      int32 port = 5;
      string peerId = 6;
      int64 readIndex = 7;
+     string reason = 8;
 };
 message ReadIndexRequest {
      string group_id = 1;

@@ -9937,6 +9937,16 @@ public final class RpcRequests {
      * <code>int64 readIndex = 7;</code>
      */
     long getReadIndex();
+
+    /**
+     * <code>string reason = 8;</code>
+     */
+    java.lang.String getReason();
+    /**
+     * <code>string reason = 8;</code>
+     */
+    com.google.protobuf.ByteString
+    getReasonBytes();
   }
   /**
    * Protobuf type {@code protobuf.AppendEntriesResponse}
@@ -9958,6 +9968,7 @@ public final class RpcRequests {
       port_ = 0;
       peerId_ = "";
       readIndex_ = 0L;
+      reason_ = "";
     }
 
     @java.lang.Override
@@ -10019,6 +10030,12 @@ public final class RpcRequests {
             case 56: {
 
               readIndex_ = input.readInt64();
+              break;
+            }
+            case 66: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              reason_ = s;
               break;
             }
             default: {
@@ -10166,6 +10183,40 @@ public final class RpcRequests {
       return readIndex_;
     }
 
+    public static final int REASON_FIELD_NUMBER = 8;
+    private volatile java.lang.Object reason_;
+    /**
+     * <code>string reason = 8;</code>
+     */
+    public java.lang.String getReason() {
+      java.lang.Object ref = reason_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        reason_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string reason = 8;</code>
+     */
+    public com.google.protobuf.ByteString
+    getReasonBytes() {
+      java.lang.Object ref = reason_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (java.lang.String) ref);
+        reason_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -10200,6 +10251,9 @@ public final class RpcRequests {
       }
       if (readIndex_ != 0L) {
         output.writeInt64(7, readIndex_);
+      }
+      if (!getReasonBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, reason_);
       }
       unknownFields.writeTo(output);
     }
@@ -10236,6 +10290,9 @@ public final class RpcRequests {
         size += com.google.protobuf.CodedOutputStream
                 .computeInt64Size(7, readIndex_);
       }
+      if (!getReasonBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, reason_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -10266,6 +10323,8 @@ public final class RpcRequests {
               .equals(other.getPeerId());
       result = result && (getReadIndex()
               == other.getReadIndex());
+      result = result && getReason()
+              .equals(other.getReason());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -10295,6 +10354,8 @@ public final class RpcRequests {
       hash = (37 * hash) + READINDEX_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
               getReadIndex());
+      hash = (37 * hash) + REASON_FIELD_NUMBER;
+      hash = (53 * hash) + getReason().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -10442,6 +10503,8 @@ public final class RpcRequests {
 
         readIndex_ = 0L;
 
+        reason_ = "";
+
         return this;
       }
 
@@ -10475,6 +10538,7 @@ public final class RpcRequests {
         result.port_ = port_;
         result.peerId_ = peerId_;
         result.readIndex_ = readIndex_;
+        result.reason_ = reason_;
         onBuilt();
         return result;
       }
@@ -10545,6 +10609,10 @@ public final class RpcRequests {
         }
         if (other.getReadIndex() != 0L) {
           setReadIndex(other.getReadIndex());
+        }
+        if (!other.getReason().isEmpty()) {
+          reason_ = other.reason_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -10839,6 +10907,75 @@ public final class RpcRequests {
       public Builder clearReadIndex() {
 
         readIndex_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object reason_ = "";
+      /**
+       * <code>string reason = 8;</code>
+       */
+      public java.lang.String getReason() {
+        java.lang.Object ref = reason_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          reason_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string reason = 8;</code>
+       */
+      public com.google.protobuf.ByteString
+      getReasonBytes() {
+        java.lang.Object ref = reason_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b =
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                          (java.lang.String) ref);
+          reason_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string reason = 8;</code>
+       */
+      public Builder setReason(
+              java.lang.String value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+
+        reason_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string reason = 8;</code>
+       */
+      public Builder clearReason() {
+
+        reason_ = getDefaultInstance().getReason();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string reason = 8;</code>
+       */
+      public Builder setReasonBytes(
+              com.google.protobuf.ByteString value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
+        reason_ = value;
         onChanged();
         return this;
       }
@@ -15420,27 +15557,27 @@ public final class RpcRequests {
                     "ies\030\007 \001(\0132\023.protobuf.EntryMeta\022\027\n\017commit" +
                     "ted_index\030\010 \001(\003\022\014\n\004data\030\t \001(\014\022\017\n\007address" +
                     "\030\n \001(\t\022\014\n\004port\030\013 \001(\005\022\020\n\010taskPort\030\014 \001(\005\022\021" +
-                    "\n\treadIndex\030\r \001(\003\"\220\001\n\025AppendEntriesRespo" +
+                    "\n\treadIndex\030\r \001(\003\"\240\001\n\025AppendEntriesRespo" +
                     "nse\022\014\n\004term\030\001 \001(\003\022\017\n\007success\030\002 \001(\010\022\026\n\016la" +
                     "st_log_index\030\003 \001(\003\022\017\n\007address\030\004 \001(\t\022\014\n\004p" +
                     "ort\030\005 \001(\005\022\016\n\006peerId\030\006 \001(\t\022\021\n\treadIndex\030\007" +
-                    " \001(\003\"Y\n\020ReadIndexRequest\022\020\n\010group_id\030\001 \001" +
-                    "(\t\022\021\n\tserver_id\030\002 \001(\t\022\017\n\007entries\030\003 \001(\014\022\017" +
-                    "\n\007peer_id\030\004 \001(\t\"3\n\021ReadIndexResponse\022\r\n\005" +
-                    "index\030\001 \001(\003\022\017\n\007success\030\002 \001(\010\"e\n\033NotifyFo" +
-                    "llowerStableRequest\022\021\n\tlastIndex\030\001 \001(\003\022\022" +
-                    "\n\nfirstIndex\030\002 \001(\003\022\016\n\006peerId\030\003 \001(\t\022\017\n\007su" +
-                    "ccess\030\004 \001(\010\"d\n\034NotifyFollowerStableRespo" +
-                    "nse\022\021\n\tlastIndex\030\001 \001(\003\022\022\n\nfirstIndex\030\002 \001" +
-                    "(\003\022\014\n\004term\030\003 \001(\003\022\017\n\007success\030\004 \001(\010\"f\n\034Not" +
-                    "ifyFollowerToApplyRequest\022\021\n\tlastIndex\030\001" +
-                    " \001(\003\022\022\n\nfirstIndex\030\002 \001(\003\022\016\n\006peerId\030\003 \001(\t" +
-                    "\022\017\n\007success\030\004 \001(\010\"y\n\035NotifyFollowerToApp" +
-                    "lyResponse\022\021\n\tlastIndex\030\001 \001(\003\022\022\n\nfirstIn" +
-                    "dex\030\002 \001(\003\022\014\n\004term\030\003 \001(\003\022\022\n\nfollowerId\030\004 " +
-                    "\001(\t\022\017\n\007success\030\005 \001(\010*/\n\023AppendEntriesSta" +
-                    "tus\022\014\n\010APPROVED\020\000\022\n\n\006FAILED\020\001B\022\n\003rpcB\013Rp" +
-                    "cRequestsb\006proto3"
+                    " \001(\003\022\016\n\006reason\030\010 \001(\t\"Y\n\020ReadIndexRequest" +
+                    "\022\020\n\010group_id\030\001 \001(\t\022\021\n\tserver_id\030\002 \001(\t\022\017\n" +
+                    "\007entries\030\003 \001(\014\022\017\n\007peer_id\030\004 \001(\t\"3\n\021ReadI" +
+                    "ndexResponse\022\r\n\005index\030\001 \001(\003\022\017\n\007success\030\002" +
+                    " \001(\010\"e\n\033NotifyFollowerStableRequest\022\021\n\tl" +
+                    "astIndex\030\001 \001(\003\022\022\n\nfirstIndex\030\002 \001(\003\022\016\n\006pe" +
+                    "erId\030\003 \001(\t\022\017\n\007success\030\004 \001(\010\"d\n\034NotifyFol" +
+                    "lowerStableResponse\022\021\n\tlastIndex\030\001 \001(\003\022\022" +
+                    "\n\nfirstIndex\030\002 \001(\003\022\014\n\004term\030\003 \001(\003\022\017\n\007succ" +
+                    "ess\030\004 \001(\010\"f\n\034NotifyFollowerToApplyReques" +
+                    "t\022\021\n\tlastIndex\030\001 \001(\003\022\022\n\nfirstIndex\030\002 \001(\003" +
+                    "\022\016\n\006peerId\030\003 \001(\t\022\017\n\007success\030\004 \001(\010\"y\n\035Not" +
+                    "ifyFollowerToApplyResponse\022\021\n\tlastIndex\030" +
+                    "\001 \001(\003\022\022\n\nfirstIndex\030\002 \001(\003\022\014\n\004term\030\003 \001(\003\022" +
+                    "\022\n\nfollowerId\030\004 \001(\t\022\017\n\007success\030\005 \001(\010*/\n\023" +
+                    "AppendEntriesStatus\022\014\n\010APPROVED\020\000\022\n\n\006FAI" +
+                    "LED\020\001B\022\n\003rpcB\013RpcRequestsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
             new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -15532,7 +15669,7 @@ public final class RpcRequests {
     internal_static_protobuf_AppendEntriesResponse_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_AppendEntriesResponse_descriptor,
-            new java.lang.String[] { "Term", "Success", "LastLogIndex", "Address", "Port", "PeerId", "ReadIndex", });
+            new java.lang.String[] { "Term", "Success", "LastLogIndex", "Address", "Port", "PeerId", "ReadIndex", "Reason", });
     internal_static_protobuf_ReadIndexRequest_descriptor =
             getDescriptor().getMessageTypes().get(13);
     internal_static_protobuf_ReadIndexRequest_fieldAccessorTable = new

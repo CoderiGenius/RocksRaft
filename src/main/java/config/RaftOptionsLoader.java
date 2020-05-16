@@ -34,6 +34,8 @@ public class RaftOptionsLoader {
         NodeOptions.getNodeOptions().setPort(currentNodeOptions.getPort());
         NodeOptions.getNodeOptions().setTaskPort(currentNodeOptions.getTaskPort());
         NodeOptions.getNodeOptions().setPeerId(currentNodeOptions.getPeerId());
+        NodeOptions.getNodeOptions().setClientAddress(currentNodeOptions.getClientAddress());
+        NodeOptions.getNodeOptions().setClientPort(currentNodeOptions.getClientPort());
         Endpoint endpoint = new Endpoint(currentNodeOptions.getAddress(),currentNodeOptions.getPort());
         PeerId peerId = new PeerId();
         peerId.setPeerName(currentNodeOptions.getName());

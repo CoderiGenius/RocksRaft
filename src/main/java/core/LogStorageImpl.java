@@ -25,7 +25,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class LogStorageImpl implements LogStorage {
 
-    private final RocksDBStorage rocksDBStorage = new RocksDBStorageImpl();
+    private final RocksDBStorage rocksDBStorage = RocksDBStorageImpl.getRocksDBStorage();
     private ColumnFamilyHandle defaultHandle;
     private WriteOptions                    writeOptions;
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
@@ -48,20 +48,21 @@ public class LogStorageImpl implements LogStorage {
 
     @Override
     public boolean init()  {
-        String path = getLogStorageOptions().getLogStoragePath()+getLogStorageOptions().getLogStorageName();
-        Options options = new Options();
+//        String path = getLogStorageOptions().getLogStoragePath()+getLogStorageOptions().getLogStorageName();
+//        Options options = new Options();
         this.logEntryEncoder = LogEntryV2CodecFactory.getInstance().encoder();
-        options.setCreateIfMissing(true);
+        //options.setCreateIfMissing(true);
         this.writeOptions = new WriteOptions();
         this.writeOptions.setSync(true);
-        try {
-            rocksDB = RocksDB.open(options, path);
-        } catch (RocksDBException e) {
-            LOG.error("Create rocksDB connection error {}",e.getMessage());
-            return false;
-        }
-        LOG.info("Create rocksDB connection success");
+//        try {
+//            rocksDB = RocksDB.open(options, path);
+//        } catch (RocksDBException e) {
+//            LOG.error("Create rocksDB connection error {}",e.getMessage());
+//            return false;
+//        }
+//        LOG.info("Create rocksDB connection success");
         return true;
+
     }
 
 
@@ -104,6 +105,7 @@ public class LogStorageImpl implements LogStorage {
                     addDataBatch(entry, batch);
             }
         });
+
         if (ret) {
             return entriesCount;
         } else {
@@ -134,7 +136,9 @@ public class LogStorageImpl implements LogStorage {
     private void addDataBatch(final LogEntry entry, final WriteBatch writeBatch) throws RaftException, RocksDBException {
         final long logIndex = entry.getId().getIndex();
         final byte[] content = this.logEntryEncoder.encode(entry);
-        writeBatch.put(this.defaultHandle, getKeyBytes(logIndex),content);
+        //writeBatch.put(this.defaultHandle, getKeyBytes(logIndex),content);
+        LOG.debug("RocksDB put:key:{}",logIndex);
+        rocksDBStorage.put(("log"+logIndex).getBytes(),content);
     }
 
     public void setLogStorageOptions(LogStorageOptions logStorageOptions) {
@@ -159,7 +163,7 @@ public class LogStorageImpl implements LogStorage {
         this.readLock.lock();
         try (final WriteBatch batch = new WriteBatch()) {
             template.execute(batch);
-            this.rocksDBStorage.write(this.writeOptions, batch);
+            //this.rocksDBStorage.write(this.writeOptions, batch);
         } catch (final RocksDBException e) {
             LOG.error("Execute batch failed with rocksdb exception.", e);
             return false;

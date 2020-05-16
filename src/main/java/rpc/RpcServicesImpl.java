@@ -72,7 +72,11 @@ public class RpcServicesImpl implements RpcServices {
 //                    "as the current node already Prevote others at term {}", requestPreVoteRequest.getLastLogTerm());
 //            return builder.build();
 //        }
-            LOG.info("PreVote request from {} granted", requestPreVoteRequest.getPeerId());
+            LOG.info("PreVote request from {} granted as the " +
+                    "current term {} index {} and {} term {} and index {}"
+                    , requestPreVoteRequest.getPeerId(),NodeImpl.getNodeImple().getLastLogTerm()
+                    ,NodeImpl.getNodeImple().getLastLogTerm()
+                    ,requestPreVoteRequest.getPeerId(),candidateTerm,candidateLogIndex);
 
         NodeImpl.getNodeImple().setLastPreVoteTerm(requestPreVoteRequest.getLastLogTerm());
         builder.setGranted(true);
@@ -139,19 +143,27 @@ public class RpcServicesImpl implements RpcServices {
     public RpcRequests.AppendEntriesResponse handleAppendEntriesRequest(RpcRequests.AppendEntriesRequest appendEntriesRequest) {
         RpcRequests.AppendEntriesResponse.Builder builder = RpcRequests.AppendEntriesResponse.newBuilder();
 
-        //if it is a readIndex heartbeat the add the readIndex to the response for identify
+        if (NodeImpl.NodeState.leader.equals(NodeImpl.getNodeImple().getNodeState())) {
+            LOG.debug("Receive appendEntries request from {} while in leader state index {} term {}"
+                    ,appendEntriesRequest.getPeerId(),appendEntriesRequest.getCommittedIndex(),
+                    appendEntriesRequest.getTerm());
+        }
+        //if it is a readIndex heartbeat then add the readIndex to the response for identify
         builder.setReadIndex(appendEntriesRequest.getReadIndex());
         try {
             NodeImpl.getNodeImple().getScheduledFuture().cancel(false);
             NodeImpl.getNodeImple().setChecker();
 
             //check term
-            if (appendEntriesRequest.getTerm() != NodeImpl.getNodeImple().getLastLogTerm().get()) {
-                return appendEntriesBuilder(builder, false).build();
+            if (appendEntriesRequest.getTerm() < NodeImpl.getNodeImple().getLastLogTerm().get()) {
+                return appendEntriesBuilder(builder
+                        ,"Term failure,target term is "
+                                +NodeImpl.getNodeImple().getLastLogTerm().get(), false).build();
             }
             //check index
-            if (appendEntriesRequest.getCommittedIndex() <= NodeImpl.getNodeImple().getLastLogIndex().get()) {
-                return appendEntriesBuilder(builder, false).build();
+            if (appendEntriesRequest.getCommittedIndex() < NodeImpl.getNodeImple().getLastLogIndex().get()) {
+                return appendEntriesBuilder(builder, "Index failure, target index is "
+                        +NodeImpl.getNodeImple().getLastLogIndex().get(),false).build();
             }
 
             //find out if it is null request and check if it is new leader request
@@ -161,22 +173,26 @@ public class RpcServicesImpl implements RpcServices {
                 //if add new leader failed
                 if (!NodeImpl.getNodeImple().transformLeader(appendEntriesRequest)) {
                     LOG.error("add new Leader failed leaderID:{}",appendEntriesRequest.getPeerId());
-                    return appendEntriesBuilder(builder, false).build();
+                    return appendEntriesBuilder(builder,"Add leader failed", false).build();
                 }
-            } else {
+            } else if(!appendEntriesRequest.getData().isEmpty()){
                 //normal appendEntry request
-
+                LOG.debug("Receive normal appendEntry request {}",appendEntriesRequest.getData());
 
                 //check leader illegal
 
                 //storage to log
 
                 if (NodeImpl.getNodeImple().followerSetLogEvent(appendEntriesRequest)) {
-                    return appendEntriesBuilder(builder, true).build();
+                    return appendEntriesBuilder(builder,"", true).build();
                 }
             }
+            if (appendEntriesRequest.getData().isEmpty()) {
+                //heart beat request
+                return appendEntriesBuilder(builder,"", true).build();
+            }
 
-            return appendEntriesBuilder(builder, false).build();
+            return appendEntriesBuilder(builder, "unknow failure",false).build();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -185,10 +201,11 @@ return null;
     }
 
     private RpcRequests.AppendEntriesResponse.Builder appendEntriesBuilder(
-            RpcRequests.AppendEntriesResponse.Builder builder,boolean result) {
+            RpcRequests.AppendEntriesResponse.Builder builder,String reason,boolean result) {
         builder.setSuccess(result);
         builder.setLastLogIndex(NodeImpl.getNodeImple().getLastLogIndex().get());
         builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
+        builder.setReason(reason);
         builder.setAddress(NodeImpl.getNodeImple().getCurrentEndPoint().getIp());
         builder.setPort(NodeImpl.getNodeImple().getCurrentEndPoint().getPort());
         builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
@@ -221,13 +238,15 @@ return null;
 
 
     /**
-     * Come from follower, leader invokes this method to handle follower stable event
+     * Come from follower, leader run this method to handle follower stable event
      * @param notifyFollowerStableRequest
      * @return
      */
     @Override
     public RpcRequests.NotifyFollowerStableResponse handleFollowerStableRequest
     (RpcRequests.NotifyFollowerStableRequest notifyFollowerStableRequest) {
+        LOG.debug("Receive follower stable request from follower:{} at index {}"
+                ,notifyFollowerStableRequest.getPeerId(),notifyFollowerStableRequest.getLastIndex());
         RpcRequests.NotifyFollowerStableResponse.Builder builder = RpcRequests.NotifyFollowerStableResponse.newBuilder();
 
         if (NodeImpl.getNodeImple().handleFollowerStableEvent(notifyFollowerStableRequest)) {

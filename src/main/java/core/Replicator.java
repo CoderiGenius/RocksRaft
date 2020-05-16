@@ -9,12 +9,14 @@ package core;
 import com.alipay.remoting.NamedThreadFactory;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Message;
+import com.google.protobuf.ZeroByteStringHelper;
 import com.lmax.disruptor.*;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import config.ReplicatorOptions;
 import entity.*;
 import exceptions.LogExceptionHandler;
+import org.apache.log4j.pattern.LogEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rpc.RpcRequests;
@@ -28,10 +30,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -130,9 +129,10 @@ public class Replicator {
 
     private AtomicLong currentSuccessTerm;
     private AtomicLong currentSuccessIndex;
-    private List<RpcRequests.AppendEntriesRequest> appendEntriesRequestList;
-    private Disruptor<LogEntry> disruptor;
-    private RingBuffer<LogEntry> ringBuffer;
+    private List<RpcRequests.AppendEntriesRequest> appendEntriesRequestList
+            = new CopyOnWriteArrayList<>();
+    private Disruptor<LogEntryEvent> disruptor;
+    private RingBuffer<LogEntryEvent> ringBuffer;
     // In-flight RPC requests, FIFO queue
     private final ArrayDeque<Inflight> inflights              = new ArrayDeque<>();
     private final Map<Long,Inflight> inflightMap              = new ConcurrentHashMap<>();
@@ -145,7 +145,7 @@ public class Replicator {
         this.rpcServices = rpcServices;
         this.endpoint = options.getPeerId().getEndpoint();
         this.followerState = State.Probe;
-        this.disruptor = DisruptorBuilder.<LogEntry>newInstance()
+        this.disruptor = DisruptorBuilder.<LogEntryEvent>newInstance()
                 .setRingBufferSize(NodeOptions.getNodeOptions().getDisruptorBufferSize())
                 .setEventFactory(new LogEntryEventFactory())
                 .setThreadFactory(new NamedThreadFactory("JRaft-Replicator-Disruptor-", true))
@@ -154,18 +154,34 @@ public class Replicator {
                 .build();
         disruptor.handleEventsWith( new ReplicatorHandler());
         disruptor.setDefaultExceptionHandler(new LogExceptionHandler<Object>(getClass().getSimpleName()));
+        ringBuffer = disruptor.start();
         this.timerManager = new TimerManager();
         timerManager.init(10);
     }
 
-    private  class ReplicatorHandler implements EventHandler<LogEntry> {
+    private  class ReplicatorHandler implements EventHandler<LogEntryEvent> {
+
 
 
         @Override
-        public void onEvent(LogEntry logEntry, long l, boolean b) throws Exception {
-            if (b && !getAppendEntriesRequestList().isEmpty()){
-               final RpcRequests.AppendEntriesRequests.Builder builder
-                       = RpcRequests.AppendEntriesRequests.newBuilder();
+        public void onEvent(LogEntryEvent logEntryEvent, long l, boolean b) throws Exception {
+            LogEntry logEntry = logEntryEvent.entry;
+            LOG.debug("Replicator receive log event on logEntry: {} data: {}"
+                    ,logEntry.getId(),new String(ZeroByteStringHelper.getByteArray(
+                            ZeroByteStringHelper.wrap(logEntry.getData()))));;
+            if (b
+                    && !getAppendEntriesRequestList().isEmpty()){
+
+                final RpcRequests.AppendEntriesRequest.Builder builder1
+                        = RpcRequests.AppendEntriesRequest.newBuilder();
+                builder1.setData(ZeroByteStringHelper.wrap(logEntry.getData()));
+                builder1.setCommittedIndex(logEntry.getId().getIndex());
+                builder1.setTerm(logEntry.getId().getTerm());
+                builder1.setPeerId(logEntry.getLeaderId().getId());
+                getAppendEntriesRequestList().add(builder1.build());
+
+                final RpcRequests.AppendEntriesRequests.Builder builder
+                        = RpcRequests.AppendEntriesRequests.newBuilder();
                 builder.addAllArgs(getAppendEntriesRequestList());
                 RpcRequests.AppendEntriesRequests appendEntriesRequests = builder.build();
                 //rpcServices.handleApendEntriesRequests(appendEntriesRequests);
@@ -176,14 +192,17 @@ public class Replicator {
                         getAppendEntriesRequestList().size(),
                         appendEntriesRequests.getSerializedSize());
                 getInflights().add(inflight);
-                getAppendEntriesRequestList().clear();
+
                 getInflightMap().put(getAppendEntriesRequestList().get(0).getCommittedIndex(),inflight);
+                getAppendEntriesRequestList().clear();
                 return;
             }
             if(!b){
                 final RpcRequests.AppendEntriesRequest.Builder builder
                         = RpcRequests.AppendEntriesRequest.newBuilder();
-                builder.setData(ByteString.copyFrom(logEntry.getData()));
+                builder.setData(ZeroByteStringHelper
+                        .wrap(
+                                logEntry.getData()));
                 builder.setCommittedIndex(logEntry.getId().getIndex());
                 builder.setTerm(logEntry.getId().getTerm());
                 builder.setPeerId(logEntry.getLeaderId().getId());
@@ -191,11 +210,11 @@ public class Replicator {
             }
         }
     }
-    private static class LogEntryEventFactory implements EventFactory<LogEntry> {
+    private static class LogEntryEventFactory implements EventFactory<LogEntryEvent> {
 
         @Override
-        public LogEntry newInstance() {
-            return new LogEntry();
+        public LogEntryEvent newInstance() {
+            return new LogEntryEvent();
         }
     }
     /**
@@ -328,9 +347,17 @@ public class Replicator {
             //need to satisfy the currentIndexOfFollower smaller than inflight
             if (inflightLast != null &&
                     currentIndexOfFollower < (inflightLast.getStartIndex() + inflightLast.getSize())) {
-                EventTranslator<LogEntry> entryEventTranslator = (event, sequence) ->
+                EventTranslator<LogEntryEvent> entryEventTranslator = (event, sequence) ->
                 {
-                    event = NodeImpl.getNodeImple().getLogManager().getEntry(currentIndexOfFollower);
+                    event.entry = NodeImpl.getNodeImple().getLogManager().getEntry(currentIndexOfFollower);
+
+                };
+                getRingBuffer().publishEvent(entryEventTranslator);
+            }else{
+                //if not satisfy then cover the follower with leader log FROM THE BEGINNING
+                EventTranslator<LogEntryEvent> entryEventTranslator = (event, sequence) ->
+                {
+                    event.entry = NodeImpl.getNodeImple().getLogManager().getEntry(0);
 
                 };
                 getRingBuffer().publishEvent(entryEventTranslator);
@@ -338,6 +365,7 @@ public class Replicator {
 
         } catch (Exception e) {
             LOG.error("handleProbeOrFollowerDisOrderResponse error {}",e.getMessage());
+            e.printStackTrace();
         }finally {
             //getWriteLock().unlock();
         }
@@ -417,9 +445,7 @@ public class Replicator {
         return rpcServices;
     }
 
-    public Disruptor<LogEntry> getDisruptor() {
-        return disruptor;
-    }
+
 
     public ReentrantReadWriteLock getReentrantLock() {
         return reentrantLock;
@@ -453,17 +479,7 @@ public class Replicator {
         this.lastInflightIndex = lastInflightIndex;
     }
 
-    public void setDisruptor(Disruptor<LogEntry> disruptor) {
-        this.disruptor = disruptor;
-    }
 
-    public RingBuffer<LogEntry> getRingBuffer() {
-        return ringBuffer;
-    }
-
-    public void setRingBuffer(RingBuffer<LogEntry> ringBuffer) {
-        this.ringBuffer = ringBuffer;
-    }
 
     public void setRpcServices(RpcServices rpcServices) {
         this.rpcServices = rpcServices;
@@ -479,6 +495,26 @@ public class Replicator {
 
     public void setAppendEntriesRequestList(List<RpcRequests.AppendEntriesRequest> appendEntriesRequestList) {
         this.appendEntriesRequestList = appendEntriesRequestList;
+    }
+
+    public static Logger getLOG() {
+        return LOG;
+    }
+
+    public Disruptor<LogEntryEvent> getDisruptor() {
+        return disruptor;
+    }
+
+    public void setDisruptor(Disruptor<LogEntryEvent> disruptor) {
+        this.disruptor = disruptor;
+    }
+
+    public RingBuffer<LogEntryEvent> getRingBuffer() {
+        return ringBuffer;
+    }
+
+    public void setRingBuffer(RingBuffer<LogEntryEvent> ringBuffer) {
+        this.ringBuffer = ringBuffer;
     }
 
     public State getFollowerState() {

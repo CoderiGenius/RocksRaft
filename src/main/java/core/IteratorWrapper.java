@@ -16,6 +16,9 @@ public class IteratorWrapper implements Iterator {
 
     private final IteratorImpl impl;
 
+    private final String OPERATION = "LOG";
+
+
     public IteratorWrapper(IteratorImpl iterImpl) {
         super();
         this.impl = iterImpl;
@@ -33,6 +36,11 @@ public class IteratorWrapper implements Iterator {
             this.impl.next();
         }
         return data;
+    }
+
+    @Override
+    public String getOperation() {
+        return getOPERATION();
     }
 
     @Override
@@ -61,5 +69,18 @@ public class IteratorWrapper implements Iterator {
     public void setErrorAndRollback(final long ntail, final Status st) {
 
         //this.impl.setErrorAndRollback(ntail, st);
+    }
+
+    @Override
+    public int getSize() {
+        return 0;
+    }
+
+    public IteratorImpl getImpl() {
+        return impl;
+    }
+
+    public String getOPERATION() {
+        return OPERATION;
     }
 }

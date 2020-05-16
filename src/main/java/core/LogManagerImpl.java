@@ -1,6 +1,7 @@
 package core;
 
 import com.alipay.remoting.NamedThreadFactory;
+import com.google.protobuf.ZeroByteStringHelper;
 import com.lmax.disruptor.*;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
@@ -21,6 +22,7 @@ import utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -282,22 +284,38 @@ public class LogManagerImpl implements LogManager {
         List<StableClosure> storage = new ArrayList<>(256);
         AppendBatcher       ab      = new AppendBatcher(this.storage, 256, new ArrayList<>(),
                 LogManagerImpl.this.diskId);
-
+        //List<LogEntry> logEntries = new CopyOnWriteArrayList();
         @Override
         public void onEvent(StableClosureEvent stableClosureEvent, long sequence, boolean endOfBatch) throws Exception {
+
+            LOG.debug("Send to all replicators with entries sizes: {}"
+                    ,stableClosureEvent.done.getEntries().size());
+            LOG.debug("Send to all replicators with entries data: {}"
+                    ,new String(ZeroByteStringHelper.getByteArray(
+                            ZeroByteStringHelper.wrap(stableClosureEvent.done.getEntries().get(0).getData()))));
+            NodeImpl.getNodeImple().getReplicatorGroup()
+                    .sendAppendEntriesToAllReplicator(stableClosureEvent.done.getEntries());
+
             final StableClosure done = stableClosureEvent.done;
             if (done.getEntries() != null && !done.getEntries().isEmpty()) {
+//                logEntries.addAll(done.getEntries());
                 this.ab.append(done);
             }else {
                 this.lastId = this.ab.flush();
+
             }
             if (endOfBatch) {
                 this.lastId = this.ab.flush();
                 setDiskId(this.lastId);
-                //send to all replicators
-                NodeImpl.getNodeImple().getReplicatorGroup()
-                        .sendAppendEntriesToAllReplicator(stableClosureEvent.done.getEntries());
+//                LOG.debug("Send to all replicators with entries sizes: {}"
+//                        ,stableClosureEvent.done.getEntries().size());
+//                LOG.debug("Send to all replicators with entries data: {}"
+//                        ,new String(ZeroByteStringHelper.getByteArray(
+//                                ZeroByteStringHelper.wrap(stableClosureEvent.done.getEntries().get(0).getData()))));
+//                NodeImpl.getNodeImple().getReplicatorGroup()
+//                        .sendAppendEntriesToAllReplicator(stableClosureEvent.done.getEntries());
             }
+
         }
     }
 
@@ -360,6 +378,7 @@ public class LogManagerImpl implements LogManager {
                             st.setFirstIndex(storage.get(i).getFirstLogIndex());
                             st.setLastIndex(storage.get(i).getFirstLogIndex()+size);
                             //st.setTerm(storage.get(i));
+
                         }
                         this.storage.get(i).run(st);
                     } catch (Throwable t) {

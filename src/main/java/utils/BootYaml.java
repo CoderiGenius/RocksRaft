@@ -43,7 +43,7 @@ public class BootYaml {
         //加载流,获取yaml文件中的配置数据，然后转换为Map，
         //Options obj = (Options) yaml.load(resourceAsStream);
         Options obj =  yaml.loadAs(resourceAsStream,Options.class);
-        System.out.println(obj.getOtherNodes()[0].getAddress());
+        System.out.println(obj.getCurrentNodeOptions().getClientAddress());
 
     }
 }

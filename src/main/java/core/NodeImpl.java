@@ -1,6 +1,7 @@
 package core;
 
 import com.alipay.remoting.NamedThreadFactory;
+import com.google.protobuf.ZeroByteStringHelper;
 import com.lmax.disruptor.*;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
@@ -87,7 +88,7 @@ public class NodeImpl implements Node {
     private LogStorage logStorage;
     private TimerManager followerTimerManager;
     private EnClosureRpcRequest enClosureRpcRequest;
-
+    private EnClosureClientRpcRequest enClosureClientRpcRequest;
     // Max retry times when applying tasks.
     private static final int                                               MAX_APPLY_RETRY_TIMES    = 3;
     /**
@@ -122,7 +123,7 @@ public class NodeImpl implements Node {
     private StateMachine stateMachine;
     private ScheduledFuture scheduledFuture;
     private Runnable runnable;
-    private final CustomStateMachine customStateMachine = new CustomStateMachine();
+    //private final CustomStateMachine customStateMachine;
 
 
     /**
@@ -290,7 +291,7 @@ public class NodeImpl implements Node {
         final FSMCallerOptions fsmCallerOptions = new FSMCallerOptions();
         //fsmCallerOptions.setAfterShutdown(status -> afterShutdown());
 
-        setStateMachine(customStateMachine);
+        setStateMachine(new CustomStateMachine());
         fsmCallerOptions.setLogManager(this.logManager);
         fsmCallerOptions.setFsm(getStateMachine());
         fsmCallerOptions.setNode(NodeImpl.getNodeImple());
@@ -305,6 +306,8 @@ public class NodeImpl implements Node {
         setChecker();
 
         setEnClosureRpcRequest(new EnClosureRpcRequest(getRpcServicesMap()));
+        setEnClosureClientRpcRequest(new EnClosureClientRpcRequest(getClientRpcService()));
+
         return true;
     }
 
@@ -334,7 +337,7 @@ public class NodeImpl implements Node {
     }
 
     /**
-     * Called by follower when receive prob request from new leader
+     * Called by node(follower/leader) when receive prob request from new leader
      * @param request
      * @return
      */
@@ -343,8 +346,9 @@ public class NodeImpl implements Node {
         try {
 
 
-            LOG.info("Start to transform Leader from {} to {}"
-                    , getLeaderId(), request.getPeerId());
+            LOG.info("Start to transform Leader from {} to {} as {} has index:{} term:{}"
+                    , getLeaderId(), request.getPeerId(),request.getPeerId()
+                    ,request.getCommittedIndex(),request.getTerm());
             getWriteLock().lock();
             try {
                 //check if leader is valid
@@ -391,7 +395,8 @@ public class NodeImpl implements Node {
             getTaskRpcServices().get(getLeaderId().getPeerId().getEndpoint()).apply(task);
             return;
         } else if (!NodeState.leader.equals(getNodeState())) {
-            LOG.info("Current node is not in valid state {}", getNodeState());
+            LOG.info("Current node is not in valid state:{}", getNodeState());
+            getTaskRpcServices().get(getLeaderId().getPeerId().getEndpoint()).apply(task);
             Utils.runClosureInThread(task.getDone()
                     , new Status(RaftError.ENODESHUTDOWN, "Current node is not in valid state {}", getNodeState()));
             return;
@@ -400,6 +405,10 @@ public class NodeImpl implements Node {
         LogEntry logEntry = new LogEntry();
         logEntry.setData(task.getData());
         logEntry.setLeaderId(getLeaderId().getPeerId());
+        LogId logId = new LogId();
+        logId.setIndex(getLastLogIndex().get());
+        logId.setTerm(getLastLogTerm().get());
+        logEntry.setId(logId);
         int retryTimes = 0;
 
             final EventTranslator<LogEntryEvent> translator = (event, sequence) -> {
@@ -479,8 +488,12 @@ public class NodeImpl implements Node {
    public void handleReadHeartbeatRequestClosure(RpcRequests.AppendEntriesResponse response) {
 
         if(!response.getSuccess()){
-            LOG.info("Read failed! Heartbeat check failed!");
+            LOG.error("Read failed! Heartbeat check failed!");
+            return;
         }
+        getEnClosureClientRpcRequest().warpApplyToStateMachine(
+                getReadTaskScheduleMap().get(response.getReadIndex()),true);
+
 
     }
 
@@ -514,7 +527,7 @@ public class NodeImpl implements Node {
                     continue;
                 }
                 // set task entry info before adding to list.
-                task.entry.getId().setIndex(this.lastLogIndex.getAndIncrement());
+                task.entry.getId().setIndex(getLastLogIndex().getAndIncrement());
                 task.entry.getId().setTerm(this.getLastLogTerm().get());
 
                 task.entry.setType(EnumOutter.EntryType.ENTRY_TYPE_DATA);
@@ -546,7 +559,7 @@ public class NodeImpl implements Node {
                     continue;
                 }
                 // set task entry info before adding to list.
-                task.entry.getId().setIndex(this.lastLogIndex.getAndIncrement());
+                task.entry.getId().setIndex(getLastLogIndex().getAndIncrement());
                 task.entry.getId().setTerm(this.getLastLogTerm().get());
 
                 task.entry.setType(EnumOutter.EntryType.ENTRY_TYPE_DATA);
@@ -566,23 +579,28 @@ public class NodeImpl implements Node {
      */
     public boolean handleFollowerStableEvent(RpcRequests.NotifyFollowerStableRequest notifyFollowerStableRequest) {
 
-        getBallotBoxConcurrentHashMap()
-                .get(notifyFollowerStableRequest.getFirstIndex())
-                .checkGranted(notifyFollowerStableRequest.getPeerId()
-                        ,notifyFollowerStableRequest.getFirstIndex()
-                        ,notifyFollowerStableRequest.getLastIndex()-notifyFollowerStableRequest.getFirstIndex());
-    return true;
+        try {
+            getBallotBoxConcurrentHashMap()
+                    .get(notifyFollowerStableRequest.getFirstIndex())
+                    .checkGranted(notifyFollowerStableRequest.getPeerId()
+                            , notifyFollowerStableRequest.getFirstIndex()
+                            , notifyFollowerStableRequest.getLastIndex() - notifyFollowerStableRequest.getFirstIndex());
+            return true;
+        } catch (Exception e) {
+            LOG.error("handleFollowerStableEvent error {}",e.getMessage());
+        }
+        return false;
     }
-
     /**
      * Invoked by followers when received appendEntries from leader
      * @param appendEntriesRequest
      * @return
      */
-    public boolean followerSetLogEvent
-    (RpcRequests.AppendEntriesRequest appendEntriesRequest) {
+    public boolean followerSetLogEvent(RpcRequests.AppendEntriesRequest appendEntriesRequest) {
+        LOG.debug("Follower receive log event");
        LogEntry logEntry = new LogEntry();
-       logEntry.setData(ByteBuffer.wrap(appendEntriesRequest.getData().toByteArray()));
+       logEntry.setData(ByteBuffer.wrap(
+               ZeroByteStringHelper.getByteArray(appendEntriesRequest.getData())));
         final EventTranslator<LogEntryEvent> translator = (event, sequence) -> {
             event.reset();
             event.entry = logEntry;
@@ -695,6 +713,8 @@ public class NodeImpl implements Node {
                 appendEntriesResponse.getPeerId(),appendEntriesResponse.getTerm());
 
        if (!appendEntriesResponse.getSuccess()) {
+           LOG.warn("AppendEntries warning {} target peer:{}"
+                   ,appendEntriesResponse.getReason(),appendEntriesResponse.getPeerId());
            //log rePlay at the given position
            NodeImpl.getNodeImple()
                    .getReplicatorGroup().sendInflight(
@@ -767,8 +787,8 @@ public class NodeImpl implements Node {
 
     public boolean checkIfCurrentNodeCanVoteOthers() {
         //only leader, follower, preCandidate, NODE_STATE can vote others
-        if (NodeState.preCandidate.equals(getNodeState())
-                || NodeState.follower.equals(getNodeState())
+        if (NodeState.follower.equals(getNodeState())
+                ||NodeState.preCandidate.equals(getNodeState())
                 || NodeState.leader.equals(getNodeState())
                 || NodeState.NODE_STATE.equals(getNodeState())) {
             return true;
@@ -1016,6 +1036,14 @@ public class NodeImpl implements Node {
 
     public void setBallotBoxConcurrentHashMap(Map<Long, BallotBox> ballotBoxConcurrentHashMap) {
         this.ballotBoxConcurrentHashMap = ballotBoxConcurrentHashMap;
+    }
+
+    public EnClosureClientRpcRequest getEnClosureClientRpcRequest() {
+        return enClosureClientRpcRequest;
+    }
+
+    public void setEnClosureClientRpcRequest(EnClosureClientRpcRequest enClosureClientRpcRequest) {
+        this.enClosureClientRpcRequest = enClosureClientRpcRequest;
     }
 
     public AtomicLong getStableLogIndex() {

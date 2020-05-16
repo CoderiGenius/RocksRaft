@@ -130,6 +130,25 @@ public class NodeOptions extends RpcOptions {
     private RaftServiceFactory             serviceFactory         = defaultServiceFactory;
 
 
+    private String clientAddress;
+    private String clientPort;
+
+    public String getClientAddress() {
+        return clientAddress;
+    }
+
+    public void setClientAddress(String clientAddress) {
+        this.clientAddress = clientAddress;
+    }
+
+    public String getClientPort() {
+        return clientPort;
+    }
+
+    public void setClientPort(String clientPort) {
+        this.clientPort = clientPort;
+    }
+
     private int taskPort;
 
     public int getApplyBatch() {

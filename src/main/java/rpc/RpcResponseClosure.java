@@ -31,12 +31,13 @@ public class RpcResponseClosure<T>  implements SofaResponseCallback<T> {
     @Override
     public void onAppResponse(Object o, String s, RequestBase requestBase) {
 
-        LOG.debug("Recvieve response:requestBase: {} requestString: {}",requestBase.toString(),s);
+        LOG.debug("Receive response:requestBase: {} requestString: {}",requestBase.toString(),s);
         switch (requestBase.getMethodName()) {
-            case "handleApendEntriesRequest":
+            case "handleAppendEntriesRequest":
                 RpcRequests.AppendEntriesResponse appendEntriesResponse =
                         (RpcRequests.AppendEntriesResponse)o;
                 NodeImpl.getNodeImple().handleAppendEntriesResponse(appendEntriesResponse);
+                return;
             case "handlePreVoteRequest":
                 RpcRequests.RequestPreVoteResponse requestPreVoteResponse =
                         (RpcRequests.RequestPreVoteResponse)o;
@@ -56,11 +57,25 @@ public class RpcResponseClosure<T>  implements SofaResponseCallback<T> {
                 }else {
                     NodeImpl.getNodeImple().handleToApplyResponse(response);
                 }
+                return;
             case "handleReadHeartbeatrequest":
                 RpcRequests.AppendEntriesResponse appendEntriesResponse1
                         = (RpcRequests.AppendEntriesResponse)o;
                 NodeImpl.getNodeImple().handleReadHeartbeatRequestClosure(appendEntriesResponse1);
+                return;
+            case "handleApendEntriesRequests":
+                RpcRequests.AppendEntriesResponses appendEntriesResponses =
+                        (RpcRequests.AppendEntriesResponses)o;
 
+                for (RpcRequests.AppendEntriesResponse a:
+                        appendEntriesResponses.getArgsList() ) {
+                    NodeImpl.getNodeImple().handleAppendEntriesResponse(a);
+                }
+                return;
+            case "handleFollowerStableRequest":
+                LOG.info("Follower invoke follower stable request success result:{}"
+                        ,((RpcRequests.NotifyFollowerStableResponse)o).toString());
+                return;
             default:
                 LOG.error("RPC Request closure mismatched, requestBase: {} requestString: {}"
                         ,requestBase.toString(),s);

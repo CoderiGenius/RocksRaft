@@ -15,7 +15,12 @@ public class Start {
     private static final Logger LOG     = LoggerFactory.getLogger(Start.class);
     public static void main(String[] args) throws InterruptedException {
 
-
+//        Runnable runnable1 = new Runnable() {
+//            @Override
+//            public void run() {
+//                System.out.println(1);
+//            }
+//        }
 
 
         Runnable runnable = () -> {

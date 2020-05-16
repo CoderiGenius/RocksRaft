@@ -83,14 +83,7 @@ public class RaftGroupService {
         this.nodeOptions = nodeOptions;
         this.rpcServer = rpcServer;
 
-//        //超时检测线程池
-//            this.heartbeat = new Heartbeat(1
-//            ,2,0
-//            , TimeUnit.MILLISECONDS,new LinkedBlockingDeque<>()
-//            ,new HeartbeatThreadFactory(),new ThreadPoolExecutor.DiscardPolicy());
-//            //放入超时检测线程
-//
-//        this.heartbeat.getThreadPoolExecutor().execute();
+
 
     }
 
@@ -173,37 +166,20 @@ public class RaftGroupService {
             LOG.debug("Add task rpc service {},{}",p.getEndpoint(),node.getTaskRpcServices().get(p.getEndpoint()));
             LOG.debug("Add task rpc service {}",consumerConfigForTasks.getDirectUrl());
 
-//            Runnable runnable = () -> {
-//                Task task = new Task();
-//                KVEntity kvEntity = new KVEntity("1","123");
-//
-//
-//                try {
-//
-//                    Thread.sleep(2000);
-//                    ByteBuffer byteBuffer = ByteBuffer.wrap("123".getBytes());
-//
-//                    task.setData(byteBuffer);
-//                    taskRpcServices.apply(task);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            };
-//            Thread thread = new Thread(runnable);
-//            thread.start();
+
+
+            //Set client task rpc service for notifying the client the result of read index
+            ConsumerConfig<ClientRpcService> readConsumerConfig = new ConsumerConfig<ClientRpcService>()
+                    .setInterfaceId(ClientRpcService.class.getName())
+                    .setProtocol("bolt")
+                    .setConnectTimeout(2000)
+                    .setReconnectPeriod(1000)
+                    .setRetries(100)
+                    .setDirectUrl("bolt"+"://"+nodeOptions.getClientAddress()+":"+nodeOptions.getClientPort());
+
+            NodeImpl.getNodeImple().setClientRpcService(readConsumerConfig.refer());
         }
 
-
-        //heartbeat
-//        Heartbeat heartbeat = new Heartbeat(1, 20
-//                , 0, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>()
-//                , new HeartbeatThreadFactory(), new ThreadPoolExecutor.DiscardPolicy());
-//
-//
-//        Thread.sleep(5000);
-//        heartbeat.setChecker(
-//                new TimeOutChecker( Utils.monotonicMs(), new ElectionTimeOutClosure(),""));
-//        LOG.info("Add initial Heartbeat");
         node.init();
         return node;
     }

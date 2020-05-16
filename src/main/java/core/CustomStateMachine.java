@@ -1,10 +1,14 @@
 package core;
 
 import entity.Iterator;
+import entity.ReadTask;
+import entity.RpcResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -15,15 +19,34 @@ import java.util.concurrent.locks.ReentrantLock;
 public class CustomStateMachine extends StateMachineAdapter{
     private static final Logger LOG = LoggerFactory.getLogger(CustomStateMachine.class);
     private final Lock lock                  = new ReentrantLock();
-    private final RocksDBStorage rocksDBStorage = new RocksDBStorageImpl();
+    private final RocksDBStorage rocksDBStorage = RocksDBStorageImpl.getRocksDBStorage();
 
     @Override
     public void onApply(Iterator iter) {
         this.lock.lock();
         try {
-            while (iter.hasNext()){
-                rocksDBStorage.put(toBytes(iter.getIndex()),getByteArrayFromByteBuffer(iter.getData()));
+            switch (iter.getOperation()){
+                case "LOG":
+                    while (iter.hasNext()){
+                        rocksDBStorage.put(toBytes(iter.getIndex()),getByteArrayFromByteBuffer(iter.getData()));
+                    }
+                    iter.next();
+                    return;
+                case "READ":
+                    List<ReadTask> list = new ArrayList<>(iter.getSize());
+                    while (iter.hasNext()){
+                        ReadTask readTask = new ReadTask(
+                                rocksDBStorage.get(getByteArrayFromByteBuffer(iter.getData())));
+                        list.add(readTask);
+                        iter.next();
+                    }
+                    NodeImpl.getNodeImple().getEnClosureClientRpcRequest()
+                            .handleNotifyClient(list,true,new RpcResult());
+                    return;
+                default:
+                    LOG.error("unknow apply operation");
             }
+
         } catch (Exception e) {
             LOG.error("CustomStateMachine apply error {}",e.getMessage());
         }finally {

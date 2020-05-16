@@ -9,6 +9,10 @@ import java.nio.ByteBuffer;
 
 public interface Iterator extends java.util.Iterator<ByteBuffer>{
 
+
+
+    String getOperation();
+
     /**
      * Return the data whose content is the same as what was passed to
      * Node#apply(Task) in the leader node.
@@ -55,4 +59,6 @@ public interface Iterator extends java.util.Iterator<ByteBuffer>{
      * @param st    Status to describe the detail of the error.
      */
     void setErrorAndRollback(final long ntail, final Status st);
+
+    int getSize();
 }

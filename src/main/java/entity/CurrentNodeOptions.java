@@ -21,6 +21,24 @@ public class CurrentNodeOptions{
     private String logStorageName;
     private String taskExecuteMethod;
 
+    private String clientAddress;
+    private String clientPort;
+
+    public String getClientAddress() {
+        return clientAddress;
+    }
+
+    public void setClientAddress(String clientAddress) {
+        this.clientAddress = clientAddress;
+    }
+
+    public String getClientPort() {
+        return clientPort;
+    }
+
+    public void setClientPort(String clientPort) {
+        this.clientPort = clientPort;
+    }
 
     public String getTaskExecuteMethod() {
         return taskExecuteMethod;
@@ -46,6 +64,7 @@ public class CurrentNodeOptions{
                 ", rpcProtocol='" + rpcProtocol + '\'' +
                 ", serialization='" + serialization + '\'' +
                 ", port=" + port +
+                ", taskPort=" + taskPort +
                 ", daemon=" + daemon +
                 ", groupId='" + groupId + '\'' +
                 ", address='" + address + '\'' +
@@ -53,6 +72,9 @@ public class CurrentNodeOptions{
                 ", peerId='" + peerId + '\'' +
                 ", logStoragePath='" + logStoragePath + '\'' +
                 ", logStorageName='" + logStorageName + '\'' +
+                ", taskExecuteMethod='" + taskExecuteMethod + '\'' +
+                ", clientAddress='" + clientAddress + '\'' +
+                ", clientPort='" + clientPort + '\'' +
                 '}';
     }
 

@@ -5,6 +5,7 @@ import entity.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -28,12 +29,16 @@ public class ClientRpcServiceImpl implements ClientRpcService {
     @Override
     public void readResult(ReadTask readTask) {
         LOG.info("Receive ReadTask {}",readTask);
-
+        String result = new String(readTask.getTaskBytes(), StandardCharsets.UTF_8);
+        LOG.info("Read result:"+result);
     }
 
     @Override
     public void readResults(List<ReadTask> readTaskList) {
         LOG.info("Receive readTaskList {}",readTaskList);
-
+        for (ReadTask r :
+                readTaskList) {
+            readResult(r);
+        }
     }
 }
