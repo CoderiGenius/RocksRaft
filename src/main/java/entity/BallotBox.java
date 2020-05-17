@@ -47,6 +47,7 @@ public class BallotBox {
 
     public void grant(final String peerId) {
 
+        LOG.debug("log at {} length:{} was granted by {}",getCurrentIndex(),length,peerId);
         if(findPeer(peerId)){
             this.quorum.decrementAndGet();
         }
@@ -71,21 +72,39 @@ public class BallotBox {
     }
 
     /**
-     * check if the ballot box can apply the log to the state machine
+     * Check if the ballot box can apply the log to the state machine
+     * Rules：check if it is sequential:if it is sequential then apply
+     * if it is not then mark it and wait for the front to apply
      */
     public void checkBallotBoxToApply(){
-        if (BallotBoxState.Applied.equals(getBallotBoxState())) {
-            //already granted by most of the followers, apply to state machine now
-            NodeImpl.getNodeImple().getFsmCaller().onCommitted(currentIndex+length);
-        }
+
+        LOG.debug("checkBallotBoxToApply applied:{} currentIndex:{} length:{} stableLogIndex:{} "
+                ,getBallotBoxState(),currentIndex,length,NodeImpl.getNodeImple().getStableLogIndex());
+
+        //1、Need to make sure that the ballot box is granted by most of peers
+        //2、Need to make sure that the log is sequential. if not, wait for the front one to be applied
+        //If yes, apply the current log and check the next one by the way.
+
         if (isGranted() &&
-                this.currentIndex == (NodeImpl.getNodeImple().getStableLogIndex().get()-length + 1)) {
+                this.currentIndex == (NodeImpl.getNodeImple().getStableLogIndex().get()+ 1)||
+                isGranted() &&
+                        //Sometimes the stable log index is equals to currentIndex. For example
+                        // the startup the stable log index is 0 and currentIndex is also 0
+                        this.currentIndex == (NodeImpl.getNodeImple().getStableLogIndex().get())) {
             //check if it is sequential
             //on state machine apply
             setBallotBoxState(BallotBoxState.Applied);
             NodeImpl.getNodeImple().getFsmCaller().onCommitted(currentIndex+length);
-            NodeImpl.getNodeImple().getBallotBoxConcurrentHashMap()
-                    .get(this.currentIndex + length).checkBallotBoxToApply();
+            //check next ballot box to apply
+            BallotBox nextBallotBox = NodeImpl.getNodeImple().getBallotBoxConcurrentHashMap()
+                    .get(this.currentIndex + length + 1);
+            if (nextBallotBox != null) {
+                nextBallotBox.checkBallotBoxToApply();
+            }
+        }else{
+            // if is not sequential, wait the front one to be applied
+            LOG.debug("Log granted disorder，wait the front one");
+
         }
 
     }
@@ -97,8 +116,14 @@ public class BallotBox {
      */
     public boolean isGranted(){
 
-        if (BallotBoxState.Granted.equals(getBallotBoxState()) || this.quorum.get() <= 0) {
-            setBallotBoxState(BallotBoxState.Granted);
+//        if (BallotBoxState.Granted.equals(getBallotBoxState()) || this.quorum.get() <= 0) {
+//            setBallotBoxState(BallotBoxState.Granted);
+//            return true;
+//        }
+//        return false;
+
+        if (this.quorum.get() <= 0) {
+
             return true;
         }
         return false;

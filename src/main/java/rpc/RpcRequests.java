@@ -4186,14 +4186,14 @@ public final class RpcRequests {
     long getTerm();
 
     /**
-     * <code>int64 last_log_term = 4;</code>
+     * <code>int64 committed_log_term = 4;</code>
      */
-    long getLastLogTerm();
+    long getCommittedLogTerm();
 
     /**
-     * <code>int64 last_log_index = 5;</code>
+     * <code>int64 committed_log_index = 5;</code>
      */
-    long getLastLogIndex();
+    long getCommittedLogIndex();
 
     /**
      * <code>bool pre_vote = 6;</code>
@@ -4216,8 +4216,8 @@ public final class RpcRequests {
       serverId_ = "";
       peerId_ = "";
       term_ = 0L;
-      lastLogTerm_ = 0L;
-      lastLogIndex_ = 0L;
+      committedLogTerm_ = 0L;
+      committedLogIndex_ = 0L;
       preVote_ = false;
     }
 
@@ -4264,12 +4264,12 @@ public final class RpcRequests {
             }
             case 32: {
 
-              lastLogTerm_ = input.readInt64();
+              committedLogTerm_ = input.readInt64();
               break;
             }
             case 40: {
 
-              lastLogIndex_ = input.readInt64();
+              committedLogIndex_ = input.readInt64();
               break;
             }
             case 48: {
@@ -4386,22 +4386,22 @@ public final class RpcRequests {
       return term_;
     }
 
-    public static final int LAST_LOG_TERM_FIELD_NUMBER = 4;
-    private long lastLogTerm_;
+    public static final int COMMITTED_LOG_TERM_FIELD_NUMBER = 4;
+    private long committedLogTerm_;
     /**
-     * <code>int64 last_log_term = 4;</code>
+     * <code>int64 committed_log_term = 4;</code>
      */
-    public long getLastLogTerm() {
-      return lastLogTerm_;
+    public long getCommittedLogTerm() {
+      return committedLogTerm_;
     }
 
-    public static final int LAST_LOG_INDEX_FIELD_NUMBER = 5;
-    private long lastLogIndex_;
+    public static final int COMMITTED_LOG_INDEX_FIELD_NUMBER = 5;
+    private long committedLogIndex_;
     /**
-     * <code>int64 last_log_index = 5;</code>
+     * <code>int64 committed_log_index = 5;</code>
      */
-    public long getLastLogIndex() {
-      return lastLogIndex_;
+    public long getCommittedLogIndex() {
+      return committedLogIndex_;
     }
 
     public static final int PRE_VOTE_FIELD_NUMBER = 6;
@@ -4436,11 +4436,11 @@ public final class RpcRequests {
       if (term_ != 0L) {
         output.writeInt64(3, term_);
       }
-      if (lastLogTerm_ != 0L) {
-        output.writeInt64(4, lastLogTerm_);
+      if (committedLogTerm_ != 0L) {
+        output.writeInt64(4, committedLogTerm_);
       }
-      if (lastLogIndex_ != 0L) {
-        output.writeInt64(5, lastLogIndex_);
+      if (committedLogIndex_ != 0L) {
+        output.writeInt64(5, committedLogIndex_);
       }
       if (preVote_ != false) {
         output.writeBool(6, preVote_);
@@ -4464,13 +4464,13 @@ public final class RpcRequests {
         size += com.google.protobuf.CodedOutputStream
                 .computeInt64Size(3, term_);
       }
-      if (lastLogTerm_ != 0L) {
+      if (committedLogTerm_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-                .computeInt64Size(4, lastLogTerm_);
+                .computeInt64Size(4, committedLogTerm_);
       }
-      if (lastLogIndex_ != 0L) {
+      if (committedLogIndex_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-                .computeInt64Size(5, lastLogIndex_);
+                .computeInt64Size(5, committedLogIndex_);
       }
       if (preVote_ != false) {
         size += com.google.protobuf.CodedOutputStream
@@ -4498,10 +4498,10 @@ public final class RpcRequests {
               .equals(other.getPeerId());
       result = result && (getTerm()
               == other.getTerm());
-      result = result && (getLastLogTerm()
-              == other.getLastLogTerm());
-      result = result && (getLastLogIndex()
-              == other.getLastLogIndex());
+      result = result && (getCommittedLogTerm()
+              == other.getCommittedLogTerm());
+      result = result && (getCommittedLogIndex()
+              == other.getCommittedLogIndex());
       result = result && (getPreVote()
               == other.getPreVote());
       result = result && unknownFields.equals(other.unknownFields);
@@ -4522,12 +4522,12 @@ public final class RpcRequests {
       hash = (37 * hash) + TERM_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
               getTerm());
-      hash = (37 * hash) + LAST_LOG_TERM_FIELD_NUMBER;
+      hash = (37 * hash) + COMMITTED_LOG_TERM_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-              getLastLogTerm());
-      hash = (37 * hash) + LAST_LOG_INDEX_FIELD_NUMBER;
+              getCommittedLogTerm());
+      hash = (37 * hash) + COMMITTED_LOG_INDEX_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-              getLastLogIndex());
+              getCommittedLogIndex());
       hash = (37 * hash) + PRE_VOTE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
               getPreVote());
@@ -4670,9 +4670,9 @@ public final class RpcRequests {
 
         term_ = 0L;
 
-        lastLogTerm_ = 0L;
+        committedLogTerm_ = 0L;
 
-        lastLogIndex_ = 0L;
+        committedLogIndex_ = 0L;
 
         preVote_ = false;
 
@@ -4705,8 +4705,8 @@ public final class RpcRequests {
         result.serverId_ = serverId_;
         result.peerId_ = peerId_;
         result.term_ = term_;
-        result.lastLogTerm_ = lastLogTerm_;
-        result.lastLogIndex_ = lastLogIndex_;
+        result.committedLogTerm_ = committedLogTerm_;
+        result.committedLogIndex_ = committedLogIndex_;
         result.preVote_ = preVote_;
         onBuilt();
         return result;
@@ -4767,11 +4767,11 @@ public final class RpcRequests {
         if (other.getTerm() != 0L) {
           setTerm(other.getTerm());
         }
-        if (other.getLastLogTerm() != 0L) {
-          setLastLogTerm(other.getLastLogTerm());
+        if (other.getCommittedLogTerm() != 0L) {
+          setCommittedLogTerm(other.getCommittedLogTerm());
         }
-        if (other.getLastLogIndex() != 0L) {
-          setLastLogIndex(other.getLastLogIndex());
+        if (other.getCommittedLogIndex() != 0L) {
+          setCommittedLogIndex(other.getCommittedLogIndex());
         }
         if (other.getPreVote() != false) {
           setPreVote(other.getPreVote());
@@ -4969,54 +4969,54 @@ public final class RpcRequests {
         return this;
       }
 
-      private long lastLogTerm_ ;
+      private long committedLogTerm_ ;
       /**
-       * <code>int64 last_log_term = 4;</code>
+       * <code>int64 committed_log_term = 4;</code>
        */
-      public long getLastLogTerm() {
-        return lastLogTerm_;
+      public long getCommittedLogTerm() {
+        return committedLogTerm_;
       }
       /**
-       * <code>int64 last_log_term = 4;</code>
+       * <code>int64 committed_log_term = 4;</code>
        */
-      public Builder setLastLogTerm(long value) {
+      public Builder setCommittedLogTerm(long value) {
 
-        lastLogTerm_ = value;
+        committedLogTerm_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>int64 last_log_term = 4;</code>
+       * <code>int64 committed_log_term = 4;</code>
        */
-      public Builder clearLastLogTerm() {
+      public Builder clearCommittedLogTerm() {
 
-        lastLogTerm_ = 0L;
+        committedLogTerm_ = 0L;
         onChanged();
         return this;
       }
 
-      private long lastLogIndex_ ;
+      private long committedLogIndex_ ;
       /**
-       * <code>int64 last_log_index = 5;</code>
+       * <code>int64 committed_log_index = 5;</code>
        */
-      public long getLastLogIndex() {
-        return lastLogIndex_;
+      public long getCommittedLogIndex() {
+        return committedLogIndex_;
       }
       /**
-       * <code>int64 last_log_index = 5;</code>
+       * <code>int64 committed_log_index = 5;</code>
        */
-      public Builder setLastLogIndex(long value) {
+      public Builder setCommittedLogIndex(long value) {
 
-        lastLogIndex_ = value;
+        committedLogIndex_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>int64 last_log_index = 5;</code>
+       * <code>int64 committed_log_index = 5;</code>
        */
-      public Builder clearLastLogIndex() {
+      public Builder clearCommittedLogIndex() {
 
-        lastLogIndex_ = 0L;
+        committedLogIndex_ = 0L;
         onChanged();
         return this;
       }
@@ -5807,14 +5807,14 @@ public final class RpcRequests {
     long getPreTerm();
 
     /**
-     * <code>int64 last_log_term = 4;</code>
+     * <code>int64 committed_log_index = 4;</code>
      */
-    long getLastLogTerm();
+    long getCommittedLogIndex();
 
     /**
-     * <code>int64 last_log_index = 5;</code>
+     * <code>int64 committed_log_term = 5;</code>
      */
-    long getLastLogIndex();
+    long getCommittedLogTerm();
 
     /**
      * <code>bool pre_vote = 6;</code>
@@ -5847,8 +5847,8 @@ public final class RpcRequests {
       serverId_ = "";
       peerId_ = "";
       preTerm_ = 0L;
-      lastLogTerm_ = 0L;
-      lastLogIndex_ = 0L;
+      committedLogIndex_ = 0L;
+      committedLogTerm_ = 0L;
       preVote_ = false;
       peerName_ = "";
     }
@@ -5896,12 +5896,12 @@ public final class RpcRequests {
             }
             case 32: {
 
-              lastLogTerm_ = input.readInt64();
+              committedLogIndex_ = input.readInt64();
               break;
             }
             case 40: {
 
-              lastLogIndex_ = input.readInt64();
+              committedLogTerm_ = input.readInt64();
               break;
             }
             case 48: {
@@ -6024,22 +6024,22 @@ public final class RpcRequests {
       return preTerm_;
     }
 
-    public static final int LAST_LOG_TERM_FIELD_NUMBER = 4;
-    private long lastLogTerm_;
+    public static final int COMMITTED_LOG_INDEX_FIELD_NUMBER = 4;
+    private long committedLogIndex_;
     /**
-     * <code>int64 last_log_term = 4;</code>
+     * <code>int64 committed_log_index = 4;</code>
      */
-    public long getLastLogTerm() {
-      return lastLogTerm_;
+    public long getCommittedLogIndex() {
+      return committedLogIndex_;
     }
 
-    public static final int LAST_LOG_INDEX_FIELD_NUMBER = 5;
-    private long lastLogIndex_;
+    public static final int COMMITTED_LOG_TERM_FIELD_NUMBER = 5;
+    private long committedLogTerm_;
     /**
-     * <code>int64 last_log_index = 5;</code>
+     * <code>int64 committed_log_term = 5;</code>
      */
-    public long getLastLogIndex() {
-      return lastLogIndex_;
+    public long getCommittedLogTerm() {
+      return committedLogTerm_;
     }
 
     public static final int PRE_VOTE_FIELD_NUMBER = 6;
@@ -6108,11 +6108,11 @@ public final class RpcRequests {
       if (preTerm_ != 0L) {
         output.writeInt64(3, preTerm_);
       }
-      if (lastLogTerm_ != 0L) {
-        output.writeInt64(4, lastLogTerm_);
+      if (committedLogIndex_ != 0L) {
+        output.writeInt64(4, committedLogIndex_);
       }
-      if (lastLogIndex_ != 0L) {
-        output.writeInt64(5, lastLogIndex_);
+      if (committedLogTerm_ != 0L) {
+        output.writeInt64(5, committedLogTerm_);
       }
       if (preVote_ != false) {
         output.writeBool(6, preVote_);
@@ -6139,13 +6139,13 @@ public final class RpcRequests {
         size += com.google.protobuf.CodedOutputStream
                 .computeInt64Size(3, preTerm_);
       }
-      if (lastLogTerm_ != 0L) {
+      if (committedLogIndex_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-                .computeInt64Size(4, lastLogTerm_);
+                .computeInt64Size(4, committedLogIndex_);
       }
-      if (lastLogIndex_ != 0L) {
+      if (committedLogTerm_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-                .computeInt64Size(5, lastLogIndex_);
+                .computeInt64Size(5, committedLogTerm_);
       }
       if (preVote_ != false) {
         size += com.google.protobuf.CodedOutputStream
@@ -6176,10 +6176,10 @@ public final class RpcRequests {
               .equals(other.getPeerId());
       result = result && (getPreTerm()
               == other.getPreTerm());
-      result = result && (getLastLogTerm()
-              == other.getLastLogTerm());
-      result = result && (getLastLogIndex()
-              == other.getLastLogIndex());
+      result = result && (getCommittedLogIndex()
+              == other.getCommittedLogIndex());
+      result = result && (getCommittedLogTerm()
+              == other.getCommittedLogTerm());
       result = result && (getPreVote()
               == other.getPreVote());
       result = result && getPeerName()
@@ -6202,12 +6202,12 @@ public final class RpcRequests {
       hash = (37 * hash) + PRE_TERM_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
               getPreTerm());
-      hash = (37 * hash) + LAST_LOG_TERM_FIELD_NUMBER;
+      hash = (37 * hash) + COMMITTED_LOG_INDEX_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-              getLastLogTerm());
-      hash = (37 * hash) + LAST_LOG_INDEX_FIELD_NUMBER;
+              getCommittedLogIndex());
+      hash = (37 * hash) + COMMITTED_LOG_TERM_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-              getLastLogIndex());
+              getCommittedLogTerm());
       hash = (37 * hash) + PRE_VOTE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
               getPreVote());
@@ -6352,9 +6352,9 @@ public final class RpcRequests {
 
         preTerm_ = 0L;
 
-        lastLogTerm_ = 0L;
+        committedLogIndex_ = 0L;
 
-        lastLogIndex_ = 0L;
+        committedLogTerm_ = 0L;
 
         preVote_ = false;
 
@@ -6389,8 +6389,8 @@ public final class RpcRequests {
         result.serverId_ = serverId_;
         result.peerId_ = peerId_;
         result.preTerm_ = preTerm_;
-        result.lastLogTerm_ = lastLogTerm_;
-        result.lastLogIndex_ = lastLogIndex_;
+        result.committedLogIndex_ = committedLogIndex_;
+        result.committedLogTerm_ = committedLogTerm_;
         result.preVote_ = preVote_;
         result.peerName_ = peerName_;
         onBuilt();
@@ -6452,11 +6452,11 @@ public final class RpcRequests {
         if (other.getPreTerm() != 0L) {
           setPreTerm(other.getPreTerm());
         }
-        if (other.getLastLogTerm() != 0L) {
-          setLastLogTerm(other.getLastLogTerm());
+        if (other.getCommittedLogIndex() != 0L) {
+          setCommittedLogIndex(other.getCommittedLogIndex());
         }
-        if (other.getLastLogIndex() != 0L) {
-          setLastLogIndex(other.getLastLogIndex());
+        if (other.getCommittedLogTerm() != 0L) {
+          setCommittedLogTerm(other.getCommittedLogTerm());
         }
         if (other.getPreVote() != false) {
           setPreVote(other.getPreVote());
@@ -6658,54 +6658,54 @@ public final class RpcRequests {
         return this;
       }
 
-      private long lastLogTerm_ ;
+      private long committedLogIndex_ ;
       /**
-       * <code>int64 last_log_term = 4;</code>
+       * <code>int64 committed_log_index = 4;</code>
        */
-      public long getLastLogTerm() {
-        return lastLogTerm_;
+      public long getCommittedLogIndex() {
+        return committedLogIndex_;
       }
       /**
-       * <code>int64 last_log_term = 4;</code>
+       * <code>int64 committed_log_index = 4;</code>
        */
-      public Builder setLastLogTerm(long value) {
+      public Builder setCommittedLogIndex(long value) {
 
-        lastLogTerm_ = value;
+        committedLogIndex_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>int64 last_log_term = 4;</code>
+       * <code>int64 committed_log_index = 4;</code>
        */
-      public Builder clearLastLogTerm() {
+      public Builder clearCommittedLogIndex() {
 
-        lastLogTerm_ = 0L;
+        committedLogIndex_ = 0L;
         onChanged();
         return this;
       }
 
-      private long lastLogIndex_ ;
+      private long committedLogTerm_ ;
       /**
-       * <code>int64 last_log_index = 5;</code>
+       * <code>int64 committed_log_term = 5;</code>
        */
-      public long getLastLogIndex() {
-        return lastLogIndex_;
+      public long getCommittedLogTerm() {
+        return committedLogTerm_;
       }
       /**
-       * <code>int64 last_log_index = 5;</code>
+       * <code>int64 committed_log_term = 5;</code>
        */
-      public Builder setLastLogIndex(long value) {
+      public Builder setCommittedLogTerm(long value) {
 
-        lastLogIndex_ = value;
+        committedLogTerm_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>int64 last_log_index = 5;</code>
+       * <code>int64 committed_log_term = 5;</code>
        */
-      public Builder clearLastLogIndex() {
+      public Builder clearCommittedLogTerm() {
 
-        lastLogIndex_ = 0L;
+        committedLogTerm_ = 0L;
         onChanged();
         return this;
       }
@@ -15537,47 +15537,48 @@ public final class RpcRequests {
                     "orMsg\030\002 \001(\t\"E\n\021TimeoutNowRequest\022\021\n\tserv" +
                     "er_id\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\022\014\n\004term\030\003 \001" +
                     "(\003\"3\n\022TimeoutNowResponse\022\014\n\004term\030\001 \001(\003\022\017" +
-                    "\n\007success\030\002 \001(\010\"\207\001\n\022RequestVoteRequest\022\021" +
+                    "\n\007success\030\002 \001(\010\"\221\001\n\022RequestVoteRequest\022\021" +
                     "\n\tserver_id\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\022\014\n\004te" +
-                    "rm\030\003 \001(\003\022\025\n\rlast_log_term\030\004 \001(\003\022\026\n\016last_" +
-                    "log_index\030\005 \001(\003\022\020\n\010pre_vote\030\006 \001(\010\"G\n\023Req" +
-                    "uestVoteResponse\022\014\n\004term\030\001 \001(\003\022\017\n\007grante" +
-                    "d\030\002 \001(\010\022\021\n\tpeer_name\030\003 \001(\t\"\241\001\n\025RequestPr" +
-                    "eVoteRequest\022\021\n\tserver_id\030\001 \001(\t\022\017\n\007peer_" +
-                    "id\030\002 \001(\t\022\020\n\010pre_term\030\003 \001(\003\022\025\n\rlast_log_t" +
-                    "erm\030\004 \001(\003\022\026\n\016last_log_index\030\005 \001(\003\022\020\n\010pre" +
-                    "_vote\030\006 \001(\010\022\021\n\tpeer_name\030\007 \001(\t\"J\n\026Reques" +
-                    "tPreVoteResponse\022\014\n\004term\030\001 \001(\003\022\017\n\007grante" +
-                    "d\030\002 \001(\010\022\021\n\tpeer_name\030\003 \001(\t\"@\n\032AppendEntr" +
-                    "iesRequestHeader\022\021\n\tserver_id\030\001 \001(\t\022\017\n\007p" +
-                    "eer_id\030\002 \001(\t\"\232\002\n\024AppendEntriesRequest\022\020\n" +
-                    "\010group_id\030\001 \001(\t\022\021\n\tserver_id\030\002 \001(\t\022\017\n\007pe" +
-                    "er_id\030\003 \001(\t\022\014\n\004term\030\004 \001(\003\022\025\n\rprev_log_te" +
-                    "rm\030\005 \001(\003\022\026\n\016prev_log_index\030\006 \001(\003\022$\n\007entr" +
-                    "ies\030\007 \001(\0132\023.protobuf.EntryMeta\022\027\n\017commit" +
-                    "ted_index\030\010 \001(\003\022\014\n\004data\030\t \001(\014\022\017\n\007address" +
-                    "\030\n \001(\t\022\014\n\004port\030\013 \001(\005\022\020\n\010taskPort\030\014 \001(\005\022\021" +
-                    "\n\treadIndex\030\r \001(\003\"\240\001\n\025AppendEntriesRespo" +
-                    "nse\022\014\n\004term\030\001 \001(\003\022\017\n\007success\030\002 \001(\010\022\026\n\016la" +
-                    "st_log_index\030\003 \001(\003\022\017\n\007address\030\004 \001(\t\022\014\n\004p" +
-                    "ort\030\005 \001(\005\022\016\n\006peerId\030\006 \001(\t\022\021\n\treadIndex\030\007" +
-                    " \001(\003\022\016\n\006reason\030\010 \001(\t\"Y\n\020ReadIndexRequest" +
-                    "\022\020\n\010group_id\030\001 \001(\t\022\021\n\tserver_id\030\002 \001(\t\022\017\n" +
-                    "\007entries\030\003 \001(\014\022\017\n\007peer_id\030\004 \001(\t\"3\n\021ReadI" +
-                    "ndexResponse\022\r\n\005index\030\001 \001(\003\022\017\n\007success\030\002" +
-                    " \001(\010\"e\n\033NotifyFollowerStableRequest\022\021\n\tl" +
-                    "astIndex\030\001 \001(\003\022\022\n\nfirstIndex\030\002 \001(\003\022\016\n\006pe" +
-                    "erId\030\003 \001(\t\022\017\n\007success\030\004 \001(\010\"d\n\034NotifyFol" +
-                    "lowerStableResponse\022\021\n\tlastIndex\030\001 \001(\003\022\022" +
-                    "\n\nfirstIndex\030\002 \001(\003\022\014\n\004term\030\003 \001(\003\022\017\n\007succ" +
-                    "ess\030\004 \001(\010\"f\n\034NotifyFollowerToApplyReques" +
-                    "t\022\021\n\tlastIndex\030\001 \001(\003\022\022\n\nfirstIndex\030\002 \001(\003" +
-                    "\022\016\n\006peerId\030\003 \001(\t\022\017\n\007success\030\004 \001(\010\"y\n\035Not" +
-                    "ifyFollowerToApplyResponse\022\021\n\tlastIndex\030" +
-                    "\001 \001(\003\022\022\n\nfirstIndex\030\002 \001(\003\022\014\n\004term\030\003 \001(\003\022" +
-                    "\022\n\nfollowerId\030\004 \001(\t\022\017\n\007success\030\005 \001(\010*/\n\023" +
-                    "AppendEntriesStatus\022\014\n\010APPROVED\020\000\022\n\n\006FAI" +
-                    "LED\020\001B\022\n\003rpcB\013RpcRequestsb\006proto3"
+                    "rm\030\003 \001(\003\022\032\n\022committed_log_term\030\004 \001(\003\022\033\n\023" +
+                    "committed_log_index\030\005 \001(\003\022\020\n\010pre_vote\030\006 " +
+                    "\001(\010\"G\n\023RequestVoteResponse\022\014\n\004term\030\001 \001(\003" +
+                    "\022\017\n\007granted\030\002 \001(\010\022\021\n\tpeer_name\030\003 \001(\t\"\253\001\n" +
+                    "\025RequestPreVoteRequest\022\021\n\tserver_id\030\001 \001(" +
+                    "\t\022\017\n\007peer_id\030\002 \001(\t\022\020\n\010pre_term\030\003 \001(\003\022\033\n\023" +
+                    "committed_log_index\030\004 \001(\003\022\032\n\022committed_l" +
+                    "og_term\030\005 \001(\003\022\020\n\010pre_vote\030\006 \001(\010\022\021\n\tpeer_" +
+                    "name\030\007 \001(\t\"J\n\026RequestPreVoteResponse\022\014\n\004" +
+                    "term\030\001 \001(\003\022\017\n\007granted\030\002 \001(\010\022\021\n\tpeer_name" +
+                    "\030\003 \001(\t\"@\n\032AppendEntriesRequestHeader\022\021\n\t" +
+                    "server_id\030\001 \001(\t\022\017\n\007peer_id\030\002 \001(\t\"\232\002\n\024App" +
+                    "endEntriesRequest\022\020\n\010group_id\030\001 \001(\t\022\021\n\ts" +
+                    "erver_id\030\002 \001(\t\022\017\n\007peer_id\030\003 \001(\t\022\014\n\004term\030" +
+                    "\004 \001(\003\022\025\n\rprev_log_term\030\005 \001(\003\022\026\n\016prev_log" +
+                    "_index\030\006 \001(\003\022$\n\007entries\030\007 \001(\0132\023.protobuf" +
+                    ".EntryMeta\022\027\n\017committed_index\030\010 \001(\003\022\014\n\004d" +
+                    "ata\030\t \001(\014\022\017\n\007address\030\n \001(\t\022\014\n\004port\030\013 \001(\005" +
+                    "\022\020\n\010taskPort\030\014 \001(\005\022\021\n\treadIndex\030\r \001(\003\"\240\001" +
+                    "\n\025AppendEntriesResponse\022\014\n\004term\030\001 \001(\003\022\017\n" +
+                    "\007success\030\002 \001(\010\022\026\n\016last_log_index\030\003 \001(\003\022\017" +
+                    "\n\007address\030\004 \001(\t\022\014\n\004port\030\005 \001(\005\022\016\n\006peerId\030" +
+                    "\006 \001(\t\022\021\n\treadIndex\030\007 \001(\003\022\016\n\006reason\030\010 \001(\t" +
+                    "\"Y\n\020ReadIndexRequest\022\020\n\010group_id\030\001 \001(\t\022\021" +
+                    "\n\tserver_id\030\002 \001(\t\022\017\n\007entries\030\003 \001(\014\022\017\n\007pe" +
+                    "er_id\030\004 \001(\t\"3\n\021ReadIndexResponse\022\r\n\005inde" +
+                    "x\030\001 \001(\003\022\017\n\007success\030\002 \001(\010\"e\n\033NotifyFollow" +
+                    "erStableRequest\022\021\n\tlastIndex\030\001 \001(\003\022\022\n\nfi" +
+                    "rstIndex\030\002 \001(\003\022\016\n\006peerId\030\003 \001(\t\022\017\n\007succes" +
+                    "s\030\004 \001(\010\"d\n\034NotifyFollowerStableResponse\022" +
+                    "\021\n\tlastIndex\030\001 \001(\003\022\022\n\nfirstIndex\030\002 \001(\003\022\014" +
+                    "\n\004term\030\003 \001(\003\022\017\n\007success\030\004 \001(\010\"f\n\034NotifyF" +
+                    "ollowerToApplyRequest\022\021\n\tlastIndex\030\001 \001(\003" +
+                    "\022\022\n\nfirstIndex\030\002 \001(\003\022\016\n\006peerId\030\003 \001(\t\022\017\n\007" +
+                    "success\030\004 \001(\010\"y\n\035NotifyFollowerToApplyRe" +
+                    "sponse\022\021\n\tlastIndex\030\001 \001(\003\022\022\n\nfirstIndex\030" +
+                    "\002 \001(\003\022\014\n\004term\030\003 \001(\003\022\022\n\nfollowerId\030\004 \001(\t\022" +
+                    "\017\n\007success\030\005 \001(\010*/\n\023AppendEntriesStatus\022" +
+                    "\014\n\010APPROVED\020\000\022\n\n\006FAILED\020\001B\022\n\003rpcB\013RpcReq" +
+                    "uestsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
             new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -15633,7 +15634,7 @@ public final class RpcRequests {
     internal_static_protobuf_RequestVoteRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_RequestVoteRequest_descriptor,
-            new java.lang.String[] { "ServerId", "PeerId", "Term", "LastLogTerm", "LastLogIndex", "PreVote", });
+            new java.lang.String[] { "ServerId", "PeerId", "Term", "CommittedLogTerm", "CommittedLogIndex", "PreVote", });
     internal_static_protobuf_RequestVoteResponse_descriptor =
             getDescriptor().getMessageTypes().get(7);
     internal_static_protobuf_RequestVoteResponse_fieldAccessorTable = new
@@ -15645,7 +15646,7 @@ public final class RpcRequests {
     internal_static_protobuf_RequestPreVoteRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_protobuf_RequestPreVoteRequest_descriptor,
-            new java.lang.String[] { "ServerId", "PeerId", "PreTerm", "LastLogTerm", "LastLogIndex", "PreVote", "PeerName", });
+            new java.lang.String[] { "ServerId", "PeerId", "PreTerm", "CommittedLogIndex", "CommittedLogTerm", "PreVote", "PeerName", });
     internal_static_protobuf_RequestPreVoteResponse_descriptor =
             getDescriptor().getMessageTypes().get(9);
     internal_static_protobuf_RequestPreVoteResponse_fieldAccessorTable = new

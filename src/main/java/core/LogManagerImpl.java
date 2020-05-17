@@ -296,6 +296,7 @@ public class LogManagerImpl implements LogManager {
             NodeImpl.getNodeImple().getReplicatorGroup()
                     .sendAppendEntriesToAllReplicator(stableClosureEvent.done.getEntries());
 
+
             final StableClosure done = stableClosureEvent.done;
             if (done.getEntries() != null && !done.getEntries().isEmpty()) {
 //                logEntries.addAll(done.getEntries());
@@ -381,6 +382,10 @@ public class LogManagerImpl implements LogManager {
 
                         }
                         this.storage.get(i).run(st);
+
+
+
+
                     } catch (Throwable t) {
                         LOG.error("Fail to run closure with status: {}.", st, t);
                     }

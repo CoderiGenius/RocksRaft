@@ -29,8 +29,10 @@ public class CustomStateMachine extends StateMachineAdapter{
                 case "LOG":
                     while (iter.hasNext()){
                         rocksDBStorage.put(toBytes(iter.getIndex()),getByteArrayFromByteBuffer(iter.getData()));
+                        NodeImpl.getNodeImple().handleLogApplied(iter.getIndex());
+                        iter.next();
                     }
-                    iter.next();
+
                     return;
                 case "READ":
                     List<ReadTask> list = new ArrayList<>(iter.getSize());

@@ -76,18 +76,19 @@ public class BallotBoxForApply {
      */
     public void checkBallotBoxToApply(){
 
-        if (isGranted() &&
-                this.currentIndex == (NodeImpl.getNodeImple().getStableLogIndex().get())) {
-            //check if it is sequential
-            //on state machine apply
-            setBallotBoxState(BallotBoxState.Applied);
-            NodeImpl.getNodeImple().setStableLogIndex(currentIndex);
-//            NodeImpl.getNodeImple().getFsmCaller().onCommitted(currentIndex+length);
-//            NodeImpl.getNodeImple().getBallotBoxConcurrentHashMap()
-//                    .get(this.currentIndex + length).checkBallotBoxToApply();
+        setBallotBoxState(BallotBoxState.Applied);
+        NodeImpl.getNodeImple().getAppliedLogIndex().set(currentIndex);
 
-            NodeImpl.getNodeImple().setStableLogIndex(currentIndex);
-        }
+//        if (isGranted() &&
+//                this.currentIndex == (NodeImpl.getNodeImple().getStableLogIndex().get())) {
+//            //check if it is sequential
+//            //on state machine apply
+//
+////            NodeImpl.getNodeImple().getFsmCaller().onCommitted(currentIndex+length);
+////            NodeImpl.getNodeImple().getBallotBoxConcurrentHashMap()
+////                    .get(this.currentIndex + length).checkBallotBoxToApply();
+//
+//        }
 
     }
 

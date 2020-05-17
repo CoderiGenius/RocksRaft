@@ -28,10 +28,10 @@ public class RpcServicesImpl implements RpcServices {
 
           LOG.info("Receive preVoteRequest from {} ", requestPreVoteRequest.getPeerId()
             );
-            long candidateTerm = requestPreVoteRequest.getLastLogTerm();
+            long candidateTerm = requestPreVoteRequest.getCommittedLogTerm();
             long selfTerm = NodeImpl.getNodeImple().getLastLogTerm().get();
-            long candidateLogIndex = requestPreVoteRequest.getLastLogIndex();
-            long selfLogIndex = NodeImpl.getNodeImple().getLastLogIndex().longValue();
+            long candidateLogIndex = requestPreVoteRequest.getCommittedLogIndex();
+            long selfLogIndex = NodeImpl.getNodeImple().getStableLogIndex().longValue();
             RpcRequests.RequestPreVoteResponse.Builder builder = RpcRequests.RequestPreVoteResponse.newBuilder();
             builder.setTerm(selfTerm);
             builder.setPeerName(NodeImpl.getNodeImple().getNodeId().getPeerId().getPeerName());
@@ -65,6 +65,9 @@ public class RpcServicesImpl implements RpcServices {
                         "as the candidate's LogIndex {} is not as newer as the current {}", candidateLogIndex, selfLogIndex);
                 return builder.build();
             }
+
+
+
         //Every term can vote just once
 //        if (NodeImpl.getNodeImple().getLastPreVoteTerm() == requestPreVoteRequest.getLastLogTerm()) {
 //            builder.setGranted(false);
@@ -78,7 +81,7 @@ public class RpcServicesImpl implements RpcServices {
                     ,NodeImpl.getNodeImple().getLastLogTerm()
                     ,requestPreVoteRequest.getPeerId(),candidateTerm,candidateLogIndex);
 
-        NodeImpl.getNodeImple().setLastPreVoteTerm(requestPreVoteRequest.getLastLogTerm());
+        NodeImpl.getNodeImple().setLastPreVoteTerm(requestPreVoteRequest.getCommittedLogTerm());
         builder.setGranted(true);
             return builder.build();
 
@@ -89,8 +92,8 @@ public class RpcServicesImpl implements RpcServices {
         LOG.info("Receive VoteRequest from {}", requestVoteRequest.getPeerId());
         long candidateTerm = requestVoteRequest.getTerm();
         long selfTerm = NodeImpl.getNodeImple().getLastLogTerm().get();
-        long candidateLogIndex = requestVoteRequest.getLastLogIndex();
-        long selfLogIndex = NodeImpl.getNodeImple().getLastLogIndex().longValue();
+        long candidateLogIndex = requestVoteRequest.getCommittedLogIndex();
+        long selfLogIndex = NodeImpl.getNodeImple().getStableLogIndex().longValue();
         RpcRequests.RequestVoteResponse.Builder builder = RpcRequests.RequestVoteResponse.newBuilder();
         builder.setTerm(selfTerm);
         builder.setPeerName(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
@@ -152,6 +155,7 @@ public class RpcServicesImpl implements RpcServices {
         builder.setReadIndex(appendEntriesRequest.getReadIndex());
         try {
             NodeImpl.getNodeImple().getScheduledFuture().cancel(false);
+            NodeImpl.getNodeImple().setLastReceiveHeartbeatTime(Utils.monotonicMs());
             NodeImpl.getNodeImple().setChecker();
 
             //check term
@@ -161,9 +165,9 @@ public class RpcServicesImpl implements RpcServices {
                                 +NodeImpl.getNodeImple().getLastLogTerm().get(), false).build();
             }
             //check index
-            if (appendEntriesRequest.getCommittedIndex() < NodeImpl.getNodeImple().getLastLogIndex().get()) {
+            if (appendEntriesRequest.getCommittedIndex() < NodeImpl.getNodeImple().getStableLogIndex().get()) {
                 return appendEntriesBuilder(builder, "Index failure, target index is "
-                        +NodeImpl.getNodeImple().getLastLogIndex().get(),false).build();
+                        +NodeImpl.getNodeImple().getStableLogIndex().get(),false).build();
             }
 
             //find out if it is null request and check if it is new leader request
@@ -203,7 +207,7 @@ return null;
     private RpcRequests.AppendEntriesResponse.Builder appendEntriesBuilder(
             RpcRequests.AppendEntriesResponse.Builder builder,String reason,boolean result) {
         builder.setSuccess(result);
-        builder.setLastLogIndex(NodeImpl.getNodeImple().getLastLogIndex().get());
+        builder.setLastLogIndex(NodeImpl.getNodeImple().getStableLogIndex().get());
         builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
         builder.setReason(reason);
         builder.setAddress(NodeImpl.getNodeImple().getCurrentEndPoint().getIp());
@@ -250,12 +254,12 @@ return null;
         RpcRequests.NotifyFollowerStableResponse.Builder builder = RpcRequests.NotifyFollowerStableResponse.newBuilder();
 
         if (NodeImpl.getNodeImple().handleFollowerStableEvent(notifyFollowerStableRequest)) {
-            builder.setLastIndex(NodeImpl.getNodeImple().getLastLogIndex().get());
+            builder.setLastIndex(NodeImpl.getNodeImple().getStableLogIndex().get());
             builder.setSuccess(true);
             builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
             return builder.build();
         }else {
-            builder.setLastIndex(NodeImpl.getNodeImple().getLastLogIndex().get());
+            builder.setLastIndex(NodeImpl.getNodeImple().getStableLogIndex().get());
             builder.setSuccess(false);
             builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
             return builder.build();

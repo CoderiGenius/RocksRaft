@@ -279,21 +279,21 @@ public class Replicator {
 
 
     public void sendEmptyEntries(final boolean isHeartBeat) {
-        LOG.debug("Start to send empty entries heartbeat:{}",isHeartBeat);
+        LOG.debug("Start to send empty entries to {} isHeartbeat:{}",getEndpoint(),isHeartBeat);
         try {
 
 
             RpcRequests.AppendEntriesRequest.Builder builder = RpcRequests.AppendEntriesRequest.newBuilder();
             if (isHeartBeat) {
-                builder.setCommittedIndex(NodeImpl.getNodeImple().getLastLogIndex().longValue());
+                builder.setCommittedIndex(NodeImpl.getNodeImple().getStableLogIndex().longValue());
                 builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
                 builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
                 builder.setGroupId(NodeImpl.getNodeImple().getNodeId().getGroupId());
-                builder.setPrevLogIndex(NodeImpl.getNodeImple().getLastLogIndex().get());
-                builder.setPrevLogTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
+//                builder.setPrevLogIndex(NodeImpl.getNodeImple().getLastLogIndex().get());
+//                builder.setPrevLogTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
             } else {
                 // Sending a probe request.
-                builder.setCommittedIndex(NodeImpl.getNodeImple().getLastLogIndex().longValue());
+                builder.setCommittedIndex(NodeImpl.getNodeImple().getStableLogIndex().longValue());
                 builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
                 builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
                 builder.setGroupId(NodeImpl.getNodeImple().getNodeId().getGroupId());
@@ -307,7 +307,7 @@ public class Replicator {
                     .handleAppendEntriesRequest(request,getRpcServices(),true);
             LOG.debug("Send emptyAppendEntries request to {} at index {} on term {}"
                     , getOptions().getPeerId().getPeerName()
-                    , NodeImpl.getNodeImple().getLastLogIndex(),
+                    , NodeImpl.getNodeImple().getStableLogIndex(),
                     NodeImpl.getNodeImple().getLastLogTerm());
 
             Runnable runnable = () -> sendEmptyEntries(true);
@@ -326,12 +326,12 @@ public class Replicator {
 
     void sendReadIndexRequest(long index) {
         RpcRequests.AppendEntriesRequest.Builder builder = RpcRequests.AppendEntriesRequest.newBuilder();
-        builder.setCommittedIndex(NodeImpl.getNodeImple().getLastLogIndex().longValue());
+        builder.setCommittedIndex(NodeImpl.getNodeImple().getStableLogIndex().longValue());
         builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
         builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
         builder.setGroupId(NodeImpl.getNodeImple().getNodeId().getGroupId());
-        builder.setPrevLogIndex(NodeImpl.getNodeImple().getLastLogIndex().get());
-        builder.setPrevLogTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
+//        builder.setPrevLogIndex(NodeImpl.getNodeImple().getLastLogIndex().get());
+//        builder.setPrevLogTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
         builder.setReadIndex(index);
         NodeImpl.getNodeImple().getEnClosureRpcRequest()
                 .handleReadHeartbeatrequest(builder.build(),getRpcServices(),true);
@@ -376,7 +376,7 @@ public class Replicator {
 
         LOG.info("Send emptyAppendEntries request to {} at index {} on term {}"
                 , getOptions().getPeerId().getPeerName()
-                , NodeImpl.getNodeImple().getLastLogIndex(), NodeImpl.getNodeImple().getLastLogTerm());
+                , NodeImpl.getNodeImple().getStableLogIndex(), NodeImpl.getNodeImple().getLastLogTerm());
 
         sendEmptyEntries(false);
 

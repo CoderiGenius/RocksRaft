@@ -48,11 +48,11 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
             //LOG.debug("Elect self {}",NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
             NodeImpl.getNodeImple().getPreVoteBallot().grant(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
             RpcRequests.RequestPreVoteRequest.Builder builder = RpcRequests.RequestPreVoteRequest.newBuilder();
-            builder.setLastLogTerm(NodeImpl.getNodeImple().getLastLogTerm().longValue());
+
             builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
             builder.setPeerName(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
-            builder.setLastLogTerm(NodeImpl.getNodeImple().getLastLogTerm().longValue());
-            builder.setLastLogIndex(NodeImpl.getNodeImple().getLastLogIndex().longValue());
+            builder.setCommittedLogTerm(NodeImpl.getNodeImple().getLastLogTerm().longValue());
+            builder.setCommittedLogIndex(NodeImpl.getNodeImple().getStableLogIndex().longValue());
             RpcRequests.RequestPreVoteRequest requestPreVoteRequest = builder.build();
             //send preVote request to all peers in the list
             Map<Endpoint, RpcServices> map = NodeImpl.getNodeImple().getRpcServicesMap();
@@ -87,8 +87,8 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
             //do increment to term
 
             RpcRequests.RequestVoteRequest.Builder builder = RpcRequests.RequestVoteRequest.newBuilder();
-            builder.setLastLogIndex(NodeImpl.getNodeImple().getLastLogIndex().longValue());
-            builder.setLastLogTerm(NodeImpl.getNodeImple().getLastLogTerm().longValue());
+            builder.setCommittedLogIndex(NodeImpl.getNodeImple().getStableLogIndex().longValue());
+            builder.setCommittedLogTerm(NodeImpl.getNodeImple().getLastLogTerm().longValue());
             builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().incrementAndGet());
             builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getPeerName());
             builder.setServerId(NodeImpl.getNodeImple().getNodeId().getGroupId());
@@ -146,8 +146,8 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
                 NodeImpl.getNodeImple().getElectionBallot().grant(requestVoteResponse.getPeerName());
             }
             if (NodeImpl.getNodeImple().getElectionBallot().isGranted()) {
-                LOG.info("Current node start to perform as leader,grant peer list {}"
-                        ,NodeImpl.getNodeImple().getElectionBallot().getGranted()
+                LOG.info("Current node start to perform as leader at term {},grant peer list {}"
+                        ,NodeImpl.getNodeImple().getLastLogTerm(),NodeImpl.getNodeImple().getElectionBallot().getGranted()
                 );
                 NodeImpl.getNodeImple().startToPerformAsLeader();
             }

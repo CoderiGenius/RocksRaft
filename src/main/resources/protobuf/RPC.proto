@@ -41,8 +41,8 @@ message RequestVoteRequest {
      string server_id = 1;
      string peer_id = 2;
      int64 term = 3;
-     int64 last_log_term = 4;
-     int64 last_log_index = 5;
+     int64 committed_log_term = 4;
+     int64 committed_log_index = 5;
      bool pre_vote = 6;
 };
 message RequestVoteResponse {
@@ -56,8 +56,8 @@ message RequestPreVoteRequest {
      string server_id = 1;
      string peer_id = 2;
      int64 pre_term = 3;
-     int64 last_log_term = 4;
-     int64 last_log_index = 5;
+     int64 committed_log_index = 4;
+     int64 committed_log_term = 5;
      bool pre_vote = 6;
      string peer_name = 7;
 };

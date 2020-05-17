@@ -165,7 +165,8 @@ public class FSMCallerImpl implements FSMCaller {
 
     @Override
     public boolean onCommitted(long committedIndex) {
-        NodeImpl.getNodeImple().setLastLogIndex(committedIndex);
+        LOG.debug("onCommitted the log at committedIndex {}",committedIndex);
+        NodeImpl.getNodeImple().setStableLogIndex(committedIndex);
 //        NodeImpl.getNodeImple().setStableLogIndex(committedIndex);
         NodeImpl.getNodeImple().getReplicatorGroup().sendApplyNotifyToAll(committedIndex);
         BallotBoxForApply ballotBoxForApply = new BallotBoxForApply(committedIndex);

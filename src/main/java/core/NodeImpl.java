@@ -77,6 +77,7 @@ public class NodeImpl implements Node {
     private AtomicLong lastLogTerm = new AtomicLong(0);
     private AtomicLong lastLogIndex = new AtomicLong(0);
     private AtomicLong stableLogIndex = new AtomicLong(0);
+    private AtomicLong appliedLogIndex = new AtomicLong(0);
     private PeerId currentLeaderId;
     private volatile long lastVoteTerm;
     private volatile long lastPreVoteTerm;
@@ -196,6 +197,10 @@ public class NodeImpl implements Node {
                     getReplicatorGroup().addReplicator(peerId, replicator);
                 }
             }
+
+            //Set lastLogIndex to stableLogIndex
+            getLastLogIndex().set(getStableLogIndex().get());
+
             LOG.info("Start to work as leader at term: {}",getLastLogTerm());
 
         } catch (Exception e) {
@@ -355,13 +360,16 @@ public class NodeImpl implements Node {
                 if (!checkNodeAheadOfCurrent(request.getTerm(), request.getCommittedIndex())) {
                     LOG.error("leader is invalid with term {} index {} while current term {} index {}"
                             , request.getTerm(), request.getCommittedIndex()
-                            , getLastLogTerm(), getLastLogIndex());
+                            , getLastLogTerm(), getStableLogIndex());
                     return false;
                 }
 
                 if (NodeState.leader.equals(getNodeState())) {
                     getReplicatorGroup().stopAll();
                 }
+                getBallotBoxConcurrentHashMap().clear();
+                getBallotBoxForApplyConcurrentHashMap().clear();
+
                 setNodeState(NodeState.follower);
                 PeerId peerId = new PeerId(request.getPeerId(), request.getPeerId()
                         , request.getAddress(), request.getPort(), request.getTaskPort());
@@ -405,10 +413,10 @@ public class NodeImpl implements Node {
         LogEntry logEntry = new LogEntry();
         logEntry.setData(task.getData());
         logEntry.setLeaderId(getLeaderId().getPeerId());
-        LogId logId = new LogId();
-        logId.setIndex(getLastLogIndex().get());
-        logId.setTerm(getLastLogTerm().get());
-        logEntry.setId(logId);
+//        LogId logId = new LogId();
+//        logId.setIndex(getLastLogIndex().get());
+//        logId.setTerm(getLastLogTerm().get());
+//        logEntry.setId(logId);
         int retryTimes = 0;
 
             final EventTranslator<LogEntryEvent> translator = (event, sequence) -> {
@@ -580,14 +588,30 @@ public class NodeImpl implements Node {
     public boolean handleFollowerStableEvent(RpcRequests.NotifyFollowerStableRequest notifyFollowerStableRequest) {
 
         try {
-            getBallotBoxConcurrentHashMap()
-                    .get(notifyFollowerStableRequest.getFirstIndex())
-                    .checkGranted(notifyFollowerStableRequest.getPeerId()
-                            , notifyFollowerStableRequest.getFirstIndex()
-                            , notifyFollowerStableRequest.getLastIndex() - notifyFollowerStableRequest.getFirstIndex());
-            return true;
+            BallotBox ballotBox = getBallotBoxConcurrentHashMap()
+                    .get(notifyFollowerStableRequest.getFirstIndex());
+            if (ballotBox != null) {
+                ballotBox.checkGranted(notifyFollowerStableRequest.getPeerId()
+                        , notifyFollowerStableRequest.getFirstIndex()
+                        , notifyFollowerStableRequest.getLastIndex()
+                                - notifyFollowerStableRequest.getFirstIndex());
+            }else {
+                ballotBox = new BallotBox(getPeerIdList(),
+                        notifyFollowerStableRequest.getFirstIndex(),
+                        notifyFollowerStableRequest.getLastIndex()
+                        - notifyFollowerStableRequest.getFirstIndex());
+                getBallotBoxConcurrentHashMap().put(notifyFollowerStableRequest.getFirstIndex(),
+                        ballotBox);
+                ballotBox.checkGranted(notifyFollowerStableRequest.getPeerId()
+                        , notifyFollowerStableRequest.getFirstIndex()
+                        , notifyFollowerStableRequest.getLastIndex()
+                                - notifyFollowerStableRequest.getFirstIndex());
+            }
+
+                                return true;
         } catch (Exception e) {
             LOG.error("handleFollowerStableEvent error {}",e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }
@@ -633,7 +657,7 @@ public class NodeImpl implements Node {
            event.reset();
            event.entry = readTask.getTaskBytes();
            //event.done = task.getDone();
-           event.expectedIndex = NodeImpl.getNodeImple().getLastLogIndex().get();
+           event.expectedIndex = NodeImpl.getNodeImple().getStableLogIndex().get();
        };
        int tryTimes = 0;
        while (tryTimes < 3) {
@@ -663,7 +687,7 @@ public class NodeImpl implements Node {
         if (NodeState.leader.equals(getNodeState())) {
             //send Heartbeat to confirm i am the leader
             LOG.debug("Start to handle read task with leader mode");
-            long index = getLastLogIndex().get();
+            long index = getStableLogIndex().get();
             getReplicatorGroup().heartbeatCheckIfCurrentNodeIsLeader(index);
             readTaskSchedule.setIndex(index);
            getReadTaskScheduleMap().put(index,readTaskSchedule);
@@ -693,11 +717,19 @@ public class NodeImpl implements Node {
         public void run(final Status status) {
             LOG.debug("LeaderStableClosure:{}",status);
             if (status.isOk()) {
-                BallotBox ballotBox = new BallotBox(getPeerIdList(),
-                        this.firstLogIndex, this.nEntries);
+                BallotBox ballotBox = getBallotBoxConcurrentHashMap().get(status.getFirstIndex());
+                if(ballotBox!=null){
+                    ballotBox.grant(getLeaderId().getPeerId().getId());
+                }
+            else {
+                    ballotBox = new BallotBox(getPeerIdList(),
+                            status.getFirstIndex(), status.getLastIndex()-status.getFirstIndex());
 
-                ballotBox.grant(getLeaderId().getPeerId().getId());
-                getBallotBoxConcurrentHashMap().put(this.firstLogIndex,ballotBox);
+                    ballotBox.grant(getLeaderId().getPeerId().getId());
+                    getBallotBoxConcurrentHashMap().put(status.getFirstIndex(), ballotBox);
+
+                }
+
             } else {
                 LOG.error("Node {} append [{}, {}] failed, status={}.", getNodeId(), this.firstLogIndex,
                         this.firstLogIndex + this.nEntries - 1, status);
@@ -735,11 +767,18 @@ public class NodeImpl implements Node {
      */
     public void handleToApplyResponse(RpcRequests.NotifyFollowerToApplyResponse response) {
 
-
-        NodeImpl.getNodeImple().getBallotBoxForApplyConcurrentHashMap()
-                .get(response.getLastIndex()).grant(response.getFollowerId());
+        LOG.info("Receive follower applied request {}",response.toString());
+//        NodeImpl.getNodeImple().getBallotBoxForApplyConcurrentHashMap()
+//                .get(response.getLastIndex()).grant(response.getFollowerId());
     }
-
+    /**
+     * invoke by leader set ballot For apply response to make sure the log has been apply to statemachine
+     * @param index
+     */
+    public void handleLogApplied(long index) {
+        LOG.info("Log {} has been applied to stateMachine",index);
+        getAppliedLogIndex().set(index);
+    }
 
     class FollowerStableClosure extends LogManager.StableClosure {
 
@@ -751,7 +790,7 @@ public class NodeImpl implements Node {
         public void run(final Status status) {
             if (status.isOk()) {
             //Notify leader through RPC
-
+                LOG.debug("Follower Log Stable at startIndex {}",status.getFirstIndex());
                 RpcRequests.NotifyFollowerStableRequest.Builder builder
                         = RpcRequests.NotifyFollowerStableRequest.newBuilder();
                 builder.setFirstIndex(status.getFirstIndex());
@@ -807,7 +846,7 @@ public class NodeImpl implements Node {
     }
 
     private boolean checkNodeAheadOfCurrent(long term, long index) {
-        return term >= getLastLogTerm().longValue() && index >= getLastLogIndex().longValue();
+        return term >= getLastLogTerm().longValue() && index >= getStableLogIndex().longValue();
     }
 
     public Lock getWriteLock() {
@@ -1044,6 +1083,22 @@ public class NodeImpl implements Node {
 
     public void setEnClosureClientRpcRequest(EnClosureClientRpcRequest enClosureClientRpcRequest) {
         this.enClosureClientRpcRequest = enClosureClientRpcRequest;
+    }
+
+    public void setLastLogIndex(AtomicLong lastLogIndex) {
+        this.lastLogIndex = lastLogIndex;
+    }
+
+    public void setStableLogIndex(AtomicLong stableLogIndex) {
+        this.stableLogIndex = stableLogIndex;
+    }
+
+    public AtomicLong getAppliedLogIndex() {
+        return appliedLogIndex;
+    }
+
+    public void setAppliedLogIndex(AtomicLong appliedLogIndex) {
+        this.appliedLogIndex = appliedLogIndex;
     }
 
     public AtomicLong getStableLogIndex() {
