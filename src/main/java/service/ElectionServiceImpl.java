@@ -87,8 +87,7 @@ public class ElectionServiceImpl implements ElectionService , Callable  {
             //do increment to term
 
             RpcRequests.RequestVoteRequest.Builder builder = RpcRequests.RequestVoteRequest.newBuilder();
-            builder.setCommittedLogIndex(NodeImpl.getNodeImple().getStableLogIndex().longValue());
-            builder.setCommittedLogTerm(NodeImpl.getNodeImple().getLastLogTerm().longValue());
+
             builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().incrementAndGet());
             builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getPeerName());
             builder.setServerId(NodeImpl.getNodeImple().getNodeId().getGroupId());

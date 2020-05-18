@@ -210,17 +210,15 @@ public class Status {
         this.state = new State(error.getNumber(), String.format(fmt, args));
     }
 
+
     @Override
     public String toString() {
-        if (isOk()) {
-            return "Status[OK]";
-        } else {
-            return "Status[" + RaftError.describeCode(this.state.code) + "<" + this.state.code + ">: " + this.state.msg
-                    + "]";
-        }
+        return "Status{" +
+                "firstIndex=" + firstIndex +
+                ", lastIndex=" + lastIndex +
+                ", state=" + state +
+                '}';
     }
-
-
 
     /**
      * Get the error msg.

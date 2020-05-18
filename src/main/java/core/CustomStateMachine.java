@@ -23,6 +23,7 @@ public class CustomStateMachine extends StateMachineAdapter{
 
     @Override
     public void onApply(Iterator iter) {
+        LOG.debug("onApply:{} operation:{}",iter.getIndex(),iter.getOperation());
         this.lock.lock();
         try {
             switch (iter.getOperation()){

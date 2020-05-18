@@ -271,7 +271,8 @@ public class NodeImpl implements Node {
 
         //Logmanager
         LogManagerOptions logManagerOptions = new LogManagerOptions(logStorage,getOptions());
-        this.logManager = new LogManagerImpl();
+//        this.logManager = new LogManagerImpl();
+        this.logManager = new LogManagerImplNew();
         try {
             logManager.init(logManagerOptions);
         } catch (LogStorageException e) {
@@ -334,7 +335,7 @@ public class NodeImpl implements Node {
     public boolean setChecker() {
         LOG.debug("SetChecker");
         setScheduledFuture(getFollowerTimerManager().schedule(getRunnable(),
-                getOptions().getCurrentNodeOptions().getMaxHeartBeatTime(),
+                getOptions().getCurrentNodeOptions().getMaxHeartBeatTime()/2,
                 TimeUnit.MILLISECONDS));
         return true;
     }
@@ -478,7 +479,9 @@ public class NodeImpl implements Node {
         @Override
         public void onEvent(LogEntryEvent logEntryEvent, long l, boolean endOfBatch) throws Exception {
             this.tasks.add(logEntryEvent);
+            LOG.debug("Follower receive LogEntryEvent taskEventSize:{}",this.tasks.size());
             if (this.tasks.size() >= NodeOptions.getNodeOptions().getApplyBatch() || endOfBatch) {
+
                 executeFollowerTasks(tasks);
                 this.tasks.clear();
             }
@@ -563,7 +566,7 @@ public class NodeImpl implements Node {
             for (int i = 0; i < size; i++) {
                 final LogEntryEvent task = tasks.get(i);
                 if (task.expectedTerm != -1 && task.expectedTerm != getLastLogTerm().get()) {
-                    LOG.debug("Node {} can't apply task whose expectedTerm={} doesn't match currTerm={}.", getNodeId(),
+                    LOG.error("Node {} can't apply task whose expectedTerm={} doesn't match currTerm={}.", getNodeId(),
                             task.expectedTerm, this.getLastLogTerm());
                     if (task.done != null) {
                         final Status st = new Status(RaftError.EPERM, "expected_term=%d doesn't match current_term=%d",
@@ -573,8 +576,8 @@ public class NodeImpl implements Node {
                     continue;
                 }
                 // set task entry info before adding to list.
-//                task.entry.getId().setIndex(getLastLogIndex().getAndIncrement());
-//                task.entry.getId().setTerm(this.getLastLogTerm().get());
+//                task.entry.getId().setIndex(task.entry.getId().getIndex());
+//                task.entry.getId().setTerm(task.entry.getId().getTerm());
 
                 task.entry.setType(EnumOutter.EntryType.ENTRY_TYPE_DATA);
                 entries.add(task.entry);
@@ -596,7 +599,7 @@ public class NodeImpl implements Node {
         try {
             long firstIndex = notifyFollowerStableRequest.getFirstIndex();
             long lastIndex = notifyFollowerStableRequest.getLastIndex();
-            for (long i = firstIndex; i <(lastIndex) ; i++) {
+            for (long i = firstIndex; i <=(lastIndex) ; i++) {
                 BallotBox ballotBox = getBallotBoxConcurrentHashMap().get(i);
                 if(ballotBox!=null){
                     ballotBox.checkGranted(notifyFollowerStableRequest.getPeerId(),
@@ -643,30 +646,46 @@ public class NodeImpl implements Node {
      * @return
      */
     public boolean followerSetLogEvent(RpcRequests.AppendEntriesRequest appendEntriesRequest) {
-        LOG.debug("Follower receive log event");
-       LogEntry logEntry = new LogEntry();
-       logEntry.setData(ByteBuffer.wrap(
-               ZeroByteStringHelper.getByteArray(appendEntriesRequest.getData())));
-        final EventTranslator<LogEntryEvent> translator = (event, sequence) -> {
-            event.reset();
-            event.entry = logEntry;
-            //event.done = task.getDone();
-            event.expectedTerm = appendEntriesRequest.getTerm();
-        };
-        int retryTimes = 0;
-        while (true) {
-            if (this.followerQueue.tryPublishEvent(translator)) {
-                break;
-            } else {
-                retryTimes++;
-                if (retryTimes > MAX_APPLY_RETRY_TIMES) {
-                    LOG.warn("Node {} applyQueue is overload.", getNodeId());
-                    return false;
+        this.writeLock.lock();
+        try {
+            LOG.debug("Follower receive log event");
+            LogEntry logEntry = new LogEntry();
+            LogId logId = new LogId();
+            logId.setTerm(appendEntriesRequest.getTerm());
+            logId.setIndex(appendEntriesRequest.getCommittedIndex());
+            PeerId peerId = new PeerId();
+            logEntry.setId(logId);
+            peerId.setPeerName(appendEntriesRequest.getPeerId());
+            logEntry.setLeaderId(peerId);
+            logEntry.setData(ByteBuffer.wrap(
+                    ZeroByteStringHelper.byteStringToString(appendEntriesRequest.getData()).getBytes()));
+            final EventTranslator<LogEntryEvent> translator = (event, sequence) -> {
+                event.reset();
+                event.entry = logEntry;
+                //event.done = task.getDone();
+                event.expectedTerm = appendEntriesRequest.getTerm();
+            };
+            int retryTimes = 0;
+            while (true) {
+                if (this.followerQueue.tryPublishEvent(translator)) {
+                    break;
+                } else {
+                    retryTimes++;
+                    if (retryTimes > MAX_APPLY_RETRY_TIMES) {
+                        LOG.warn("Node {} applyQueue is overload.", getNodeId());
+                        return false;
+                    }
+                    Thread.yield();
                 }
-                Thread.yield();
             }
-    }
-        return true;
+            return true;
+        } catch (Exception e) {
+            LOG.error("followerSetLogEvent error:{}",e.getMessage());
+            e.printStackTrace();
+        }finally {
+            this.writeLock.unlock();
+        }
+        return false;
     }
 
     /**
@@ -739,14 +758,17 @@ public class NodeImpl implements Node {
         public void run(final Status status) {
             LOG.debug("LeaderStableClosure:{} first:{} last:{}"
                     ,status,status.getFirstIndex(),status.getLastIndex());
+            if (status.isOk()) {
 
+                addBallotBox(status);
+            }
         }
     }
 
     private void addBallotBox(Status status) {
         long f = status.getFirstIndex();
         long l = status.getLastIndex();
-        for (long i=f; i < (l); i++) {
+        for (long i=f; i <=(l); i++) {
             BallotBox ballotBox = getBallotBoxConcurrentHashMap().get(i);
             if(ballotBox!=null){
                 ballotBox.grant(getLeaderId().getPeerId().getId());
@@ -791,13 +813,13 @@ public class NodeImpl implements Node {
      */
     public void handleToApplyResponse(RpcRequests.NotifyFollowerToApplyResponse response) {
 
-        LOG.info("Receive follower applied  {} firstIndex :{} lastIndex:{}"
-                ,response.toString(),response.getFirstIndex(),response.getLastIndex());
+        LOG.info("Receive follower {} applied  firstIndex :{} lastIndex:{}"
+                ,response.getFollowerId(),response.getFirstIndex(),response.getLastIndex());
 //        NodeImpl.getNodeImple().getBallotBoxForApplyConcurrentHashMap()
 //                .get(response.getLastIndex()).grant(response.getFollowerId());
     }
     /**
-     * invoke by leader set ballot For apply response to make sure the log has been apply to statemachine
+     *  All peers invoke this to notify the index has been applied to state machine
      * @param index
      */
     public void handleLogApplied(long index) {
@@ -815,8 +837,8 @@ public class NodeImpl implements Node {
         public void run(final Status status) {
             if (status.isOk()) {
             //Notify leader through RPC
-                LOG.debug("Follower Log Stable at startIndex {} length {}"
-                        ,status.getFirstIndex(),status.getLastIndex()-status.getFirstIndex()+1);
+                LOG.debug("Follower Log Stable at startIndex {} lastIndex {}"
+                        ,status.getFirstIndex(),status.getLastIndex());
                 RpcRequests.NotifyFollowerStableRequest.Builder builder
                         = RpcRequests.NotifyFollowerStableRequest.newBuilder();
                 builder.setFirstIndex(status.getFirstIndex());
@@ -907,7 +929,15 @@ public class NodeImpl implements Node {
     }
 
     public void setScheduledFuture(ScheduledFuture scheduledFuture) {
-        this.scheduledFuture = scheduledFuture;
+        this.writeLock.lock();
+        try {
+            this.scheduledFuture = scheduledFuture;
+        } catch (Exception e) {
+            LOG.error("Set ScheduledFuture error:{}",e.getMessage());
+        }finally {
+            this.writeLock.unlock();
+        }
+
     }
 
     public void setLogManager(LogManager logManager) {

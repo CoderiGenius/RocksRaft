@@ -1,32 +1,29 @@
 package rpc;
 
-import com.google.protobuf.ByteString;
 import com.google.protobuf.CodedOutputStream;
 import entity.LogEntry;
-import entity.LogId;
 import entity.Status;
 import exceptions.RaftException;
 import utils.Requires;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /**
  * Created by 周思成 on  2020/5/7 11:54
  */
 
-@Deprecated
-public class LogEntryEncoder implements entity.LogEntryEncoder {
 
-    public static final LogEntryEncoder INSTANCE = new LogEntryEncoder();
+public class LogEntryEncoderV2 implements entity.LogEntryEncoder {
+
+    public static final LogEntryEncoderV2 INSTANCE = new LogEntryEncoderV2();
 
 
     @Override
     public byte[] encode(LogEntry log) throws RaftException {
         Requires.requireNonNull(log,"The log entry is null");
-        String data = new String(getByteArrayFromByteBuffer(log.getData()));
 
-        return data.getBytes();
+
+        return log.getDataString().getBytes();
     }
 
 //    @Override

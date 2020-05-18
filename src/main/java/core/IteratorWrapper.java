@@ -26,7 +26,7 @@ public class IteratorWrapper implements Iterator {
 
     @Override
     public boolean hasNext() {
-        return this.impl.isGood() && this.impl.entry().getType() == EnumOutter.EntryType.ENTRY_TYPE_DATA;
+        return this.impl.isGood() ;
     }
 
     @Override

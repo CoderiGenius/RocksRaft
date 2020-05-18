@@ -149,7 +149,8 @@ public class FSMCallerImpl implements FSMCaller {
             }
             final IteratorImpl iterImpl = new IteratorImpl(this.fsm, this.logManager,
                     lastAppliedIndex, maxCommittedIndex, this.applyingIndex);
-            LOG.debug("doCommitted at {} iterImpl:{}", maxCommittedIndex,iterImpl.toString());
+            LOG.info("doCommitted at {} iterImpl:{} isGood:{}"
+                    , maxCommittedIndex,iterImpl.toString(),iterImpl.isGood());
             while (iterImpl.isGood()) {
                 // Apply data task to user state machine
                 doApplyTasks(iterImpl);
@@ -164,7 +165,7 @@ public class FSMCallerImpl implements FSMCaller {
     private void doApplyTasks(IteratorImpl iterImpl) {
         final IteratorWrapper iter = new IteratorWrapper(iterImpl);
 
-        LOG.debug("Apply to fsm at{}",iter.getIndex());
+        LOG.info("Apply to fsm at {}",iter.getIndex());
             this.fsm.onApply(iter);
 
         if (iter.hasNext()) {

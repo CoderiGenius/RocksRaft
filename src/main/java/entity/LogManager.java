@@ -15,6 +15,7 @@ public interface LogManager {
     abstract class StableClosure implements Closure {
 
         protected long           firstLogIndex = 0;
+        protected long lastLogIndex = 0;
         protected List<LogEntry> entries;
         protected int            nEntries;
 
@@ -28,6 +29,14 @@ public interface LogManager {
 
         public void setFirstLogIndex(final long firstLogIndex) {
             this.firstLogIndex = firstLogIndex;
+        }
+
+        public long getLastLogIndex() {
+            return lastLogIndex;
+        }
+
+        public void setLastLogIndex(long lastLogIndex) {
+            this.lastLogIndex = lastLogIndex;
         }
 
         public List<LogEntry> getEntries() {

@@ -1,5 +1,6 @@
 package entity;
 
+import com.google.protobuf.ZeroByteStringHelper;
 import rpc.EnumOutter;
 import utils.CrcUtil;
 
@@ -27,6 +28,7 @@ public class LogEntry implements Checksum {
     private List<PeerId>         oldLearners;
     /** entry data */
     private ByteBuffer data;
+    private String dataString;
     /** checksum for log entry*/
     private long                 checksum;
     /** true when the log has checksum **/
@@ -38,6 +40,14 @@ public class LogEntry implements Checksum {
 
     public void setType(EnumOutter.EntryType type) {
         this.type = type;
+    }
+
+    public String getDataString() {
+        return dataString;
+    }
+
+    public void setDataString(String dataString) {
+        this.dataString = dataString;
     }
 
     public LogId getId() {
@@ -81,11 +91,14 @@ public class LogEntry implements Checksum {
     }
 
     public ByteBuffer getData() {
-        return data;
+        return   ByteBuffer.wrap(getDataString().getBytes());
+
     }
 
     public void setData(ByteBuffer data) {
-        this.data = data;
+
+        setDataString(
+        ZeroByteStringHelper.byteBufferToString(data));
     }
 
     public long getChecksum() {

@@ -88,6 +88,7 @@ message AppendEntriesRequest {
      int32 port = 11;
      int32 taskPort = 12;
      int64 readIndex=13;
+     string dataString = 14;
 };
 
 message AppendEntriesResponse {

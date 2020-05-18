@@ -177,8 +177,7 @@ public class RpcServicesImpl implements RpcServices {
             }
 
             //find out if it is null request and check if it is new leader request
-            if (appendEntriesRequest.getData().isEmpty() &&
-                    NodeImpl.getNodeImple().checkIfLeaderChanged(appendEntriesRequest.getPeerId()) &&
+            if (NodeImpl.getNodeImple().checkIfLeaderChanged(appendEntriesRequest.getPeerId()) &&
                             !appendEntriesRequest.getAddress().isEmpty()
             ) {
                 //if add new leader failed
@@ -239,8 +238,7 @@ return null;
             RpcRequests.AppendEntriesResponse appendEntriesResponse
                     = handleAppendEntriesRequest(appendEntriesRequests.getArgs(i));
             LOG.warn("Check logEntry data:{} at:{}",
-                    new String(ZeroByteStringHelper.getByteArray(
-                            appendEntriesRequests.getArgs(i).getData()))
+                    ZeroByteStringHelper.byteStringToString(appendEntriesRequests.getArgs(i).getData())
                     ,appendEntriesRequests.getArgs(i).getCommittedIndex());
            builder.addArgs(appendEntriesResponse);
            if(!appendEntriesResponse.getSuccess()){

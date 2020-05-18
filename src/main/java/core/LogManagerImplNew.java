@@ -1,12 +1,10 @@
 package core;
 
 import com.alipay.remoting.NamedThreadFactory;
-import com.google.protobuf.ZeroByteStringHelper;
 import com.lmax.disruptor.*;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import config.LogManagerOptions;
-import config.LogStorageOptions;
 import entity.*;
 import exceptions.LogExceptionHandler;
 import exceptions.LogStorageException;
@@ -16,13 +14,11 @@ import org.slf4j.LoggerFactory;
 import rpc.EnumOutter;
 import storage.LogStorage;
 import utils.DisruptorBuilder;
-import utils.Requires;
 import utils.SegmentList;
 import utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -32,13 +28,12 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * Created by 周思成 on  2020/4/7 19:59
  */
 
-@Deprecated
-public class LogManagerImpl implements LogManager {
+public class LogManagerImplNew implements LogManager {
 
     private LogId                                            diskId                 = new LogId(0, 0);
     private static final int APPEND_LOG_RETRY_TIMES = 50;
     private static final Logger LOG = LoggerFactory
-            .getLogger(LogManagerImpl.class);
+            .getLogger(LogManagerImplNew.class);
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
     private final Lock writeLock = this.lock.writeLock();
     private final Lock readLock = this.lock.readLock();
@@ -93,15 +88,14 @@ public class LogManagerImpl implements LogManager {
 
     @Override
     public void appendEntries(final List<LogEntry> entries, final StableClosure done) {
-        //Requires.requireNonNull(done, "done");
+
         this.writeLock.lock();
         try {
-
-                //final LogEntry logEntry = entries.get(i);
                 if (!entries.isEmpty()) {
                     done.setFirstLogIndex(entries.get(0).getId().getIndex());
                     done.setLastLogIndex(entries.get(entries.size()-1).getId().getIndex());
                     LOG.debug("setLogIndex, first:{} last:{}",done.getFirstLogIndex(),done.getLastLogIndex());
+
                 }
                 done.setEntries(entries);
 
@@ -168,6 +162,7 @@ public class LogManagerImpl implements LogManager {
                 reportError(RaftError.EIO.getNumber(), "Corrupted entry at index=%d, not found", index);
                 return entry;
             }
+            return entry;
         } catch (Exception e) {
             LOG.error("getEntry error {}",e.getMessage());
             e.printStackTrace();
@@ -178,17 +173,17 @@ public class LogManagerImpl implements LogManager {
     }
     protected LogEntry getEntryFromMemory(final long index) {
         LogEntry entry = null;
-        if (!this.logsInMemory.isEmpty()) {
-            final long firstIndex = this.logsInMemory.peekFirst().getId().getIndex();
-            final long lastIndex = this.logsInMemory.peekLast().getId().getIndex();
-            if (lastIndex - firstIndex + 1 != this.logsInMemory.size()) {
-                throw new IllegalStateException(String.format("lastIndex=%d,firstIndex=%d,logsInMemory=[%s]",
-                        lastIndex, firstIndex, descLogsInMemory()));
-            }
-            if (index >= firstIndex && index <= lastIndex) {
-                entry = this.logsInMemory.get((int) (index - firstIndex));
-            }
-        }
+//        if (!this.logsInMemory.isEmpty()) {
+//            final long firstIndex = this.logsInMemory.peekFirst().getId().getIndex();
+//            final long lastIndex = this.logsInMemory.peekLast().getId().getIndex();
+//            if (lastIndex - firstIndex + 1 != this.logsInMemory.size()) {
+//                throw new IllegalStateException(String.format("lastIndex=%d,firstIndex=%d,logsInMemory=[%s]",
+//                        lastIndex, firstIndex, descLogsInMemory()));
+//            }
+//            if (index >= firstIndex && index <= lastIndex) {
+//                entry = this.logsInMemory.get((int) (index - firstIndex));
+//            }
+//        }
         return entry;
     }
 
@@ -282,10 +277,10 @@ public class LogManagerImpl implements LogManager {
 
     private class StableClosureEventHandler implements EventHandler<StableClosureEvent> {
 
-        LogId               lastId  = LogManagerImpl.this.diskId;
+        LogId               lastId  = LogManagerImplNew.this.diskId;
         List<StableClosure> storage = new ArrayList<>(256);
         AppendBatcher       ab      = new AppendBatcher(this.storage, 256, new ArrayList<>(),
-                LogManagerImpl.this.diskId);
+                LogManagerImplNew.this.diskId);
         //List<LogEntry> logEntries = new CopyOnWriteArrayList();
         @Override
         public void onEvent(StableClosureEvent stableClosureEvent, long sequence, boolean endOfBatch) throws Exception {
@@ -305,10 +300,11 @@ public class LogManagerImpl implements LogManager {
             if (done.getEntries() != null && !done.getEntries().isEmpty()) {
 //                logEntries.addAll(done.getEntries());
                 this.ab.append(done);
-            }else {
-                this.lastId = this.ab.flush();
-
             }
+//            }else {
+//                this.lastId = this.ab.flush();
+//
+//            }
             if (endOfBatch) {
                 this.lastId = this.ab.flush();
                 setDiskId(this.lastId);
@@ -356,6 +352,7 @@ public class LogManagerImpl implements LogManager {
         List<StableClosure> storage;
         int                 cap;
         int                 size;
+        int logEntriesSize;
         int                 bufferSize;
         List<LogEntry>      toAppend;
         LogId               lastId;
@@ -367,16 +364,18 @@ public class LogManagerImpl implements LogManager {
             this.cap = cap;
             this.toAppend = toAppend;
             this.lastId = lastId;
+            this.logEntriesSize = 0;
         }
 
         LogId flush() {
+
             if (this.size > 0) {
                 this.lastId = appendToStorage(this.toAppend);
                 for (int i = 0; i < this.size; i++) {
                     this.storage.get(i).getEntries().clear();
                     Status st = null;
                     try {
-                        if (LogManagerImpl.this.hasError) {
+                        if (LogManagerImplNew.this.hasError) {
                             st = new Status(RaftError.EIO, "Corrupted LogStorage");
                         } else {
                             st = Status.OK();
@@ -385,7 +384,7 @@ public class LogManagerImpl implements LogManager {
                             //st.setTerm(storage.get(i));
                         }
                         this.storage.get(i).run(st);
-                        LOG.debug("statue:");
+                        LOG.debug("status:{}",st);
                         //
 
                         //
@@ -396,6 +395,7 @@ public class LogManagerImpl implements LogManager {
                 }
                 this.toAppend.clear();
                 this.storage.clear();
+                this.logEntriesSize = 0;
             }
             this.size = 0;
             this.bufferSize = 0;
@@ -410,7 +410,7 @@ public class LogManagerImpl implements LogManager {
             this.size++;
             this.toAppend.addAll(done.getEntries());
             for (final LogEntry entry : done.getEntries()) {
-                this.bufferSize += entry.getData() != null ? entry.getData().remaining() : 0;
+                this.logEntriesSize ++;
             }
         }
     }
@@ -445,7 +445,7 @@ public class LogManagerImpl implements LogManager {
     private void addBallotBox(Status status) {
         long f = status.getFirstIndex();
         long l = status.getLastIndex();
-        for (long i=f; i < (l); i++) {
+        for (long i=f; i <=(l); i++) {
             BallotBox ballotBox = NodeImpl.getNodeImple().getBallotBoxConcurrentHashMap().get(i);
             if(ballotBox!=null){
                 ballotBox.grant(NodeImpl.getNodeImple().getLeaderId().getPeerId().getId());

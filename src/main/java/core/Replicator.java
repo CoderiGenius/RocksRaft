@@ -167,8 +167,7 @@ public class Replicator {
         public void onEvent(LogEntryEvent logEntryEvent, long l, boolean b) throws Exception {
             LogEntry logEntry = logEntryEvent.entry;
             LOG.debug("Replicator receive log event on logEntry: {} data: {} data:{}"
-                    ,logEntry.getId(),new String(ZeroByteStringHelper.getByteArray(
-                            ZeroByteStringHelper.wrap(logEntry.getData()))),logEntry.getData());;
+                    ,logEntry.getId(),logEntry.getData(),logEntry.getData());;
             if (b
                     ){
 
@@ -178,6 +177,12 @@ public class Replicator {
                 builder1.setCommittedIndex(logEntry.getId().getIndex());
                 builder1.setTerm(logEntry.getId().getTerm());
                 builder1.setPeerId(logEntry.getLeaderId().getId());
+                builder1.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
+                builder1.setGroupId(NodeImpl.getNodeImple().getNodeId().getGroupId());
+                builder1.setPort(NodeImpl.getNodeImple().getOptions().getCurrentNodeOptions().getPort());
+                builder1.setAddress(NodeImpl.getNodeImple().getOptions().getCurrentNodeOptions().getAddress());
+                builder1.setTaskPort(NodeImpl.getNodeImple().getOptions().getCurrentNodeOptions().getTaskPort());
+
                 RpcRequests.AppendEntriesRequest appendEntriesRequest = builder1.build();
                 LOG.warn("appendEntriesRequest CHECK:index {} dataIsEmpty:{} "
                         ,appendEntriesRequest.getCommittedIndex(),appendEntriesRequest.getData().isEmpty());

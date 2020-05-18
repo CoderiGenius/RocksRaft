@@ -143,8 +143,8 @@ public class ReplicatorGroupImpl implements ReplicatorGroup {
                     logEntry.setId(logId);
                     logEntry.setLeaderId(l.getLeaderId());
                     event.entry = logEntry;
-                LOG.debug("Publish event to ringBuffer {} data:{} index:{}",r.getEndpoint(),new String(ZeroByteStringHelper.getByteArray(
-                        ZeroByteStringHelper.wrap(logEntry.getData()))),logEntry.getId());
+                LOG.debug("Publish event to ringBuffer {} data:{} index:{}",r.getEndpoint(),
+                        ZeroByteStringHelper.byteBufferToString(logEntry.getData()),logEntry.getId());
                 };
                 int times = 0;
                 while (!r.getRingBuffer().tryPublishEvent(translator)) {
@@ -164,8 +164,8 @@ public class ReplicatorGroupImpl implements ReplicatorGroup {
                 replicatorList) {
 
                 final EventTranslator<LogEntryEvent> translator = (event, sequence) -> { event.entry = logEntry; };
-                LOG.debug("Publish event to ringBuffer {} data:{}",r.getEndpoint(),new String(ZeroByteStringHelper.getByteArray(
-                        ZeroByteStringHelper.wrap(logEntry.getData()))));;
+                LOG.debug("Publish event to ringBuffer {} data:{}",r.getEndpoint()
+                        ,ZeroByteStringHelper.byteBufferToString(logEntry.getData()));;
                 r.getDisruptor().getRingBuffer().tryPublishEvent(translator);
 
 

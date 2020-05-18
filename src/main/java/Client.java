@@ -55,24 +55,15 @@ public class Client {
 //        bout.close();
 //        out.close();
 
-        ByteBuffer byteBuffer =  ByteBuffer.wrap("123".getBytes());
 
-        task.setData(byteBuffer);
 
-        int i = 100;
-        while (i>=100) {
+        int i = 10;
+        while (i>0) {
+            ByteBuffer byteBuffer =  ByteBuffer.wrap(("log"+i).getBytes());
+
+            task.setData(byteBuffer);
             taskServices.apply(task);
-            taskServices.apply(task);
-            taskServices.apply(task);
-            taskServices.apply(task);
-            taskServices.apply(task);
-            taskServices.apply(task);
-            taskServices.apply(task);
-            taskServices.apply(task);
-            taskServices.apply(task);
-            taskServices.apply(task);
-            taskServices.apply(task);
-            taskServices.apply(task);
+
             i--;
         }
 

@@ -55,6 +55,7 @@ public class IteratorImpl {
     }
 
     public boolean isGood() {
+        System.out.println("current:"+currentIndex+" committedIndex:"+committedIndex);
         return this.currentIndex <= this.committedIndex && !hasError();
     }
 
@@ -72,7 +73,9 @@ public class IteratorImpl {
             ++this.currentIndex;
             if (this.currentIndex <= this.committedIndex) {
                 try {
+
                     this.currEntry = this.logManager.getEntry(this.currentIndex);
+
                     if (this.currEntry == null) {
 
                         //getOrCreateError().setType(EnumOutter.ErrorType.ERROR_TYPE_LOG);

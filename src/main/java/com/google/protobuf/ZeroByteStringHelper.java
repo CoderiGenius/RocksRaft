@@ -16,12 +16,18 @@
  */
 package com.google.protobuf;
 
+import com.alipay.remoting.util.StringUtils;
 import core.NodeImpl;
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -50,6 +56,13 @@ public class ZeroByteStringHelper {
     public static ByteString wrap(final byte[] bs, final int offset, final int len) {
         return ByteString.wrap(bs, offset, len);
     }
+
+    public static byte[] getByteArrayFromByteBuffer(ByteBuffer byteBuffer) {
+        byte[] bytesArray = new byte[byteBuffer.remaining()];
+        byteBuffer.get(bytesArray, 0, bytesArray.length);
+        return bytesArray;
+    }
+
 
     /**
      * Wrap a byte buffer into a ByteString.
@@ -80,6 +93,46 @@ public class ZeroByteStringHelper {
         }
         return byteString.toByteArray();
     }
+
+    public static String byteStringToString(ByteString src) {
+        String charSet = "utf-8";
+        if(StringUtils.isEmpty(charSet)) {
+            charSet = "GB2312";
+        }
+        return bytesToString(src.toByteArray(), charSet);
+    }
+
+    public static String byteBufferToString(ByteBuffer byteBuffer) {
+       return bytesToString(getByteArrayFromByteBuffer(byteBuffer),"utf-8");
+    }
+
+    public static String bytesToString(byte[] input, String charSet) {
+        if(ArrayUtils.isEmpty(input)) {
+            return StringUtils.EMPTY;
+        }
+
+        ByteBuffer buffer = ByteBuffer.allocate(input.length);
+        buffer.put(input);
+        buffer.flip();
+
+        Charset charset = null;
+        CharsetDecoder decoder = null;
+        CharBuffer charBuffer = null;
+
+        try {
+            charset = Charset.forName(charSet);
+            decoder = charset.newDecoder();
+            charBuffer = decoder.decode(buffer.asReadOnlyBuffer());
+
+            return charBuffer.toString();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+
+
 
     /**
      * Concatenate the given strings while performing various optimizations to
