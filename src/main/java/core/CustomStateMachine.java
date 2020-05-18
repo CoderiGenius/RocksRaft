@@ -30,6 +30,8 @@ public class CustomStateMachine extends StateMachineAdapter{
                     while (iter.hasNext()){
                         rocksDBStorage.put(toBytes(iter.getIndex()),getByteArrayFromByteBuffer(iter.getData()));
                         NodeImpl.getNodeImple().handleLogApplied(iter.getIndex());
+                        LOG.debug("Get from rocksdb test:key:{} value:{}",iter.getIndex(),new String(
+                                rocksDBStorage.get(toBytes(iter.getIndex()))));
                         iter.next();
                     }
 
@@ -57,7 +59,7 @@ public class CustomStateMachine extends StateMachineAdapter{
     }
 
     public static byte[] toBytes(long val) {
-        System.out.println( "原来的长整形数据："+val );
+        //System.out.println( "原来的长整形数据："+val );
         byte [] b = new byte[8];
         for (int i = 7; i > 0; i--) {
             //强制转型，后留下长整形的低8位
@@ -67,9 +69,9 @@ public class CustomStateMachine extends StateMachineAdapter{
             String lb2 = Long.toBinaryString( b[i]&0xff ) ;
 
 
-            System.out.println("转换为字节："+ str );
-            System.out.println( lb );
-            System.out.println( lb2 );
+            //System.out.println("转换为字节："+ str );
+            //System.out.println( lb );
+            //System.out.println( lb2 );
             //向右移动8位，则第二次循环则计算第二个8位数
             val >>>= 8;
         }

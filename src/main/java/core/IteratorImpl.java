@@ -43,7 +43,7 @@ public class IteratorImpl {
         return "IteratorImpl [fsm=" + this.fsm + ", logManager=" + this.logManager
                  + ", currentIndex=" + this.currentIndex
                 + ", committedIndex=" + this.committedIndex + ", currEntry=" + this.currEntry + ", applyingIndex="
-                + this.applyingIndex + ", error=" + this.error + "]";
+                + this.applyingIndex + ", error=" + this.error + ",isGood="+isGood()+"]";
     }
 
     public LogEntry entry() {
@@ -74,6 +74,7 @@ public class IteratorImpl {
                 try {
                     this.currEntry = this.logManager.getEntry(this.currentIndex);
                     if (this.currEntry == null) {
+
                         //getOrCreateError().setType(EnumOutter.ErrorType.ERROR_TYPE_LOG);
                         getOrCreateError().getStatus().setError(-1,
                                 "Fail to get entry at index=%d while committed_index=%d", this.currentIndex,

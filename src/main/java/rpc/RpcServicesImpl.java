@@ -1,5 +1,6 @@
 package rpc;
 
+import com.google.protobuf.ZeroByteStringHelper;
 import core.NodeImpl;
 import entity.TimeOutChecker;
 import org.slf4j.Logger;
@@ -146,6 +147,11 @@ public class RpcServicesImpl implements RpcServices {
     public RpcRequests.AppendEntriesResponse handleAppendEntriesRequest(RpcRequests.AppendEntriesRequest appendEntriesRequest) {
         RpcRequests.AppendEntriesResponse.Builder builder = RpcRequests.AppendEntriesResponse.newBuilder();
 
+        LOG.debug("handleAppendEntriesRequest preLog isDataEmpty:{} index:{} term:{} peerID:{} addrsss:{}",
+                appendEntriesRequest.getData().isEmpty(),appendEntriesRequest.getCommittedIndex(),appendEntriesRequest.getTerm()
+                ,appendEntriesRequest.getPeerId()
+                ,appendEntriesRequest.getAddress());
+
         if (NodeImpl.NodeState.leader.equals(NodeImpl.getNodeImple().getNodeState())) {
             LOG.debug("Receive appendEntries request from {} while in leader state index {} term {}"
                     ,appendEntriesRequest.getPeerId(),appendEntriesRequest.getCommittedIndex(),
@@ -160,43 +166,43 @@ public class RpcServicesImpl implements RpcServices {
 
             //check term
             if (appendEntriesRequest.getTerm() < NodeImpl.getNodeImple().getLastLogTerm().get()) {
-                return appendEntriesBuilder(builder
+                return appendEntriesBuilder(appendEntriesRequest,builder
                         ,"Term failure,target term is "
                                 +NodeImpl.getNodeImple().getLastLogTerm().get(), false).build();
             }
             //check index
             if (appendEntriesRequest.getCommittedIndex() < NodeImpl.getNodeImple().getStableLogIndex().get()) {
-                return appendEntriesBuilder(builder, "Index failure, target index is "
+                return appendEntriesBuilder(appendEntriesRequest,builder, "Index failure, target index is "
                         +NodeImpl.getNodeImple().getStableLogIndex().get(),false).build();
             }
 
             //find out if it is null request and check if it is new leader request
             if (appendEntriesRequest.getData().isEmpty() &&
-                    NodeImpl.getNodeImple().checkIfLeaderChanged(appendEntriesRequest.getPeerId())
+                    NodeImpl.getNodeImple().checkIfLeaderChanged(appendEntriesRequest.getPeerId()) &&
+                            !appendEntriesRequest.getAddress().isEmpty()
             ) {
                 //if add new leader failed
                 if (!NodeImpl.getNodeImple().transformLeader(appendEntriesRequest)) {
                     LOG.error("add new Leader failed leaderID:{}",appendEntriesRequest.getPeerId());
-                    return appendEntriesBuilder(builder,"Add leader failed", false).build();
+                    return appendEntriesBuilder(appendEntriesRequest,builder,"Add leader failed", false).build();
                 }
-            } else if(!appendEntriesRequest.getData().isEmpty()){
+            }
+            if(!appendEntriesRequest.getData().isEmpty()){
                 //normal appendEntry request
-                LOG.debug("Receive normal appendEntry request {}",appendEntriesRequest.getData());
-
-                //check leader illegal
+                LOG.debug("Receive normal appendEntry request, index:{}",appendEntriesRequest.getCommittedIndex());
 
                 //storage to log
 
                 if (NodeImpl.getNodeImple().followerSetLogEvent(appendEntriesRequest)) {
-                    return appendEntriesBuilder(builder,"", true).build();
+                    return appendEntriesBuilder(appendEntriesRequest,builder,"", true).build();
                 }
             }
             if (appendEntriesRequest.getData().isEmpty()) {
                 //heart beat request
-                return appendEntriesBuilder(builder,"", true).build();
+                return appendEntriesBuilder(appendEntriesRequest,builder,"", true).build();
             }
 
-            return appendEntriesBuilder(builder, "unknow failure",false).build();
+            return appendEntriesBuilder(appendEntriesRequest,builder, "unknow failure",false).build();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -205,10 +211,15 @@ return null;
     }
 
     private RpcRequests.AppendEntriesResponse.Builder appendEntriesBuilder(
+            RpcRequests.AppendEntriesRequest appendEntriesRequest,
             RpcRequests.AppendEntriesResponse.Builder builder,String reason,boolean result) {
         builder.setSuccess(result);
-        builder.setLastLogIndex(NodeImpl.getNodeImple().getStableLogIndex().get());
+
+        builder.setLastLogIndex(appendEntriesRequest.getCommittedIndex());
         builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
+        if (!"".equals(reason)) {
+            LOG.error("appendEntries failure {}",reason);
+        }
         builder.setReason(reason);
         builder.setAddress(NodeImpl.getNodeImple().getCurrentEndPoint().getIp());
         builder.setPort(NodeImpl.getNodeImple().getCurrentEndPoint().getPort());
@@ -217,14 +228,20 @@ return null;
     }
 
     @Override
-    public RpcRequests.AppendEntriesResponses handleApendEntriesRequests(RpcRequests.AppendEntriesRequests appendEntriesRequests) {
+    public RpcRequests.AppendEntriesResponses handleApendEntriesRequests
+            (RpcRequests.AppendEntriesRequests appendEntriesRequests) {
         RpcRequests.AppendEntriesResponses.Builder builder
                 = RpcRequests.AppendEntriesResponses.newBuilder();
 
         boolean ret = true;
         for (int i = 0; i <appendEntriesRequests.getArgsCount() ; i++) {
+            LOG.warn("handleApendEntriesRequests :{}",appendEntriesRequests.getArgs(i).getCommittedIndex());
             RpcRequests.AppendEntriesResponse appendEntriesResponse
                     = handleAppendEntriesRequest(appendEntriesRequests.getArgs(i));
+            LOG.warn("Check logEntry data:{} at:{}",
+                    new String(ZeroByteStringHelper.getByteArray(
+                            appendEntriesRequests.getArgs(i).getData()))
+                    ,appendEntriesRequests.getArgs(i).getCommittedIndex());
            builder.addArgs(appendEntriesResponse);
            if(!appendEntriesResponse.getSuccess()){
                ret = false;
@@ -249,8 +266,9 @@ return null;
     @Override
     public RpcRequests.NotifyFollowerStableResponse handleFollowerStableRequest
     (RpcRequests.NotifyFollowerStableRequest notifyFollowerStableRequest) {
-        LOG.debug("Receive follower stable request from follower:{} at index {}"
-                ,notifyFollowerStableRequest.getPeerId(),notifyFollowerStableRequest.getLastIndex());
+        LOG.debug("Receive follower stable request from follower:{} at index {} length {}"
+                ,notifyFollowerStableRequest.getPeerId(),notifyFollowerStableRequest.getLastIndex(),
+                notifyFollowerStableRequest.getLastIndex()-notifyFollowerStableRequest.getFirstIndex());
         RpcRequests.NotifyFollowerStableResponse.Builder builder = RpcRequests.NotifyFollowerStableResponse.newBuilder();
 
         if (NodeImpl.getNodeImple().handleFollowerStableEvent(notifyFollowerStableRequest)) {

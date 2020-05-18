@@ -73,8 +73,8 @@ public class RpcResponseClosure<T>  implements SofaResponseCallback<T> {
                 }
                 return;
             case "handleFollowerStableRequest":
-                LOG.info("Follower invoke follower stable request success result:{}"
-                        ,((RpcRequests.NotifyFollowerStableResponse)o).toString());
+                LOG.info("Follower invoke follower stable request success firstIndex:{}"
+                        ,((RpcRequests.NotifyFollowerStableResponse)o).getFirstIndex());
                 return;
             default:
                 LOG.error("RPC Request closure mismatched, requestBase: {} requestString: {}"

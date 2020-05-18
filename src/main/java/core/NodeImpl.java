@@ -285,7 +285,10 @@ public class NodeImpl implements Node {
                     - NodeImpl.getNodeImple().getLastReceiveHeartbeatTime().longValue())
                     >= getOptions().getCurrentNodeOptions().getMaxHeartBeatTime()) {
                 //超时，执行超时逻辑
-                LOG.error("Node timeout, start to launch TimeOut actions");
+                LOG.error("Node timeout, start to launch TimeOut actions " +
+                        "as it have not received heartBeat for {} ms ",
+                        Utils.monotonicMs()
+                                - NodeImpl.getNodeImple().getLastReceiveHeartbeatTime().longValue());
                 //timeOutClosure.run(null);
                 ElectionService.checkToStartPreVote();
             }
@@ -350,6 +353,9 @@ public class NodeImpl implements Node {
     public boolean transformLeader(RpcRequests.AppendEntriesRequest request) {
         try {
 
+            if(request.getAddress().isEmpty()){
+                return false;
+            }
 
             LOG.info("Start to transform Leader from {} to {} as {} has index:{} term:{}"
                     , getLeaderId(), request.getPeerId(),request.getPeerId()
@@ -567,8 +573,8 @@ public class NodeImpl implements Node {
                     continue;
                 }
                 // set task entry info before adding to list.
-                task.entry.getId().setIndex(getLastLogIndex().getAndIncrement());
-                task.entry.getId().setTerm(this.getLastLogTerm().get());
+//                task.entry.getId().setIndex(getLastLogIndex().getAndIncrement());
+//                task.entry.getId().setTerm(this.getLastLogTerm().get());
 
                 task.entry.setType(EnumOutter.EntryType.ENTRY_TYPE_DATA);
                 entries.add(task.entry);
@@ -588,25 +594,41 @@ public class NodeImpl implements Node {
     public boolean handleFollowerStableEvent(RpcRequests.NotifyFollowerStableRequest notifyFollowerStableRequest) {
 
         try {
-            BallotBox ballotBox = getBallotBoxConcurrentHashMap()
-                    .get(notifyFollowerStableRequest.getFirstIndex());
-            if (ballotBox != null) {
-                ballotBox.checkGranted(notifyFollowerStableRequest.getPeerId()
-                        , notifyFollowerStableRequest.getFirstIndex()
-                        , notifyFollowerStableRequest.getLastIndex()
-                                - notifyFollowerStableRequest.getFirstIndex());
-            }else {
-                ballotBox = new BallotBox(getPeerIdList(),
-                        notifyFollowerStableRequest.getFirstIndex(),
-                        notifyFollowerStableRequest.getLastIndex()
-                        - notifyFollowerStableRequest.getFirstIndex());
-                getBallotBoxConcurrentHashMap().put(notifyFollowerStableRequest.getFirstIndex(),
-                        ballotBox);
-                ballotBox.checkGranted(notifyFollowerStableRequest.getPeerId()
-                        , notifyFollowerStableRequest.getFirstIndex()
-                        , notifyFollowerStableRequest.getLastIndex()
-                                - notifyFollowerStableRequest.getFirstIndex());
+            long firstIndex = notifyFollowerStableRequest.getFirstIndex();
+            long lastIndex = notifyFollowerStableRequest.getLastIndex();
+            for (long i = firstIndex; i <(lastIndex) ; i++) {
+                BallotBox ballotBox = getBallotBoxConcurrentHashMap().get(i);
+                if(ballotBox!=null){
+                    ballotBox.checkGranted(notifyFollowerStableRequest.getPeerId(),
+                            i,1);
+                }else {
+                    ballotBox = new BallotBox(getPeerIdList(),i,1);
+                    getBallotBoxConcurrentHashMap().put(i,ballotBox);
+                    ballotBox.checkGranted(notifyFollowerStableRequest.getPeerId(),
+                            i,1);
+                }
             }
+
+//            BallotBox ballotBox = getBallotBoxConcurrentHashMap()
+//                    .get(notifyFollowerStableRequest.getFirstIndex());
+//            if (ballotBox != null) {
+//
+//                ballotBox.checkGranted(notifyFollowerStableRequest.getPeerId()
+//                        , notifyFollowerStableRequest.getFirstIndex()
+//                        , notifyFollowerStableRequest.getLastIndex()
+//                                - notifyFollowerStableRequest.getFirstIndex()+1);
+//            }else {
+//                ballotBox = new BallotBox(getPeerIdList(),
+//                        notifyFollowerStableRequest.getFirstIndex(),
+//                        notifyFollowerStableRequest.getLastIndex()
+//                        - notifyFollowerStableRequest.getFirstIndex() + 1);
+//                getBallotBoxConcurrentHashMap().put(notifyFollowerStableRequest.getFirstIndex(),
+//                        ballotBox);
+//                ballotBox.checkGranted(notifyFollowerStableRequest.getPeerId()
+//                        , notifyFollowerStableRequest.getFirstIndex()
+//                        , notifyFollowerStableRequest.getLastIndex()
+//                                - notifyFollowerStableRequest.getFirstIndex()+1);
+//            }
 
                                 return true;
         } catch (Exception e) {
@@ -715,34 +737,37 @@ public class NodeImpl implements Node {
 
         @Override
         public void run(final Status status) {
-            LOG.debug("LeaderStableClosure:{}",status);
-            if (status.isOk()) {
-                BallotBox ballotBox = getBallotBoxConcurrentHashMap().get(status.getFirstIndex());
-                if(ballotBox!=null){
-                    ballotBox.grant(getLeaderId().getPeerId().getId());
-                }
-            else {
-                    ballotBox = new BallotBox(getPeerIdList(),
-                            status.getFirstIndex(), status.getLastIndex()-status.getFirstIndex());
+            LOG.debug("LeaderStableClosure:{} first:{} last:{}"
+                    ,status,status.getFirstIndex(),status.getLastIndex());
 
-                    ballotBox.grant(getLeaderId().getPeerId().getId());
-                    getBallotBoxConcurrentHashMap().put(status.getFirstIndex(), ballotBox);
-
-                }
-
-            } else {
-                LOG.error("Node {} append [{}, {}] failed, status={}.", getNodeId(), this.firstLogIndex,
-                        this.firstLogIndex + this.nEntries - 1, status);
-            }
         }
     }
 
+    private void addBallotBox(Status status) {
+        long f = status.getFirstIndex();
+        long l = status.getLastIndex();
+        for (long i=f; i < (l); i++) {
+            BallotBox ballotBox = getBallotBoxConcurrentHashMap().get(i);
+            if(ballotBox!=null){
+                ballotBox.grant(getLeaderId().getPeerId().getId());
+            }
+            else {
+                ballotBox = new BallotBox(getPeerIdList(),
+                        i, 1);
 
+                ballotBox.grant(getLeaderId().getPeerId().getId());
+                getBallotBoxConcurrentHashMap().put(i, ballotBox);
+
+            }
+        }
+
+    }
 
     public void handleAppendEntriesResponse(final RpcRequests.AppendEntriesResponse appendEntriesResponse) {
 
-        LOG.debug("handleAppendEntriesResponse from {} at term {}",
-                appendEntriesResponse.getPeerId(),appendEntriesResponse.getTerm());
+        LOG.debug("handleAppendEntriesResponse from {} at term {} at index {}",
+                appendEntriesResponse.getPeerId(),appendEntriesResponse.getTerm()
+                ,appendEntriesResponse.getLastLogIndex());
 
        if (!appendEntriesResponse.getSuccess()) {
            LOG.warn("AppendEntries warning {} target peer:{}"
@@ -754,10 +779,9 @@ public class NodeImpl implements Node {
                    appendEntriesResponse.getPort(),
                    appendEntriesResponse.getLastLogIndex());
        }else {
-           NodeImpl.getNodeImple()
-                   .getBallotBoxConcurrentHashMap()
-                   .get(appendEntriesResponse.getLastLogIndex())
-                   .grant(appendEntriesResponse.getPeerId());
+           LOG.debug("handleAppendEntriesResponse from {} at term {} at index {} SUCCESSED",
+                   appendEntriesResponse.getPeerId(),appendEntriesResponse.getTerm()
+                   ,appendEntriesResponse.getLastLogIndex());
        }
     }
 
@@ -767,7 +791,8 @@ public class NodeImpl implements Node {
      */
     public void handleToApplyResponse(RpcRequests.NotifyFollowerToApplyResponse response) {
 
-        LOG.info("Receive follower applied request {}",response.toString());
+        LOG.info("Receive follower applied  {} firstIndex :{} lastIndex:{}"
+                ,response.toString(),response.getFirstIndex(),response.getLastIndex());
 //        NodeImpl.getNodeImple().getBallotBoxForApplyConcurrentHashMap()
 //                .get(response.getLastIndex()).grant(response.getFollowerId());
     }
@@ -790,7 +815,8 @@ public class NodeImpl implements Node {
         public void run(final Status status) {
             if (status.isOk()) {
             //Notify leader through RPC
-                LOG.debug("Follower Log Stable at startIndex {}",status.getFirstIndex());
+                LOG.debug("Follower Log Stable at startIndex {} length {}"
+                        ,status.getFirstIndex(),status.getLastIndex()-status.getFirstIndex()+1);
                 RpcRequests.NotifyFollowerStableRequest.Builder builder
                         = RpcRequests.NotifyFollowerStableRequest.newBuilder();
                 builder.setFirstIndex(status.getFirstIndex());

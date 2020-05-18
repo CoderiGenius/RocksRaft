@@ -23,23 +23,32 @@ public class LogEntryEncoder implements entity.LogEntryEncoder {
     @Override
     public byte[] encode(LogEntry log) throws RaftException {
         Requires.requireNonNull(log,"The log entry is null");
+        String data = new String(getByteArrayFromByteBuffer(log.getData()));
 
-        final LogId logId = log.getId();
-        final LogOuter.LogEntry.Builder builder = LogOuter.LogEntry.newBuilder();
-        builder.setIndex(logId.getIndex());
-        builder.setTerm(logId.getTerm());
-        builder.setData( ByteString.copyFrom(getByteArrayFromByteBuffer(log.getData())));
-        final LogOuter.LogEntry logEntry = builder.build();
-        final int bodyLen = logEntry.getSerializedSize();
-        final byte[] ret = new byte[LogEntryV2CodecFactory.HEADER_SIZE + bodyLen];
-        int i = 0;
-        for (; i <LogEntryV2CodecFactory.HEADER_VERSION.length ; i++) {
-            ret[i] = LogEntryV2CodecFactory.HEADER_VERSION[i];
-        }
-        // write body
-        writeToByteArray(logEntry, ret, i, bodyLen);
-        return ret;
+        return data.getBytes();
     }
+
+//    @Override
+//    public byte[] encode(LogEntry log) throws RaftException {
+//        Requires.requireNonNull(log,"The log entry is null");
+//
+//        final LogId logId = log.getId();
+//        final LogOuter.LogEntry.Builder builder = LogOuter.LogEntry.newBuilder();
+//        builder.setIndex(logId.getIndex());
+//        builder.setTerm(logId.getTerm());
+//        builder.setData( ByteString.copyFrom(getByteArrayFromByteBuffer(log.getData())));
+//        final LogOuter.LogEntry logEntry = builder.build();
+//        final int bodyLen = logEntry.getSerializedSize();
+//        final byte[] ret = new byte[LogEntryV2CodecFactory.HEADER_SIZE + bodyLen];
+//        int i = 0;
+//        for (; i <LogEntryV2CodecFactory.HEADER_VERSION.length ; i++) {
+//            ret[i] = LogEntryV2CodecFactory.HEADER_VERSION[i];
+//        }
+//        // write body
+//        writeToByteArray(logEntry, ret, i, bodyLen);
+//        return ret;
+//    }
+//
 
     private static byte[] getByteArrayFromByteBuffer(ByteBuffer byteBuffer) {
         byte[] bytesArray = new byte[byteBuffer.remaining()];

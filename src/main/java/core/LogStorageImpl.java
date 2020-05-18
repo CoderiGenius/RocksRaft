@@ -3,6 +3,7 @@ package core;
 import config.LogStorageOptions;
 import entity.LogEntry;
 import entity.LogEntryEncoder;
+import entity.LogId;
 import entity.RocksBatch;
 import exceptions.RaftException;
 import org.rocksdb.*;
@@ -13,6 +14,8 @@ import storage.LogStorage;
 import utils.Bits;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -41,7 +44,7 @@ public class LogStorageImpl implements LogStorage {
     }
     private static final Logger LOG                    = LoggerFactory
             .getLogger(LogStorageOptions.class);
-    static RocksDB rocksDB;
+
     LogStorageOptions logStorageOptions;
 
 
@@ -79,6 +82,22 @@ public class LogStorageImpl implements LogStorage {
 
     @Override
     public LogEntry getEntry(long index) {
+        LogEntry logEntry = new LogEntry();
+        LogId logId = new LogId();
+        logId.setIndex(index);
+        try {
+            logEntry.setId(logId);
+            logEntry.setData(ByteBuffer.wrap(rocksDBStorage.get(("log:" + index).getBytes())));
+
+            LOG.debug("Test get key:{},value:{}",
+                    index,new String(rocksDBStorage.get(("log:"+index).getBytes())
+                            , StandardCharsets.UTF_8));
+
+          return  logEntry;
+        } catch (Exception e) {
+            LOG.error("getEntry from rocksDB error {}",e.getMessage());
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -137,16 +156,17 @@ public class LogStorageImpl implements LogStorage {
         final long logIndex = entry.getId().getIndex();
         final byte[] content = this.logEntryEncoder.encode(entry);
         //writeBatch.put(this.defaultHandle, getKeyBytes(logIndex),content);
-        LOG.debug("RocksDB put:key:{}",logIndex);
-        rocksDBStorage.put(("log"+logIndex).getBytes(),content);
+        LOG.debug("RocksDB put:key:{} value:{} length:{}",logIndex,new String(content),content.length);
+        rocksDBStorage.put(("log:"+logIndex).getBytes(),content);
+        LOG.debug("Test get from RocksDB key:{},value:{} length:{}",
+                logIndex,new String(rocksDBStorage.get(("log:"+logIndex).getBytes())
+                        , StandardCharsets.UTF_8),rocksDBStorage.get(("log:"+logIndex).getBytes()).length);
     }
 
     public void setLogStorageOptions(LogStorageOptions logStorageOptions) {
         this.logStorageOptions = logStorageOptions;
     }
-    public static RocksDB getRocksDB() {
-        return rocksDB;
-    }
+
 
     protected byte[] getKeyBytes(final long index) {
         final byte[] ks = new byte[8];

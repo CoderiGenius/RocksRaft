@@ -50,7 +50,7 @@ public class FSMCallerImpl implements FSMCaller {
         this.afterShutdown = opts.getAfterShutdown();
         this.node = opts.getNode();
         this.lastAppliedTerm = opts.getBootstrapId().getTerm();
-        this.lastAppliedIndex.set(opts.getBootstrapId().getIndex());
+
         this.disruptor = DisruptorBuilder.<ApplyTask> newInstance() //
                 .setEventFactory(new ApplyTaskFactory()) //
                 .setRingBufferSize(opts.getDisruptorBufferSize()) //
@@ -75,6 +75,7 @@ public class FSMCallerImpl implements FSMCaller {
         @Override
         public void onEvent(final ApplyTask event, final long sequence, final boolean endOfBatch) throws Exception {
             try {
+                LOG.debug("Receive apply event {}",event.committedIndex);
                 this.maxCommittedIndex = runApplyTask(event, this.maxCommittedIndex, endOfBatch);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -137,23 +138,33 @@ public class FSMCallerImpl implements FSMCaller {
     }
 
     private void doCommitted(long maxCommittedIndex) {
-        final long lastAppliedIndex = this.lastAppliedIndex.get();
-        // We can tolerate the disorder of committed_index
-        if (lastAppliedIndex >= maxCommittedIndex) {
-            return;
-        }
-        final IteratorImpl iterImpl = new IteratorImpl(this.fsm, this.logManager,
-                lastAppliedIndex, maxCommittedIndex, this.applyingIndex);
-        while (iterImpl.isGood()) {
-            // Apply data task to user state machine
-            doApplyTasks(iterImpl);
+        try {
+            LOG.debug("doCommitted at {}", maxCommittedIndex);
+            final long lastAppliedIndex = this.lastAppliedIndex.get();
+            // We can tolerate the disorder of committed_index
+            if (lastAppliedIndex >= maxCommittedIndex) {
+                LOG.warn("log already committed at {} the lastAppliedIndex:{}"
+                        , maxCommittedIndex, lastAppliedIndex);
+                return;
+            }
+            final IteratorImpl iterImpl = new IteratorImpl(this.fsm, this.logManager,
+                    lastAppliedIndex, maxCommittedIndex, this.applyingIndex);
+            LOG.debug("doCommitted at {} iterImpl:{}", maxCommittedIndex,iterImpl.toString());
+            while (iterImpl.isGood()) {
+                // Apply data task to user state machine
+                doApplyTasks(iterImpl);
+            }
+            this.lastAppliedIndex.set(iterImpl.getIndex() - 1);
+        } catch (Exception e) {
+            LOG.error("doCommitted error {}",e.getMessage());
+            e.printStackTrace();
         }
     }
 
     private void doApplyTasks(IteratorImpl iterImpl) {
         final IteratorWrapper iter = new IteratorWrapper(iterImpl);
 
-
+        LOG.debug("Apply to fsm at{}",iter.getIndex());
             this.fsm.onApply(iter);
 
         if (iter.hasNext()) {
@@ -167,10 +178,13 @@ public class FSMCallerImpl implements FSMCaller {
     public boolean onCommitted(long committedIndex) {
         LOG.debug("onCommitted the log at committedIndex {}",committedIndex);
         NodeImpl.getNodeImple().setStableLogIndex(committedIndex);
-//        NodeImpl.getNodeImple().setStableLogIndex(committedIndex);
-        NodeImpl.getNodeImple().getReplicatorGroup().sendApplyNotifyToAll(committedIndex);
-        BallotBoxForApply ballotBoxForApply = new BallotBoxForApply(committedIndex);
-        NodeImpl.getNodeImple().getBallotBoxForApplyConcurrentHashMap().put(committedIndex,ballotBoxForApply);
+
+        if(NodeImpl.NodeState.leader.equals(NodeImpl.getNodeImple().getNodeState())) {
+            NodeImpl.getNodeImple().getReplicatorGroup().sendApplyNotifyToAll(committedIndex);
+            BallotBoxForApply ballotBoxForApply = new BallotBoxForApply(committedIndex);
+            NodeImpl.getNodeImple().getBallotBoxForApplyConcurrentHashMap()
+                    .put(committedIndex, ballotBoxForApply);
+        }
         return enqueueTask((task, sequence) -> {
             task.type = TaskType.COMMITTED;
             task.committedIndex = committedIndex;

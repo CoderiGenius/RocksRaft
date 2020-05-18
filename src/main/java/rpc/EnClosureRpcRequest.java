@@ -32,6 +32,7 @@ public class EnClosureRpcRequest  {
                 new ThreadFactoryImpl(),new RejectedExecutionHandlerImpl());
         timerManager = new TimerManager();
         timerManager.init(Utils.APPEND_ENTRIES_THREADS_SEND);
+        LOG.info("EnClosureRpcRequest init succeed with rpcServicesMap size:{}",getRpcServicesMap().size());
     }
 
     public static final Logger LOG = LoggerFactory.getLogger(EnClosureRpcRequest.class);
@@ -160,7 +161,8 @@ public class EnClosureRpcRequest  {
                 return rpcResult;
             } catch (Exception e) {
                 rpcResult.setSuccess(false);
-                LOG.error("handleFollowerStableRequest EnClosure error {}",e.getMessage());
+                LOG.error("handleFollowerStableRequest EnClosure error {} endpoint {} getRpcServicesMap {}"
+                        ,e.getMessage(),endpoint,getRpcServicesMap().get(endpoint));
                 if (retry) {
                     getTimerManager().schedule(()->handleFollowerStableRequest(notifyFollowerStableRequest,
                             endpoint,false),

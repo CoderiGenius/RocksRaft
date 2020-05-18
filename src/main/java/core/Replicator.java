@@ -166,11 +166,11 @@ public class Replicator {
         @Override
         public void onEvent(LogEntryEvent logEntryEvent, long l, boolean b) throws Exception {
             LogEntry logEntry = logEntryEvent.entry;
-            LOG.debug("Replicator receive log event on logEntry: {} data: {}"
+            LOG.debug("Replicator receive log event on logEntry: {} data: {} data:{}"
                     ,logEntry.getId(),new String(ZeroByteStringHelper.getByteArray(
-                            ZeroByteStringHelper.wrap(logEntry.getData()))));;
+                            ZeroByteStringHelper.wrap(logEntry.getData()))),logEntry.getData());;
             if (b
-                    && !getAppendEntriesRequestList().isEmpty()){
+                    ){
 
                 final RpcRequests.AppendEntriesRequest.Builder builder1
                         = RpcRequests.AppendEntriesRequest.newBuilder();
@@ -178,13 +178,19 @@ public class Replicator {
                 builder1.setCommittedIndex(logEntry.getId().getIndex());
                 builder1.setTerm(logEntry.getId().getTerm());
                 builder1.setPeerId(logEntry.getLeaderId().getId());
-                getAppendEntriesRequestList().add(builder1.build());
-
+                RpcRequests.AppendEntriesRequest appendEntriesRequest = builder1.build();
+                LOG.warn("appendEntriesRequest CHECK:index {} dataIsEmpty:{} "
+                        ,appendEntriesRequest.getCommittedIndex(),appendEntriesRequest.getData().isEmpty());
+                getAppendEntriesRequestList().add(appendEntriesRequest);
+            if( !getAppendEntriesRequestList().isEmpty()){
                 final RpcRequests.AppendEntriesRequests.Builder builder
                         = RpcRequests.AppendEntriesRequests.newBuilder();
                 builder.addAllArgs(getAppendEntriesRequestList());
                 RpcRequests.AppendEntriesRequests appendEntriesRequests = builder.build();
                 //rpcServices.handleApendEntriesRequests(appendEntriesRequests);
+                LOG.debug("Replicator send handleAppendEntriesRequests with sizes:{} to {}"
+                        ,getAppendEntriesRequestList().size(),getEndpoint());
+                checkList(getAppendEntriesRequestList());
                 NodeImpl.getNodeImple().getEnClosureRpcRequest()
                         .handleAppendEntriesRequests(appendEntriesRequests,rpcServices,true);
                 Inflight inflight = new Inflight(
@@ -197,6 +203,7 @@ public class Replicator {
                 getAppendEntriesRequestList().clear();
                 return;
             }
+            }
             if(!b){
                 final RpcRequests.AppendEntriesRequest.Builder builder
                         = RpcRequests.AppendEntriesRequest.newBuilder();
@@ -206,10 +213,23 @@ public class Replicator {
                 builder.setCommittedIndex(logEntry.getId().getIndex());
                 builder.setTerm(logEntry.getId().getTerm());
                 builder.setPeerId(logEntry.getLeaderId().getId());
-                getAppendEntriesRequestList().add(builder.build());
+                RpcRequests.AppendEntriesRequest appendEntriesRequest = builder.build();
+                LOG.warn("appendEntriesRequest CHECK2:index {} dataIsEmpty:{} "
+                        ,appendEntriesRequest.getCommittedIndex(),appendEntriesRequest.getData().isEmpty());
+                getAppendEntriesRequestList().add(appendEntriesRequest);
             }
         }
     }
+
+    private void checkList(List<RpcRequests.AppendEntriesRequest> list) {
+        for (RpcRequests.AppendEntriesRequest a:
+             list) {
+            LOG.debug("Log list check: {} dataIsEmpty: {}"
+                    ,a.getCommittedIndex(),a.getData().isEmpty());
+        }
+
+    }
+
     private static class LogEntryEventFactory implements EventFactory<LogEntryEvent> {
 
         @Override
@@ -289,6 +309,7 @@ public class Replicator {
                 builder.setTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
                 builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
                 builder.setGroupId(NodeImpl.getNodeImple().getNodeId().getGroupId());
+
 //                builder.setPrevLogIndex(NodeImpl.getNodeImple().getLastLogIndex().get());
 //                builder.setPrevLogTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
             } else {

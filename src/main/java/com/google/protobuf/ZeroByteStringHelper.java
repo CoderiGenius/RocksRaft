@@ -16,6 +16,10 @@
  */
 package com.google.protobuf;
 
+import core.NodeImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -28,7 +32,7 @@ import java.util.List;
  * 2018-May-08 2:38:42 PM
  */
 public class ZeroByteStringHelper {
-
+    public static final Logger LOG = LoggerFactory.getLogger(ZeroByteStringHelper.class);
     /**
      * Wrap a byte array into a ByteString.
      */
@@ -67,9 +71,12 @@ public class ZeroByteStringHelper {
             byteString.writeTo(carrier);
             if (carrier.isValid()) {
                 return carrier.getValue();
+            }else {
+                LOG.warn("getByteArray invalid");
             }
         } catch (final IOException ignored) {
             // ignored
+            LOG.error("getByteArray IO Exception:{}",ignored.getMessage());
         }
         return byteString.toByteArray();
     }

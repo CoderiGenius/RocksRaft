@@ -95,14 +95,15 @@ public class LogManagerImpl implements LogManager {
         //Requires.requireNonNull(done, "done");
         this.writeLock.lock();
         try {
-            for (int i = 0; i < entries.size(); i++) {
+
                 //final LogEntry logEntry = entries.get(i);
                 if (!entries.isEmpty()) {
                     done.setFirstLogIndex(entries.get(0).getId().getIndex());
-                    this.logsInMemory.addAll(entries);
+                    LOG.debug("setFirstLogIndex, sizes:{}",entries.size());
                 }
                 done.setEntries(entries);
-            }
+
+            this.logsInMemory.addAll(entries);
             int retryTimes = 0;
             final EventTranslator<StableClosureEvent> translator = (event, sequence) -> {
                 event.reset();
@@ -142,37 +143,36 @@ public class LogManagerImpl implements LogManager {
         this.hasError = true;
         final RaftException error = new RaftException(EnumOutter.ErrorType.ERROR_TYPE_LOG);
         error.setStatus(new Status(code, fmt, args));
-        this.fsmCaller.onError(error);
+        //this.fsmCaller.onError(error);
     }
 
     @Override
     public LogEntry getEntry(long index) {
-
         this.readLock.lock();
+        LOG.debug("Get log entry for {}",index);
         try {
-            if (index > this.lastLogIndex || index < this.firstLogIndex) {
-                return null;
-            }
-            final LogEntry entry = getEntryFromMemory(index);
-            if (entry != null) {
+//                if (index > this.lastLogIndex || index < this.firstLogIndex) {
+//                    return null;
+//                }
+                 LogEntry entry = getEntryFromMemory(index);
+                if (entry != null) {
+                    LOG.debug("Get log entry from memory {}",entry);
+                    return entry;
+                }
+
+             entry = this.logStorage.getEntry(index);
+            LOG.debug("Get log entry from memory failed, try to get from disk, result:{}",entry);
+            if (entry == null) {
+                reportError(RaftError.EIO.getNumber(), "Corrupted entry at index=%d, not found", index);
                 return entry;
             }
-        } finally {
+        } catch (Exception e) {
+            LOG.error("getEntry error {}",e.getMessage());
+            e.printStackTrace();
+        }finally {
             this.readLock.unlock();
         }
-        final LogEntry entry = this.logStorage.getEntry(index);
-        if (entry == null) {
-            reportError(RaftError.EIO.getNumber(), "Corrupted entry at index=%d, not found", index);
-        }
-        // Validate checksum
-//        if (entry != null && this.raftOptions.isEnableLogEntryChecksum() && entry.isCorrupted()) {
-//            String msg = String.format("Corrupted entry at index=%d, term=%d, expectedChecksum=%d, realChecksum=%d",
-//                    index, entry.getId().getTerm(), entry.getChecksum(), entry.checksum());
-//            // Report error to node and throw exception.
-//            reportError(RaftError.EIO.getNumber(), msg);
-//            throw new LogEntryCorruptedException(msg);
-//        }
-        return entry;
+        return null;
     }
     protected LogEntry getEntryFromMemory(final long index) {
         LogEntry entry = null;
@@ -288,14 +288,16 @@ public class LogManagerImpl implements LogManager {
         @Override
         public void onEvent(StableClosureEvent stableClosureEvent, long sequence, boolean endOfBatch) throws Exception {
 
-            LOG.debug("Send to all replicators with entries sizes: {}"
-                    ,stableClosureEvent.done.getEntries().size());
-            LOG.debug("Send to all replicators with entries data: {}"
-                    ,new String(ZeroByteStringHelper.getByteArray(
-                            ZeroByteStringHelper.wrap(stableClosureEvent.done.getEntries().get(0).getData()))));
+            if (NodeImpl.NodeState.leader.equals(NodeImpl.getNodeImple().getNodeState())) {
+
+
+            LOG.debug("Send to all replicators with entries sizes: {} and first index:{}"
+                    ,stableClosureEvent.done.getEntries().size()
+                    ,stableClosureEvent.done.getEntries().get(0).getId());
+
             NodeImpl.getNodeImple().getReplicatorGroup()
                     .sendAppendEntriesToAllReplicator(stableClosureEvent.done.getEntries());
-
+            }
 
             final StableClosure done = stableClosureEvent.done;
             if (done.getEntries() != null && !done.getEntries().isEmpty()) {
@@ -379,12 +381,15 @@ public class LogManagerImpl implements LogManager {
                             st.setFirstIndex(storage.get(i).getFirstLogIndex());
                             st.setLastIndex(storage.get(i).getFirstLogIndex()+size);
                             //st.setTerm(storage.get(i));
-
                         }
                         this.storage.get(i).run(st);
+                        LOG.debug("statue:");
+                        //
+                        if (st.isOk()) {
 
-
-
+                            addBallotBox(st);
+                        }
+                        //
 
                     } catch (Throwable t) {
                         LOG.error("Fail to run closure with status: {}.", st, t);
@@ -436,6 +441,26 @@ public class LogManagerImpl implements LogManager {
             }
         }
         return lastId;
+    }
+
+    private void addBallotBox(Status status) {
+        long f = status.getFirstIndex();
+        long l = status.getLastIndex();
+        for (long i=f; i < (l); i++) {
+            BallotBox ballotBox = NodeImpl.getNodeImple().getBallotBoxConcurrentHashMap().get(i);
+            if(ballotBox!=null){
+                ballotBox.grant(NodeImpl.getNodeImple().getLeaderId().getPeerId().getId());
+            }
+            else {
+                ballotBox = new BallotBox(NodeImpl.getNodeImple().getPeerIdList(),
+                        i, 1);
+
+                ballotBox.grant(NodeImpl.getNodeImple().getLeaderId().getPeerId().getId());
+                NodeImpl.getNodeImple().getBallotBoxConcurrentHashMap().put(i, ballotBox);
+
+            }
+        }
+
     }
     public ReadWriteLock getLock() {
         return lock;

@@ -133,10 +133,26 @@ public class ReplicatorGroupImpl implements ReplicatorGroup {
                     LOG.warn("Empty log");
                     continue;
                 }
-            final EventTranslator<LogEntryEvent> translator = (event, sequence) -> { event.entry = l; };
-            LOG.debug("Publish event to ringBuffer {} data:{}",r.getEndpoint(),new String(ZeroByteStringHelper.getByteArray(
-                    ZeroByteStringHelper.wrap(l.getData()))));;
-                r.getDisruptor().getRingBuffer().tryPublishEvent(translator);
+            final EventTranslator<LogEntryEvent> translator = (event, sequence) -> {
+//                    //event.entry = l;
+                    LogEntry logEntry = new LogEntry();
+                    logEntry.setData(l.getData());
+                    LogId logId = new LogId();
+                    logId.setIndex(l.getId().getIndex());
+                    logId.setTerm(l.getId().getTerm());
+                    logEntry.setId(logId);
+                    logEntry.setLeaderId(l.getLeaderId());
+                    event.entry = logEntry;
+                LOG.debug("Publish event to ringBuffer {} data:{} index:{}",r.getEndpoint(),new String(ZeroByteStringHelper.getByteArray(
+                        ZeroByteStringHelper.wrap(logEntry.getData()))),logEntry.getId());
+                };
+                int times = 0;
+                while (!r.getRingBuffer().tryPublishEvent(translator)) {
+                    times++;
+                    if (times > 3) {
+                        LOG.error("Replicator over load");
+                    }
+                }
             }
 
         }
