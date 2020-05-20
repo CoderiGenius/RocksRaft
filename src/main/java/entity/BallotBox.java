@@ -114,12 +114,15 @@ public class BallotBox {
             // if is not sequential, wait the front one to be applied
             LOG.warn("Log granted disorder，wait the front one, current index {}", currentIndex);
             setBallotBoxState(BallotBoxState.Granted);
-//            LOG.warn("Check the front one, current index {}", currentIndex);
-//            BallotBox frontBallotBox = NodeImpl.getNodeImple().getBallotBoxConcurrentHashMap()
-//                    .get(this.currentIndex - length );
-//            if (frontBallotBox != null) {
-//                frontBallotBox.checkBallotBoxToApply();
-//            }
+            LOG.warn("Check the front one, current index {}", currentIndex);
+            BallotBox frontBallotBox = NodeImpl.getNodeImple().getBallotBoxConcurrentHashMap()
+                    .get(this.currentIndex - length );
+            if (frontBallotBox != null) {
+                if(!frontBallotBox.isGranted()){
+                    //the front ballotBox is still unGranted, so we need to replay the log
+                    NodeImpl.getNodeImple().rePlayTheSpecificLog(frontBallotBox.getCurrentIndex());
+                }
+            }
         }
 
 

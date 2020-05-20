@@ -63,13 +63,13 @@ public class Client {
 
             task.setData(byteBuffer);
             taskServices.apply(task);
-            if(i<150){
+            if(i==150){
                 Thread.sleep(200);
             }
-            if(i<100){
+            if(i==100){
                 Thread.sleep(200);
             }
-            if(i<50){
+            if(i==50){
                 Thread.sleep(200);
             }
             i--;

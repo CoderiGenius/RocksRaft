@@ -18,7 +18,12 @@ public class Start3 {
         Runnable runnable = () -> {
             NodeOptions nodeOptions =  NodeOptions.getNodeOptions();
 
-            RaftGroupService raftGroupService = new RaftGroupService( nodeOptions,"E:\\NewJavaEEWorkplace\\RocksRaft\\src\\main\\resources\\properties.yml");
+//            RaftGroupService raftGroupService = new RaftGroupService( nodeOptions,"E:\\NewJavaEEWorkplace\\RocksRaft\\src\\main\\resources\\properties.yml");
+
+            RaftGroupService raftGroupService =
+                    new RaftGroupService( nodeOptions
+                            ,"./properties3.yml");
+
             try {
                 Node node = raftGroupService.start();
             } catch (InterruptedException e) {

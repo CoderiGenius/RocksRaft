@@ -589,6 +589,21 @@ public class NodeImpl implements Node {
             getWriteLock().unlock();
         }
     }
+
+    /**
+     * rePlay the specific log when ballot box is seized
+     * @param index
+     */
+    public void rePlayTheSpecificLog(long index) {
+        LOG.info("rePlaying theSpecificLog:{}",index);
+        LogEntry logEntry = getLogManager().getEntry(index);
+        logEntry.getId().setTerm(NodeImpl.getNodeImple().getLastLogTerm().get());
+        logEntry.setLeaderId(NodeImpl.getNodeImple().getLeaderId().getPeerId());
+
+        getReplicatorGroup().sendAppendEntryToAllReplicator(logEntry);
+    }
+
+
     /**
      * Come from follower, leader invokes this method to handle follower stable event
      * @param notifyFollowerStableRequest

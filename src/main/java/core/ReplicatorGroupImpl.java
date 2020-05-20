@@ -163,7 +163,8 @@ public class ReplicatorGroupImpl implements ReplicatorGroup {
         for (Replicator r :
                 replicatorList) {
 
-                final EventTranslator<LogEntryEvent> translator = (event, sequence) -> { event.entry = logEntry; };
+                final EventTranslator<LogEntryEvent> translator = (event, sequence) -> {
+                    event.entry = logEntry; };
                 LOG.debug("Publish event to ringBuffer {} data:{}",r.getEndpoint()
                         ,ZeroByteStringHelper.byteBufferToString(logEntry.getData()));;
                 r.getDisruptor().getRingBuffer().tryPublishEvent(translator);

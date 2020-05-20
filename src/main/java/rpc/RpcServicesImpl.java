@@ -168,12 +168,15 @@ public class RpcServicesImpl implements RpcServices {
             if (appendEntriesRequest.getTerm() < NodeImpl.getNodeImple().getLastLogTerm().get()) {
                 return appendEntriesBuilder(appendEntriesRequest,builder
                         ,"Term failure,target term is "
-                                +NodeImpl.getNodeImple().getLastLogTerm().get(), false).build();
+                                +NodeImpl.getNodeImple().getLastLogTerm().get()
+                                +" but requester term is"+appendEntriesRequest.getTerm(), false).build();
             }
             //check index
             if (appendEntriesRequest.getCommittedIndex() < NodeImpl.getNodeImple().getStableLogIndex().get()) {
-                return appendEntriesBuilder(appendEntriesRequest,builder, "Index failure, target index is "
-                        +NodeImpl.getNodeImple().getStableLogIndex().get(),false).build();
+                return appendEntriesBuilder(appendEntriesRequest,builder
+                        , "Index failure, target index is "
+                        +NodeImpl.getNodeImple().getStableLogIndex().get()
+                        +" but requester index is "+appendEntriesRequest.getCommittedIndex(),false).build();
             }
 
             //find out if it is null request and check if it is new leader request

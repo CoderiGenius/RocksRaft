@@ -176,7 +176,7 @@ public class Replicator {
                 builder1.setData(ZeroByteStringHelper.wrap(logEntry.getData()));
                 builder1.setCommittedIndex(logEntry.getId().getIndex());
                 builder1.setTerm(logEntry.getId().getTerm());
-                builder1.setPeerId(logEntry.getLeaderId().getId());
+
                 builder1.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
                 builder1.setGroupId(NodeImpl.getNodeImple().getNodeId().getGroupId());
                 builder1.setPort(NodeImpl.getNodeImple().getOptions().getCurrentNodeOptions().getPort());
@@ -217,7 +217,7 @@ public class Replicator {
                                 logEntry.getData()));
                 builder.setCommittedIndex(logEntry.getId().getIndex());
                 builder.setTerm(logEntry.getId().getTerm());
-                builder.setPeerId(logEntry.getLeaderId().getId());
+                builder.setPeerId(NodeImpl.getNodeImple().getNodeId().getPeerId().getId());
                 RpcRequests.AppendEntriesRequest appendEntriesRequest = builder.build();
                 LOG.warn("appendEntriesRequest CHECK2:index {} dataIsEmpty:{} "
                         ,appendEntriesRequest.getCommittedIndex(),appendEntriesRequest.getData().isEmpty());
