@@ -57,13 +57,21 @@ public class Client {
 
 
 
-        int i = 10;
+        int i = 200;
         while (i>0) {
             ByteBuffer byteBuffer =  ByteBuffer.wrap(("log"+i).getBytes());
 
             task.setData(byteBuffer);
             taskServices.apply(task);
-
+            if(i<150){
+                Thread.sleep(200);
+            }
+            if(i<100){
+                Thread.sleep(200);
+            }
+            if(i<50){
+                Thread.sleep(200);
+            }
             i--;
         }
 
