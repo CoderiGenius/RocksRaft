@@ -462,7 +462,7 @@ public class NodeImpl implements Node {
 
         @Override
         public void onEvent(LogEntryEvent logEntryEvent, long l, boolean endOfBatch) throws Exception {
-            LOG.debug("Receive logEvent");
+            LOG.debug("Receive logEvent:{}",logEntryEvent.entry.getId());
             this.tasks.add(logEntryEvent);
             if (this.tasks.size() >= NodeOptions.getNodeOptions().getApplyBatch() || endOfBatch) {
                 executeApplyingTasks(this.tasks);

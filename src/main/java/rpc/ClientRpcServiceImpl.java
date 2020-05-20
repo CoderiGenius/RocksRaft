@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by 周思成 on  2020/5/8 21:12
@@ -15,7 +16,7 @@ import java.util.List;
 public class ClientRpcServiceImpl implements ClientRpcService {
 
     public static final Logger LOG = LoggerFactory.getLogger(ClientRpcServiceImpl.class);
-
+    public static AtomicInteger atomicInteger = new AtomicInteger(0);
     @Override
     public void applied(Status status) {
         LOG.info("Receive status {}",status);
@@ -31,6 +32,7 @@ public class ClientRpcServiceImpl implements ClientRpcService {
         LOG.info("Receive ReadTask {}",readTask);
         String result = new String(readTask.getTaskBytes(), StandardCharsets.UTF_8);
         LOG.info("Read result:"+result);
+        atomicInteger.addAndGet(1);
     }
 
     @Override

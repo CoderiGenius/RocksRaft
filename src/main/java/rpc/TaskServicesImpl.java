@@ -40,9 +40,10 @@ public class TaskServicesImpl implements TaskRpcServices {
 
     @Override
     public void apply(Task[] tasks) {
-        for (Task t:tasks
-             ) {
-            NodeImpl.getNodeImple().apply(t);
+        LOG.info("Apply tasks:{} currentThread:{}",tasks.length,Thread.currentThread().getName());
+        for (Task task : tasks) {
+            LOG.debug("for :{}",Thread.currentThread().getName());
+            NodeImpl.getNodeImple().apply(task);
         }
     }
 

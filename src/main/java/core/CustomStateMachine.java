@@ -3,6 +3,7 @@ package core;
 import entity.Iterator;
 import entity.ReadTask;
 import entity.RpcResult;
+import entity.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +32,10 @@ public class CustomStateMachine extends StateMachineAdapter{
                     while (iter.hasNext()){
                         rocksDBStorage.put(toBytes(iter.getIndex()),getByteArrayFromByteBuffer(iter.getData()));
                         NodeImpl.getNodeImple().handleLogApplied(iter.getIndex());
-                        LOG.debug("Get from rocksdb test:key:{} value:{}",iter.getIndex(),new String(
-                                rocksDBStorage.get(toBytes(iter.getIndex()))));
+//                        LOG.debug("Get from rocksdb test:key:{} value:{}",iter.getIndex(),new String(
+//                                rocksDBStorage.get(toBytes(iter.getIndex()))));
+                        ReadTask task = new ReadTask(getByteArrayFromByteBuffer(iter.getData()));
+                        NodeImpl.getNodeImple().getClientRpcService().readResult(task);
                         iter.next();
                     }
 

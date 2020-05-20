@@ -22,7 +22,7 @@ public class Start2 {
 
             RaftGroupService raftGroupService =
                     new RaftGroupService( nodeOptions
-                            ,"./properties2.yml");
+                            ,"properties2.yml");
 
             try {
                 Node node = raftGroupService.start();
