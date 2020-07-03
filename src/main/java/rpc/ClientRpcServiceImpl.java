@@ -29,10 +29,16 @@ public class ClientRpcServiceImpl implements ClientRpcService {
 
     @Override
     public void readResult(ReadTask readTask) {
-        LOG.info("Receive ReadTask {}",readTask);
-        String result = new String(readTask.getTaskBytes(), StandardCharsets.UTF_8);
-        LOG.info("Read result:"+result);
-        atomicInteger.addAndGet(1);
+        try {
+            LOG.info("Receive ReadTask {}", readTask);
+            String result = new String(readTask.getTaskBytes(), StandardCharsets.UTF_8);
+            LOG.info("Read result:" + result);
+            atomicInteger.addAndGet(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOG.error("readResult error:{}",e.getMessage());
+        }
+
     }
 
     @Override

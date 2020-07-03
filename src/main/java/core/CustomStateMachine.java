@@ -24,23 +24,24 @@ public class CustomStateMachine extends StateMachineAdapter{
 
     @Override
     public void onApply(Iterator iter) {
-        LOG.debug("onApply:{} operation:{}",iter.getIndex(),iter.getOperation());
+        LOG.debug("onApply:{} operation:{}",iter.getIndex(),"READ".equals(iter.getOperation()));
         this.lock.lock();
         try {
             switch (iter.getOperation()){
                 case "LOG":
                     while (iter.hasNext()){
+                        LOG.debug("CustomStateMachine handle LOG:{}",iter.getSize());
                         rocksDBStorage.put(toBytes(iter.getIndex()),getByteArrayFromByteBuffer(iter.getData()));
                         NodeImpl.getNodeImple().handleLogApplied(iter.getIndex());
-//                        LOG.debug("Get from rocksdb test:key:{} value:{}",iter.getIndex(),new String(
-//                                rocksDBStorage.get(toBytes(iter.getIndex()))));
+                        LOG.debug("Get from rocksdb test:key:{} value:{}",iter.getIndex(),new String(
+                                rocksDBStorage.get(toBytes(iter.getIndex()))));
                         ReadTask task = new ReadTask(getByteArrayFromByteBuffer(iter.getData()));
                         NodeImpl.getNodeImple().getClientRpcService().readResult(task);
                         iter.next();
                     }
-
-                    return;
+                    break;
                 case "READ":
+                    LOG.debug("CustomStateMachine handle READ:{}",iter.getSize());
                     List<ReadTask> list = new ArrayList<>(iter.getSize());
                     while (iter.hasNext()){
                         ReadTask readTask = new ReadTask(
@@ -50,13 +51,31 @@ public class CustomStateMachine extends StateMachineAdapter{
                     }
                     NodeImpl.getNodeImple().getEnClosureClientRpcRequest()
                             .handleNotifyClient(list,true,new RpcResult());
-                    return;
+                    break;
                 default:
                     LOG.error("unknow apply operation");
             }
 
+
+//                LOG.debug("CustomStateMachine handle READ:{}",iter.getSize());
+//                List<ReadTask> list = new ArrayList<>(iter.getSize());
+//                while (iter.hasNext()){
+//                    LOG.debug("DATA:{}",getByteArrayFromByteBuffer(iter.getData()));
+////                    ReadTask readTask = new ReadTask(
+////                            rocksDBStorage.get(getByteArrayFromByteBuffer(iter.getData())));
+//                    ReadTask readTask = new ReadTask("1111".getBytes());
+//                    LOG.debug("readTask:{}",readTask.getTaskBytes());
+//                    list.add(readTask);
+//                    iter.next();
+//                }
+//                NodeImpl.getNodeImple().getEnClosureClientRpcRequest()
+//                        .handleNotifyClient(list,true,new RpcResult());
+
+
+
         } catch (Exception e) {
             LOG.error("CustomStateMachine apply error {}",e.getMessage());
+            e.printStackTrace();
         }finally {
             this.lock.unlock();
         }

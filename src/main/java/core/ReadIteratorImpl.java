@@ -60,17 +60,18 @@ public class ReadIteratorImpl implements Iterator {
 
     @Override
     public int getSize() {
-        return getSize();
+        return size;
     }
 
     @Override
     public boolean hasNext() {
-        return currentIndex<(size);
+        return (currentIndex+1)<(size);
     }
 
     @Override
     public ByteBuffer next() {
             this.currentIndex = currentIndex +1;
+
             this.data = list.get(currentIndex).entry;
         return getData();
     }

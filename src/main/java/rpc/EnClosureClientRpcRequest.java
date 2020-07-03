@@ -73,7 +73,7 @@ public class EnClosureClientRpcRequest {
                                                        boolean retry,RpcResult rpcResult) {
 
         Callable<RpcResult> callable = () -> {
-
+            LOG.debug("ReadTask runnable start, index:{}",readTaskSchedule.getIndex());
             if(NodeImpl.getNodeImple().getStableLogIndex().get() >= readTaskSchedule.getIndex()) {
                 try {
 
@@ -110,6 +110,7 @@ public class EnClosureClientRpcRequest {
                                                        boolean retry,RpcResult rpcResult ) {
 
         Callable<RpcResult> callable = () -> {
+            LOG.debug("NotifyClient runnable start, size:{}",list.size());
 
 
                 try {

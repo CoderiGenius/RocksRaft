@@ -195,7 +195,7 @@ public class Replicator {
                 //rpcServices.handleApendEntriesRequests(appendEntriesRequests);
                 LOG.debug("Replicator send handleAppendEntriesRequests with sizes:{} to {}"
                         ,getAppendEntriesRequestList().size(),getEndpoint());
-                checkList(getAppendEntriesRequestList());
+
                 NodeImpl.getNodeImple().getEnClosureRpcRequest()
                         .handleAppendEntriesRequests(appendEntriesRequests,rpcServices,true);
                 Inflight inflight = new Inflight(

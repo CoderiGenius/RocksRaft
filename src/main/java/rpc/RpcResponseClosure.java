@@ -37,17 +37,17 @@ public class RpcResponseClosure<T>  implements SofaResponseCallback<T> {
                 RpcRequests.AppendEntriesResponse appendEntriesResponse =
                         (RpcRequests.AppendEntriesResponse)o;
                 NodeImpl.getNodeImple().handleAppendEntriesResponse(appendEntriesResponse);
-                return;
+                break;
             case "handlePreVoteRequest":
                 RpcRequests.RequestPreVoteResponse requestPreVoteResponse =
                         (RpcRequests.RequestPreVoteResponse)o;
                 electionService.handlePrevoteResponse(requestPreVoteResponse);
-                return;
+                break;
             case "handleVoteRequest":
                 RpcRequests.RequestVoteResponse requestVoteResponse =
                         (RpcRequests.RequestVoteResponse)o;
                 electionService.handleElectionResponse(requestVoteResponse);
-                return;
+                break;
             case "handleToApplyRequest":
                 RpcRequests.NotifyFollowerToApplyResponse response =
                         (RpcRequests.NotifyFollowerToApplyResponse)o;
@@ -57,12 +57,12 @@ public class RpcResponseClosure<T>  implements SofaResponseCallback<T> {
                 }else {
                     NodeImpl.getNodeImple().handleToApplyResponse(response);
                 }
-                return;
+                break;
             case "handleReadHeartbeatrequest":
                 RpcRequests.AppendEntriesResponse appendEntriesResponse1
                         = (RpcRequests.AppendEntriesResponse)o;
                 NodeImpl.getNodeImple().handleReadHeartbeatRequestClosure(appendEntriesResponse1);
-                return;
+                break;
             case "handleApendEntriesRequests":
                 RpcRequests.AppendEntriesResponses appendEntriesResponses =
                         (RpcRequests.AppendEntriesResponses)o;
@@ -71,11 +71,11 @@ public class RpcResponseClosure<T>  implements SofaResponseCallback<T> {
                         appendEntriesResponses.getArgsList() ) {
                     NodeImpl.getNodeImple().handleAppendEntriesResponse(a);
                 }
-                return;
+                break;
             case "handleFollowerStableRequest":
                 LOG.info("Follower invoke follower stable request success lastIndex:{}"
                         ,((RpcRequests.NotifyFollowerStableResponse)o).getLastIndex());
-                return;
+                break;
             default:
                 LOG.error("RPC Request closure mismatched, requestBase: {} requestString: {}"
                         ,requestBase.toString(),s);

@@ -35,7 +35,7 @@ public class IteratorImpl {
         this.currentIndex = lastAppliedIndex;
         this.committedIndex = committedIndex;
         this.applyingIndex = applyingIndex;
-        next();
+        getFirst();
     }
 
     @Override
@@ -90,6 +90,38 @@ public class IteratorImpl {
                 }
                 this.applyingIndex.set(this.currentIndex);
             }
+        }
+    }
+
+    /**
+     * get the first，this is useful when commitedIndex == currentIndex
+     */
+    public void getFirst() {
+        this.currEntry = null; //release current entry
+        //get next entry
+        if (this.currentIndex == this.committedIndex) {
+
+
+                try {
+
+                    this.currEntry = this.logManager.getEntry(this.currentIndex);
+
+                    if (this.currEntry == null) {
+
+                        //getOrCreateError().setType(EnumOutter.ErrorType.ERROR_TYPE_LOG);
+                        getOrCreateError().getStatus().setError(-1,
+                                "Fail to get entry at index=%d while committed_index=%d", this.currentIndex,
+                                this.committedIndex);
+                    }
+                } catch (final Exception e) {
+                    e.printStackTrace();
+                    //getOrCreateError().setType(EnumOutter.ErrorType.ERROR_TYPE_LOG);
+                    getOrCreateError().getStatus().setError(RaftError.EINVAL, e.getMessage());
+                }
+                this.applyingIndex.set(this.currentIndex);
+
+        }else {
+            next();
         }
     }
 

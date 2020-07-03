@@ -139,10 +139,11 @@ public class FSMCallerImpl implements FSMCaller {
 
     private void doCommitted(long maxCommittedIndex) {
         try {
-            LOG.debug("doCommitted at {}", maxCommittedIndex);
+
             final long lastAppliedIndex = this.lastAppliedIndex.get();
+            LOG.debug("doCommitted at {} lastAppliedIndex:{}", maxCommittedIndex,lastAppliedIndex);
             // We can tolerate the disorder of committed_index
-            if (lastAppliedIndex >= maxCommittedIndex) {
+            if (lastAppliedIndex >= maxCommittedIndex && lastAppliedIndex!=0L) {
                 LOG.warn("log already committed at {} the lastAppliedIndex:{}"
                         , maxCommittedIndex, lastAppliedIndex);
                 return;
@@ -155,7 +156,7 @@ public class FSMCallerImpl implements FSMCaller {
                 // Apply data task to user state machine
                 doApplyTasks(iterImpl);
             }
-            this.lastAppliedIndex.set(iterImpl.getIndex() - 1);
+            this.lastAppliedIndex.set(iterImpl.getIndex());
         } catch (Exception e) {
             LOG.error("doCommitted error {}",e.getMessage());
             e.printStackTrace();

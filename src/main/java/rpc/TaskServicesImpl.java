@@ -49,6 +49,7 @@ public class TaskServicesImpl implements TaskRpcServices {
 
     @Override
     public ReadTaskResponse handleReadIndexRequest(ReadTask readTask) {
+        LOG.debug("Receive readTask");
       return   NodeImpl.getNodeImple().addReadTaskEvent(readTask);
     }
     @Override

@@ -287,7 +287,7 @@ public class NodeImpl implements Node {
                     >= getOptions().getCurrentNodeOptions().getMaxHeartBeatTime()) {
                 //超时，执行超时逻辑
                 LOG.error("Node timeout, start to launch TimeOut actions " +
-                        "as it have not received heartBeat for {} ms ",
+                        "as it has not received heartBeat for {} ms ",
                         Utils.monotonicMs()
                                 - NodeImpl.getNodeImple().getLastReceiveHeartbeatTime().longValue());
                 //timeOutClosure.run(null);
@@ -335,7 +335,7 @@ public class NodeImpl implements Node {
     public boolean setChecker() {
         LOG.debug("SetChecker");
         setScheduledFuture(getFollowerTimerManager().schedule(getRunnable(),
-                getOptions().getCurrentNodeOptions().getMaxHeartBeatTime()/2,
+                getOptions().getCurrentNodeOptions().getMaxHeartBeatTime(),
                 TimeUnit.MILLISECONDS));
         return true;
     }
@@ -496,6 +496,7 @@ public class NodeImpl implements Node {
         @Override
         public void onEvent(ReadEvent readEvent, long l, boolean endOfBatch) throws Exception {
             this.tasks.add(readEvent);
+            LOG.debug("Add readEvent");
             if (endOfBatch) {
                 getNodeImple().handleReadTask(tasks);
             }
@@ -715,6 +716,7 @@ public class NodeImpl implements Node {
            //event.done = task.getDone();
            event.expectedIndex = NodeImpl.getNodeImple().getStableLogIndex().get();
        };
+       LOG.debug("Add readTask:{}",readTask);
        int tryTimes = 0;
        while (tryTimes < 3) {
            if (getReadQueue().tryPublishEvent(translator)) {
@@ -810,11 +812,11 @@ public class NodeImpl implements Node {
            LOG.warn("AppendEntries warning {} target peer:{}"
                    ,appendEntriesResponse.getReason(),appendEntriesResponse.getPeerId());
            //log rePlay at the given position
-           NodeImpl.getNodeImple()
-                   .getReplicatorGroup().sendInflight(
-                   appendEntriesResponse.getAddress(),
-                   appendEntriesResponse.getPort(),
-                   appendEntriesResponse.getLastLogIndex());
+//           NodeImpl.getNodeImple()
+//                   .getReplicatorGroup().sendInflight(
+//                   appendEntriesResponse.getAddress(),
+//                   appendEntriesResponse.getPort(),
+//                   appendEntriesResponse.getLastLogIndex());
        }else {
            LOG.debug("handleAppendEntriesResponse from {} at term {} at index {} SUCCESSED",
                    appendEntriesResponse.getPeerId(),appendEntriesResponse.getTerm()
