@@ -11,7 +11,7 @@ currentNodeOptions:
   address: localhost
   name: raft-3
   peerId: raft-3
-  logStoragePath: E:\\Rocksdb1\
+  logStoragePath: src/main/resources/Rocksdb1
   logStorageName: log3
   clientAddress: localhost
   clientPort: 12299

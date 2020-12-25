@@ -22,7 +22,7 @@ public class RaftOptionsLoader {
     public  RaftOptionsLoader(String name) throws FileNotFoundException {
         Options options = BootYaml.getYaml(name);
         NodeImpl.getNodeImple().setOptions(options);
-        LOG.info("load raftOptions from "+name+" options:"+options.toString());
+        LOG.info("load raftOptions from {} options:{}",name,options.toString());
         CurrentNodeOptions currentNodeOptions = options.getCurrentNodeOptions();
         OtherNodes[] otherNodes = options.getOtherNodes();
 

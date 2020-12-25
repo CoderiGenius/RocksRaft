@@ -1,6 +1,7 @@
 package utils;
 
-import com.alipay.remoting.NamedThreadFactory;
+//import com.alipay.remoting.NamedThreadFactory;
+import com.alipay.sofa.rpc.common.struct.NamedThreadFactory;
 import entity.Closure;
 import entity.Status;
 import io.netty.util.internal.SystemPropertyUtil;

@@ -1,7 +1,7 @@
 package core;
 
-import com.alipay.remoting.rpc.RpcServer;
-import com.alipay.remoting.util.StringUtils;
+
+import com.alipay.sofa.rpc.common.utils.StringUtils;
 import com.alipay.sofa.rpc.config.ConsumerConfig;
 import com.alipay.sofa.rpc.config.ProviderConfig;
 import com.alipay.sofa.rpc.config.ServerConfig;
@@ -47,13 +47,7 @@ public class RaftGroupService {
      */
     private NodeOptions nodeOptions;
 
-    /**
-     * The raft RPC server
-     */
-    private RpcServer rpcServer;
 
-
-    private Heartbeat heartbeat;
 
     /**
      * The raft group id
@@ -77,11 +71,11 @@ public class RaftGroupService {
         this.groupId = NodeImpl.getNodeImple().getNodeId().getGroupId();
     }
 
-    public RaftGroupService(String groupId, PeerId peerId, NodeOptions nodeOptions, RpcServer rpcServer) {
+    public RaftGroupService(String groupId, PeerId peerId, NodeOptions nodeOptions) {
         this.groupId = groupId;
         this.peerId = peerId;
         this.nodeOptions = nodeOptions;
-        this.rpcServer = rpcServer;
+
 
 
 

@@ -32,6 +32,12 @@ public class RpcResponseClosure<T>  implements SofaResponseCallback<T> {
     public void onAppResponse(Object o, String s, RequestBase requestBase) {
 
         LOG.debug("Receive response:requestBase: {} requestString: {}",requestBase.toString(),s);
+
+        if(requestBase.getMethodName()==null){
+            LOG.error("Receive empty methodName:{}",requestBase.toString());
+            return;
+        }
+
         switch (requestBase.getMethodName()) {
             case "handleAppendEntriesRequest":
                 RpcRequests.AppendEntriesResponse appendEntriesResponse =

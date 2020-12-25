@@ -21,14 +21,14 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created by 周思成 on  2020/4/25 12:28
  */
 
-public class ClientRead {
-    private static final Logger LOG = LoggerFactory.getLogger(ClientRead.class);
+public class ClientExample {
+    private static final Logger LOG = LoggerFactory.getLogger(ClientExample.class);
 
     public static boolean flag = true;
     public static AtomicInteger atomicIntegerForTansactions = new AtomicInteger(0);
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+
 
         ServerConfig serverConfig = new ServerConfig()
                 .setProtocol("bolt")
@@ -49,7 +49,7 @@ public class ClientRead {
                 .setProtocol("bolt")
                 .setConnectTimeout(2000)
                 .setDirectUrl("bolt"
-                       //+ "://" + "172.24.234.215" + ":" + 12221)
+
                         + "://" + "localhost" + ":" + 12221)
                 .setInterfaceId(TaskRpcServices.class.getName());
 
@@ -60,7 +60,55 @@ public class ClientRead {
 
 
 
+        LOG.info("Start to test basic functions");
 
+
+        Task task = new Task();
+        ByteBuffer byteBuffer =  ByteBuffer.wrap(("1log"+1).getBytes());
+        task.setData(byteBuffer);
+        taskServices.apply(task);
+
+        ReadTask readTask = new ReadTask("1log1".getBytes());
+        taskServices.handleReadIndexRequest(readTask);
+
+
+
+        taskServices.apply(task);
+
+        taskServices.apply(task);
+
+
+
+
+
+
+        LOG.info("Conduct benchmark test");
+
+
+
+
+
+
+
+
+
+
+//        cachedThreadPool.shutdown();
+//        flag=false;
+//        long totalTime = (Utils.monotonicMs()-startTime);
+//        System.out.println("***************** Raft Test Result ******************");
+//        System.out.println("Total Transaction:           "+atomicIntegerForTansactions.get());
+//        System.out.println("Total Running Time:          "+totalTime);
+//        System.out.println("Total Transaction Processed: "+ClientRpcServiceImpl.atomicInteger);
+//        System.out.println("Average Transaction Time:    "+(totalTime/ClientRpcServiceImpl.atomicInteger.get()));
+//        System.out.println("****************************************************");
+       Thread.currentThread().join();
+    }
+
+
+    private void benchMark(TaskRpcServices taskServices){
+
+        ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
 
         Runnable runnable1 = () -> {
             int i = 0;
@@ -69,7 +117,7 @@ public class ClientRead {
                 ByteBuffer byteBuffer =  ByteBuffer.wrap(("1log"+i).getBytes());
                 task.setData(byteBuffer);
                 taskServices.apply(task);
-                ClientRead.atomicIntegerForTansactions.addAndGet(1);
+                ClientExample.atomicIntegerForTansactions.addAndGet(1);
                 i++;
             }
         };
@@ -81,7 +129,7 @@ public class ClientRead {
                 ByteBuffer byteBuffer =  ByteBuffer.wrap(("2log"+i).getBytes());
                 task.setData(byteBuffer);
                 taskServices.apply(task);
-                ClientRead.atomicIntegerForTansactions.addAndGet(1);
+                ClientExample.atomicIntegerForTansactions.addAndGet(1);
                 i++;
             }
         };
@@ -97,7 +145,7 @@ public class ClientRead {
                     task[j] = task1;
                 }
                 taskServices.apply(task);
-                ClientRead.atomicIntegerForTansactions.addAndGet(task.length);
+                ClientExample.atomicIntegerForTansactions.addAndGet(task.length);
                 i++;
             }
         };
@@ -113,40 +161,22 @@ public class ClientRead {
                 }
 
                 taskServices.apply(task);
-                ClientRead.atomicIntegerForTansactions.addAndGet(task.length);
+                ClientExample.atomicIntegerForTansactions.addAndGet(task.length);
                 i++;
             }
         };
-//        cachedThreadPool.submit(runnable1);
-//        cachedThreadPool.submit(runnable2);
-//        cachedThreadPool.execute(runnable3);
-//        //runnable1.run();
-//        //cachedThreadPool.submit(runnable3);
-//        Thread.sleep(1000);
-//        System.exit(0);
-        Task task = new Task();
-        ByteBuffer byteBuffer =  ByteBuffer.wrap(("1log"+1).getBytes());
-        task.setData(byteBuffer);
-        taskServices.apply(task);
 
-        ReadTask readTask = new ReadTask("1log1".getBytes());
-        taskServices.handleReadIndexRequest(readTask);
+                cachedThreadPool.submit(runnable1);
+        cachedThreadPool.submit(runnable2);
+        cachedThreadPool.execute(runnable3);
+        //runnable1.run();
+        //cachedThreadPool.submit(runnable3);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.exit(0);
 
-
-
-        taskServices.apply(task);
-
-        taskServices.apply(task);
-
-//        cachedThreadPool.shutdown();
-//        flag=false;
-//        long totalTime = (Utils.monotonicMs()-startTime);
-//        System.out.println("***************** Raft Test Result ******************");
-//        System.out.println("Total Transaction:           "+atomicIntegerForTansactions.get());
-//        System.out.println("Total Running Time:          "+totalTime);
-//        System.out.println("Total Transaction Processed: "+ClientRpcServiceImpl.atomicInteger);
-//        System.out.println("Average Transaction Time:    "+(totalTime/ClientRpcServiceImpl.atomicInteger.get()));
-//        System.out.println("****************************************************");
-       Thread.currentThread().join();
     }
 }
